@@ -7,10 +7,9 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/planet-platform/transaction-protocol-poc/protocol"
-
 	"github.com/gorilla/mux"
 	"github.com/gorilla/websocket"
+	"github.com/odysseyhack/planet-society/protocol/protocol"
 )
 
 type Websocket struct {
