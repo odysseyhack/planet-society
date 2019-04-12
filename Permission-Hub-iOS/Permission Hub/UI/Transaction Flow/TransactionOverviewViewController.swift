@@ -80,6 +80,9 @@ final class TransactionOverviewViewController: UIViewController {
         var cells = [TransactionOverviewViewCellType]()
 
         cells.append(.notification(
+            type: .notification,
+            text: "Verified"))
+        cells.append(.notification(
             type: .warning,
             text: "Permission warning!"))
         cells.append(.description(text: transaction.reason))
