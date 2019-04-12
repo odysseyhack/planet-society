@@ -246,45 +246,37 @@ func transact(ctx context.Context, db *database.Database) (*Transaction, error) 
 func fillTransaction(db *database.Database) (transaction *Transaction, err error) {
 	transaction = &Transaction{}
 	randS := rand.New(rand.NewSource(time.Now().UnixNano()))
-
 	if transaction.PersonalDetails, err = db.PersonalDetails(); err != nil {
 		return nil, err
 	}
-
 	identities, err := db.IdentityList()
 	if err != nil {
 		return nil, err
 	}
-
 	identityID := identities[randS.Uint32()%uint32(len(identities))].ID
-
 	ids, err := db.IdentityDocumentList(identityID)
 	if err != nil {
 		return nil, err
 	}
 	number1 := randS.Uint32() % uint32(len(ids))
 	transaction.IdentityDocument = ids[number1]
-
 	ps, err := db.PassportList(identityID)
 	if err != nil {
 		return nil, err
 	}
 	number2 := randS.Uint32() % uint32(len(ps))
 	transaction.Passport = ps[number2]
-
 	pc, err := db.PaymentCardList(identityID)
 	if err != nil {
 		return nil, err
 	}
 	number3 := randS.Uint32() % uint32(len(pc))
 	transaction.PaymentCard = pc[number3]
-
 	as, err := db.AddressList(identityID)
 	if err != nil {
 		return nil, err
 	}
 	number4 := randS.Uint32() % uint32(len(as))
 	transaction.Address = as[number4]
-
 	return transaction, nil
 }

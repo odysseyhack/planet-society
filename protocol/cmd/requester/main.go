@@ -172,29 +172,34 @@ func preTransact(conn *Transport) error {
 	return nil
 }
 
-func sign(query string, keychain *cryptography.Keychain) (string, error) {
+func sign() (string, error) {
 	signer := cryptography.NewSigner(keychain.SignaturePrivateKey, keychain.SignaturePublicKey)
 	signature, err := signer.Sign([]byte(query))
 	return string(signature), err
 }
 
+func createTransactMessage() (*models.TransactionRequest, error) {
+	signature, err := sign()
+	if err != nil {
+		return nilerr
+	}
+
+	return &models.TransactionRequest{
+		TransactionID: models.Key32{Key: *transactionID},
+		Query:         query,
+		Reason:        "please provide me following details to finalize shipment",
+		LawApplying:   "European Union",
+		Signature:     signature,
+	}, nil
+}
+
 func transact(conn *Transport) error {
-	signature, err := sign(query, keychain)
+	smsg, err := createTransactMessage()
 	if err != nil {
 		return err
 	}
 	fmt.Println("-> sending transaction request")
-	err = conn.SendMessage(
-		protocol.TopicTransactionRequest,
-		&models.TransactionRequest{
-			TransactionID: models.Key32{Key: *transactionID},
-			Query:         query,
-			Reason:        "please provide me following details to finalize shipment",
-			LawApplying:   "European Union",
-			Signature:     signature,
-		},
-	)
-	if err != nil {
+	if err := conn.SendMessage(protocol.TopicTransactionRequest, smsg); err != nil {
 		return err
 	}
 
@@ -216,8 +221,11 @@ func transact(conn *Transport) error {
 	if transactionReply.Content == nil {
 		return fmt.Errorf("-> transaction failed: content is nil")
 	}
-
-	fmt.Println("-> received positive transaction response")
-	fmt.Println("Transaction content:", *transactionReply.Content)
+	PrintReply(transactionReply)
 	return nil
+}
+
+func PrintReply(reply *models.TransactionReply) {
+	fmt.Println("-> received positive transaction response")
+	fmt.Println("Transaction content:", *reply.Content)
 }
