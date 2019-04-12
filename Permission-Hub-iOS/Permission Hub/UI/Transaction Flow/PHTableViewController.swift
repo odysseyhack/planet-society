@@ -25,6 +25,7 @@ enum PHTableViewViewCellType {
     case notification(
         type: TransactionNotificationType,
         text: String)
+    case warning(text: String)
     case description(text: String)
     case transactionItem(item: TransactionItem)
 }
@@ -174,6 +175,20 @@ extension PHTableViewController: UITableViewDataSource {
             cell.configure(withViewModel: viewModel)
 
             return cell
+
+        case .warning(let text):
+
+            let cell = tableView.dequeueReusableCell(
+                withIdentifier: String(describing: TransactionTableViewCell.self),
+                for: indexPath) as! TransactionTableViewCell
+
+            let viewModel = TransactionTableViewCellViewModel(
+                image: UIImage(),
+                title: text,
+                subtitle: "")
+            cell.configure(withViewModel: viewModel)
+
+            return cell
         }
     }
 }
@@ -184,7 +199,11 @@ extension PHTableViewController: UITableViewDelegate {
 
         switch items[indexPath.row] {
         case .notification:
-            let viewController = UITableViewController()
+            let items: [PHTableViewViewCellType] = [
+                .warning(text: "Basic informations are not needed."),
+                .warning(text: "Health records are not mandatory.")
+            ]
+            let viewController = PHTableViewController(items: items)
             navigationController?.pushViewController(viewController, animated: true)
 
         case .transactionItem:
