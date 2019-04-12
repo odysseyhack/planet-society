@@ -36,9 +36,8 @@ final class TransactionNotificationTableViewCell: UITableViewCell {
         stackView.translatesAutoresizingMaskIntoConstraints = false
 
         stackView.axis = .horizontal
-        stackView.spacing = 20
+        stackView.spacing = 10
         stackView.alignment = .center
-        stackView.distribution = .equalCentering
 
         return stackView
     }()
@@ -47,6 +46,17 @@ final class TransactionNotificationTableViewCell: UITableViewCell {
 
         let imageView = UIImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.setContentHuggingPriority(.required, for: .horizontal)
+
+        return imageView
+    }()
+
+    private lazy var disclosureImageView: UIImageView = {
+
+        let image = UIImage(named: "disclosure_indicator")
+        let imageView = UIImageView(image: image)
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.setContentHuggingPriority(.required, for: .horizontal)
 
         return imageView
     }()
@@ -56,8 +66,19 @@ final class TransactionNotificationTableViewCell: UITableViewCell {
         let label = UILabel()
         label.font = PHFonts.bold(ofSize: 10)
         label.textColor = .white
+        label.textAlignment = .left
 
         return label
+    }()
+
+    private lazy var separatorView: UIView = {
+
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+
+        view.backgroundColor = .white
+
+        return view
     }()
 
     // MARK: - Initialization
@@ -77,14 +98,22 @@ final class TransactionNotificationTableViewCell: UITableViewCell {
     private func configure() {
 
         addSubview(stackView)
+        addSubview(separatorView)
+
         let margin: CGFloat = 10
         stackView.topAnchor.constraint(equalTo: topAnchor, constant: margin).isActive = true
         stackView.leftAnchor.constraint(equalTo: leftAnchor, constant: margin).isActive = true
         stackView.rightAnchor.constraint(equalTo: rightAnchor, constant: -margin).isActive = true
-        stackView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -margin).isActive = true
+
+        separatorView.topAnchor.constraint(equalTo: stackView.bottomAnchor, constant: margin).isActive = true
+        separatorView.leftAnchor.constraint(equalTo: leftAnchor).isActive = true
+        separatorView.rightAnchor.constraint(equalTo: rightAnchor).isActive = true
+        separatorView.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
+        separatorView.heightAnchor.constraint(equalToConstant: 1).isActive = true
 
         stackView.addArrangedSubview(notificationImageView)
         stackView.addArrangedSubview(notificationLabel)
+        stackView.addArrangedSubview(disclosureImageView)
     }
 
     func configure(withType type: TransactionNotificationType, andText text: String) {
