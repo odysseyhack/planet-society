@@ -9,5 +9,8 @@
 import UIKit
 
 enum PHFonts {
-    static let regular = UIFont(name: "Helvetica", size: 13)
+
+    static func regular(ofSize size: CGFloat = 12) -> UIFont {
+        return UIFont(name: "Helvetica", size: size)!
+    }
 }

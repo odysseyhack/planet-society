@@ -44,6 +44,24 @@ final class TransactionTableViewCell: UITableViewCell {
         return imageView
     }()
 
+    private let itemTitleLabel: UILabel = {
+
+        let label = UILabel()
+        label.font = PHFonts.regular(ofSize: 12)
+        label.textColor = PHColors.greyishBrown
+
+        return label
+    }()
+
+    private let itemSubtitleLabel: UILabel = {
+
+        let label = UILabel()
+        label.font = PHFonts.regular(ofSize: 11)
+        label.textColor = PHColors.grey
+
+        return label
+    }()
+
     private let verticalStackView: UIStackView = {
 
         let stackView = UIStackView()
@@ -103,12 +121,15 @@ final class TransactionTableViewCell: UITableViewCell {
 
         stackView.addArrangedSubview(itemImageView)
         stackView.addArrangedSubview(verticalStackView)
+        verticalStackView.addArrangedSubview(itemTitleLabel)
+        verticalStackView.addArrangedSubview(itemSubtitleLabel)
         stackView.addArrangedSubview(infoButton)
         stackView.addArrangedSubview(checkmarkImageView)
     }
 
     func configure(withViewModel viewModel: TransactionTableViewCellViewModel) {
 
-
+        itemTitleLabel.text = viewModel.title
+        itemSubtitleLabel.text = viewModel.subtitle
     }
 }
