@@ -41,7 +41,7 @@ final class TransactionFlowContainerViewController: UIPageViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        view.backgroundColor = Colors.lightGray
+        view.backgroundColor = PHColors.lightGray
 
         // set initial viewcontroller
         let firstViewControllerOrNil = self.steps.map { $0.viewController }.first
