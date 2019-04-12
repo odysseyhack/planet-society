@@ -31,9 +31,20 @@ final class TransactionOverviewViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        configureTableView()
+    }
+
+    // MARK: - Configuration
+
+    private func configureTableView() {
+
         tableView.register(
             TransactionTableViewCell.self,
             forCellReuseIdentifier: String(describing: TransactionTableViewCell.self))
+
+        tableView.rowHeight = UITableView.automaticDimension
+        tableView.estimatedRowHeight = 66
+        tableview.allowsSelection = false
     }
 
     // MARK: - UITableViewDataSource
