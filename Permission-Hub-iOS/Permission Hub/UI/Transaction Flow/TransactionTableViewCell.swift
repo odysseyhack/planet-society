@@ -115,10 +115,11 @@ final class TransactionTableViewCell: UITableViewCell {
         addSubview(stackView)
 
         let margin: CGFloat = 15
+        stackView.topAnchor.constraint(equalTo: topAnchor, constant: margin).isActive = true
         stackView.leftAnchor.constraint(equalTo: leftAnchor, constant: margin).isActive = true
         stackView.rightAnchor.constraint(equalTo: rightAnchor, constant: -margin).isActive = true
-        stackView.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
-
+        stackView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -margin).isActive = true
+        
         stackView.addArrangedSubview(itemImageView)
         stackView.addArrangedSubview(verticalStackView)
         verticalStackView.addArrangedSubview(itemTitleLabel)

@@ -29,9 +29,48 @@ enum TransactionOverviewViewCellType {
     case transactionItem(item: TransactionItem)
 }
 
-final class TransactionOverviewViewController: UITableViewController {
+final class TransactionOverviewViewController: UIViewController {
 
     // MARK: - Private properties
+
+    private lazy var tableView: UITableView = {
+
+        let tableView = UITableView()
+        tableView.translatesAutoresizingMaskIntoConstraints = false
+
+        tableView.rowHeight = UITableView.automaticDimension
+        tableView.estimatedRowHeight = 66
+        tableView.allowsSelection = false
+
+        tableView.dataSource = self
+
+        tableView.register(
+            TransactionTableViewCell.self,
+            forCellReuseIdentifier: String(describing: TransactionTableViewCell.self))
+
+        tableView.register(
+            UITableViewCell.self,
+            forCellReuseIdentifier: String(describing: UITableViewCell.self))
+
+        tableView.register(
+            TransactionNotificationTableViewCell.self,
+            forCellReuseIdentifier: String(describing: TransactionNotificationTableViewCell.self))
+
+        return tableView
+    }()
+
+    private lazy var bottomStackView: UIStackView = {
+
+        let stackView = UIStackView()
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+
+        stackView.axis = .horizontal
+        stackView.alignment = .center
+        stackView.distribution = .equalCentering
+        stackView.spacing = 20
+
+        return stackView
+    }()
 
     private let transaction: TransactionNotification
 
@@ -56,7 +95,7 @@ final class TransactionOverviewViewController: UITableViewController {
     init(transaction: TransactionNotification) {
         self.transaction = transaction
 
-        super.init(style: .plain)
+        super.init(nibName: nil, bundle: nil)
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -68,37 +107,52 @@ final class TransactionOverviewViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        configureTableView()
+        view.backgroundColor = PHColors.lightGray
+
+        view.addSubview(tableView)
+        view.addSubview(bottomStackView)
+
+        tableView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
+        tableView.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
+        tableView.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
+        bottomStackView.heightAnchor.constraint(equalToConstant: 75).isActive = true
+        bottomStackView.topAnchor.constraint(equalTo: tableView.bottomAnchor).isActive = true
+        bottomStackView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        bottomStackView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
+
+        for i in 0..<2 {
+
+            let button = UIButton()
+            button.translatesAutoresizingMaskIntoConstraints = false
+
+            button.widthAnchor.constraint(equalToConstant: 92).isActive = true
+            button.heightAnchor.constraint(equalToConstant: 34).isActive = true
+
+            button.titleLabel?.font = PHFonts.regular()
+
+            let color = i == 0 ? PHColors.greyishBrown : PHColors.topaz
+            button.setTitleColor(color, for: .normal)
+            button.backgroundColor = .white
+
+            button.layer.cornerRadius = 5
+            button.layer.borderWidth = 1
+            button.layer.borderColor = PHColors.topaz.cgColor
+
+            let title = i == 0 ? "Decline" : "Continue"
+            button.setTitle(title, for: .normal)
+            
+            bottomStackView.addArrangedSubview(button)
+        }
     }
+}
 
-    // MARK: - Configuration
+extension TransactionOverviewViewController: UITableViewDataSource {
 
-    private func configureTableView() {
-
-        tableView.register(
-            TransactionTableViewCell.self,
-            forCellReuseIdentifier: String(describing: TransactionTableViewCell.self))
-
-        tableView.register(
-            UITableViewCell.self,
-            forCellReuseIdentifier: String(describing: UITableViewCell.self))
-
-        tableView.register(
-            TransactionNotificationTableViewCell.self,
-            forCellReuseIdentifier: String(describing: TransactionNotificationTableViewCell.self))
-
-        tableView.rowHeight = UITableView.automaticDimension
-        tableView.estimatedRowHeight = 66
-        tableView.allowsSelection = false
-    }
-
-    // MARK: - UITableViewDataSource
-
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return cells.count
     }
 
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 
         switch cells[indexPath.row] {
         case .notification(let type, let text):
@@ -118,6 +172,7 @@ final class TransactionOverviewViewController: UITableViewController {
                 for: indexPath)
 
             cell.textLabel?.font = PHFonts.regular()
+            cell.textLabel?.textColor = PHColors.greyishBrown
             cell.textLabel?.text = text
 
             return cell

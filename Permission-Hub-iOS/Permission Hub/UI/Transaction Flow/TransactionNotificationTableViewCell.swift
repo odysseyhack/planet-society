@@ -14,8 +14,7 @@ enum TransactionNotificationType {
     var image: UIImage? {
         switch self {
         case .warning:
-            // TODO: add image
-            return nil
+            return UIImage(named: "warning")
         }
     }
 
@@ -39,6 +38,7 @@ final class TransactionNotificationTableViewCell: UITableViewCell {
         stackView.axis = .horizontal
         stackView.spacing = 20
         stackView.alignment = .center
+        stackView.distribution = .equalCentering
 
         return stackView
     }()
