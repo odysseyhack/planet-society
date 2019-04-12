@@ -5,14 +5,14 @@ import (
 	"github.com/gorilla/mux"
 	"github.com/odysseyhack/planet-society/protocol/cryptography"
 	"github.com/odysseyhack/planet-society/protocol/models"
+	"github.com/odysseyhack/planet-society/protocol/utils"
 	log "github.com/sirupsen/logrus"
 	"net/http"
-	"os"
 	"time"
 )
 
 func main() {
-	configureLogger()
+	utils.ConfigureLogger()
 
 	router := mux.NewRouter()
 	router.HandleFunc("/notification-get", getHandler)
@@ -66,13 +66,4 @@ func getHandler(w http.ResponseWriter, r *http.Request) {
 	w.Write(data)
 }
 
-func configureLogger() {
-	// Log as  default ASCII formatter.
-	log.SetFormatter(&log.TextFormatter{})
 
-	// Output to stdout instead of the default stderr
-	log.SetOutput(os.Stdout)
-
-	// Only log the info severity or above.
-	log.SetLevel(log.InfoLevel)
-}
