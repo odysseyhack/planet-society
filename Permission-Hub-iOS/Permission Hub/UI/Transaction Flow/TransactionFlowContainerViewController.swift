@@ -52,6 +52,10 @@ final class TransactionFlowContainerViewController: UIPageViewController {
                 direction: .forward,
                 animated: false)
         }
+    }
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
 
         pollForNotifications()
     }
@@ -64,10 +68,18 @@ final class TransactionFlowContainerViewController: UIPageViewController {
 
             switch result {
             case .success(let notification):
-                print(notification)
+                self.presentTransactionOverviewViewController(items: notification.items)
             case .failure(let error):
                 print(error)
             }
         }
+    }
+
+    // MARK: - Helpers
+
+    private func presentTransactionOverviewViewController(items: [TransactionItem]) {
+
+        let viewController = TransactionOverviewViewController(items: items)
+        navigationController?.pushViewController(viewController, animated: true)
     }
 }
