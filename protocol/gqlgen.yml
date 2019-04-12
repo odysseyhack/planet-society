@@ -8,7 +8,7 @@ schema:
   - schemas/protocol.graphql
 
 exec:
-  filename: generated.go
+  filename: protocol/generated.go
 
 model:
   filename: models/generated.go
