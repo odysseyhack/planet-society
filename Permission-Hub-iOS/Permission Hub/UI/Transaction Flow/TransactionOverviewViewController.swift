@@ -12,12 +12,12 @@ final class TransactionOverviewViewController: UITableViewController {
 
     // MARK: - Private properties
 
-    private let items: [TransactionItem]
+    private let transaction: TransactionNotification
 
     // MARK: - Initialization
 
-    init(items: [TransactionItem]) {
-        self.items = items
+    init(transaction: TransactionNotification) {
+        self.transaction = transaction
 
         super.init(nibName: nil, bundle: nil)
     }
@@ -44,7 +44,7 @@ final class TransactionOverviewViewController: UITableViewController {
 
         tableView.rowHeight = UITableView.automaticDimension
         tableView.estimatedRowHeight = 66
-        tableview.allowsSelection = false
+        tableView.allowsSelection = false
     }
 
     // MARK: - UITableViewDataSource

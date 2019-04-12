@@ -67,8 +67,8 @@ final class TransactionFlowContainerViewController: UIPageViewController {
         try! service.getNotifications { result in
 
             switch result {
-            case .success(let notification):
-                self.presentTransactionOverviewViewController(items: notification.items)
+            case .success(let transaction):
+                self.presentTransactionOverviewViewController(transaction: transaction)
             case .failure(let error):
                 print(error)
             }
@@ -77,9 +77,9 @@ final class TransactionFlowContainerViewController: UIPageViewController {
 
     // MARK: - Helpers
 
-    private func presentTransactionOverviewViewController(items: [TransactionItem]) {
+    private func presentTransactionOverviewViewController(transaction: TransactionNotification) {
 
-        let viewController = TransactionOverviewViewController(items: items)
+        let viewController = TransactionOverviewViewController(transaction: transaction)
         navigationController?.pushViewController(viewController, animated: true)
     }
 }
