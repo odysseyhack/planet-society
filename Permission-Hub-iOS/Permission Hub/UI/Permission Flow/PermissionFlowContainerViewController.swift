@@ -1,5 +1,5 @@
 //
-//  PermissionFlowContainerViewController.swift
+//  TransactionFlowContainerViewController.swift
 //  Permission Hub
 //
 //  Created by Corné on 12/04/2019.
@@ -8,22 +8,22 @@
 
 import UIKit
 
-struct PermissionFlowStep {
+struct TransactionFlowStep {
     let viewController = UIViewController()
 }
 
-final class PermissionFlowContainerViewController: UIPageViewController {
+final class TransactionFlowContainerViewController: UIPageViewController {
 
     // MARK: - Private properties
 
-    private let steps: [PermissionFlowStep]
+    private let steps: [TransactionFlowStep]
     private var currentStepIndex = 0
 
     private let service = NetworkingService()
 
     // MARK: - Initialization
 
-    init(steps: [PermissionFlowStep]) {
+    init(steps: [TransactionFlowStep]) {
         self.steps = steps
 
         super.init(

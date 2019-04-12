@@ -1,5 +1,5 @@
 //
-//  PermissionNotification.swift
+//  TransactionNotification.swift
 //  Permission Hub
 //
 //  Created by Corné on 12/04/2019.
@@ -8,7 +8,7 @@
 
 import Foundation
 
-struct PermissionItem: Decodable {
+struct TransactionItem: Decodable {
     let item: String
     let fields: [String]
 
@@ -18,9 +18,9 @@ struct PermissionItem: Decodable {
     }
 }
 
-struct PermissionNotification: Decodable {
+struct TransactionNotification: Decodable {
     let transactionID: String
-    let item: [PermissionItem]
+    let item: [TransactionItem]
     let reason: String
     let verification: [String]
     let date: Date
@@ -41,7 +41,7 @@ struct PermissionNotification: Decodable {
 
     init(
         transactionID: String,
-        item: [PermissionItem],
+        item: [TransactionItem],
         reason: String,
         verification: [String],
         date: Date,
@@ -61,7 +61,7 @@ struct PermissionNotification: Decodable {
 
         let container = try decoder.container(keyedBy: CodingKeys.self)
         let transactionID = try container.decode(String.self, forKey: .transactionID)
-        let item = try container.decode([PermissionItem].self, forKey: .item)
+        let item = try container.decode([TransactionItem].self, forKey: .item)
         let reason = try container.decode(String.self, forKey: .reason)
         let verification = try container.decode([String].self, forKey: .verification)
 

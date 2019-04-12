@@ -36,7 +36,7 @@ final class NetworkingService {
     // MARK: - Endpoints
 
     // endpoint to poll for notifications
-    func getNotifications(completion: @escaping  (_ result: PHNetworkingResult<PermissionNotification>) -> Void) throws {
+    func getNotifications(completion: @escaping  (_ result: PHNetworkingResult<TransactionNotification>) -> Void) throws {
 
         // construct URL
         guard let url = URL(string: baseUrl + "/notification-get") else {
@@ -52,7 +52,7 @@ final class NetworkingService {
             if let data = data {
 
                 let decoder = JSONDecoder()
-                let notification = try! decoder.decode(PermissionNotification.self, from: data)
+                let notification = try! decoder.decode(TransactionNotification.self, from: data)
                 completion(.success(notification))
             }
         }
