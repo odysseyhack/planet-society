@@ -40,3 +40,8 @@ type PermissionNotificationRequest {
     requesterName: String!
     RequesterPublicKey: String!
 }
+
+type PermissionNotificationResponse {
+    transactionID: String!
+    accepted: Boolean!
+}
