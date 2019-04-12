@@ -13,7 +13,8 @@ clean-generated:
 clean: clean-generated
 
 test:
-	@go test -v ./database
+	go test -v ./database
+	go test -v ./cryptography
 
 # binaries
 
