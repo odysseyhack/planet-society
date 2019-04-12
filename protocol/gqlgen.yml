@@ -1,0 +1,23 @@
+schema:
+  - schemas/mutation.graphql
+  - schemas/query.graphql
+  - schemas/scalars.graphql
+  - schemas/types.graphql
+  - schemas/inputs.graphql
+  - schemas/interfaces.graphql
+  - schemas/protocol.graphql
+
+exec:
+  filename: generated.go
+
+model:
+  filename: models/generated.go
+  package: models
+
+resolver:
+  filename: generated_resolver.go
+  type: Resolver
+
+models:
+  Key32:
+    model: github.com/odysseyhack/planet-society/protocol/models.Key32
