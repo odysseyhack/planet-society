@@ -195,3 +195,16 @@ extension TransactionOverviewViewController: UITableViewDataSource {
         }
     }
 }
+
+extension TransactionOverviewViewController: UITableViewDelegate {
+
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+
+        switch cells[indexPath.row] {
+        case .notification(let type, let text):
+
+            let viewController = UITableViewController()
+            navigationController?.pushViewController(viewController, animated: true)
+        }
+    }
+}
