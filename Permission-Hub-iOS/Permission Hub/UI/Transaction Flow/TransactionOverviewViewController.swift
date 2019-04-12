@@ -41,6 +41,7 @@ final class TransactionOverviewViewController: UIViewController {
         tableView.rowHeight = UITableView.automaticDimension
         tableView.estimatedRowHeight = 66
         tableView.allowsSelection = false
+        tableView.separatorStyle = .none
 
         tableView.dataSource = self
 
@@ -136,7 +137,7 @@ final class TransactionOverviewViewController: UIViewController {
 
             button.layer.cornerRadius = 5
             button.layer.borderWidth = 1
-            button.layer.borderColor = PHColors.topaz.cgColor
+            button.layer.borderColor = color.cgColor
 
             let title = i == 0 ? "Decline" : "Continue"
             button.setTitle(title, for: .normal)
