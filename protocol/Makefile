@@ -6,7 +6,7 @@ graphql-generate: clean-generated
 	@gqlgen
 
 clean-generated:
-	@rm -f generated.go
+	@rm -f protocol/generated.go
 	@rm -f generated_resolver.go
 	@rm -f models/generated.go
 
