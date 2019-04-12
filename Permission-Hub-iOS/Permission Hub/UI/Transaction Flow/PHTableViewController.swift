@@ -21,7 +21,7 @@ enum TransactionVerificationStatus {
     }
 }
 
-enum TransactionOverviewViewCellType {
+enum PHTableViewViewCellType {
     case notification(
         type: TransactionNotificationType,
         text: String)
@@ -74,31 +74,12 @@ final class PHTableViewController: UIViewController {
         return stackView
     }()
 
-    private let transaction: TransactionNotification
-
-    private var cells: [TransactionOverviewViewCellType] {
-
-        var cells = [TransactionOverviewViewCellType]()
-
-        cells.append(.notification(
-            type: .notification,
-            text: "Verified"))
-        cells.append(.notification(
-            type: .warning,
-            text: "Permission warning!"))
-        cells.append(.description(text: transaction.reason))
-
-        transaction.items.forEach {
-            cells.append(.transactionItem(item: $0))
-        }
-
-        return cells
-    }
+    private var items: [PHTableViewViewCellType]
 
     // MARK: - Initialization
 
-    init(transaction: TransactionNotification) {
-        self.transaction = transaction
+    init(items: [PHTableViewViewCellType]) {
+        self.items = items
 
         super.init(nibName: nil, bundle: nil)
     }
@@ -154,12 +135,12 @@ final class PHTableViewController: UIViewController {
 extension PHTableViewController: UITableViewDataSource {
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return cells.count
+        return items.count
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 
-        switch cells[indexPath.row] {
+        switch items[indexPath.row] {
         case .notification(let type, let text):
 
             let cell = tableView.dequeueReusableCell(
@@ -201,7 +182,7 @@ extension PHTableViewController: UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
 
-        switch cells[indexPath.row] {
+        switch items[indexPath.row] {
         case .notification:
             let viewController = UITableViewController()
             navigationController?.pushViewController(viewController, animated: true)
@@ -216,7 +197,7 @@ extension PHTableViewController: UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
 
-        switch cells[indexPath.row] {
+        switch items[indexPath.row] {
         case .transactionItem:
             tableView.cellForRow(at: indexPath)?.isSelected = false
 
