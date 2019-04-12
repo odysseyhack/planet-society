@@ -36,6 +36,8 @@ final class TransactionTableViewCell: UITableViewCell {
         let imageView = UIImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
 
+        imageView.contentMode = .center
+
         let dimension: CGFloat = 30
         imageView.widthAnchor.constraint(equalToConstant: dimension).isActive = true
         imageView.heightAnchor.constraint(equalToConstant: dimension).isActive = true
@@ -165,6 +167,7 @@ final class TransactionTableViewCell: UITableViewCell {
 
     func configure(withViewModel viewModel: TransactionTableViewCellViewModel) {
 
+        itemImageView.image = UIImage(named: "personal_details")
         itemTitleLabel.text = viewModel.title
         itemSubtitleLabel.text = viewModel.subtitle
     }
