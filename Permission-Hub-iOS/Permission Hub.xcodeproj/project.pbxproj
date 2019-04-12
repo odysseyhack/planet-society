@@ -18,6 +18,8 @@
 		4147612C2260B65100030BE6 /* TransactionNotification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4147612B2260B65100030BE6 /* TransactionNotification.swift */; };
 		4147612F2260C02000030BE6 /* TransactionOverviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4147612E2260C02000030BE6 /* TransactionOverviewViewController.swift */; };
 		414761312260C1F700030BE6 /* PHFonts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 414761302260C1F700030BE6 /* PHFonts.swift */; };
+		414761332260D14E00030BE6 /* TransactionTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 414761322260D14E00030BE6 /* TransactionTableViewCell.swift */; };
+		414761362260DB2B00030BE6 /* TransactionNotificationTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 414761352260DB2B00030BE6 /* TransactionNotificationTableViewCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -55,6 +57,8 @@
 		4147612B2260B65100030BE6 /* TransactionNotification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionNotification.swift; sourceTree = "<group>"; };
 		4147612E2260C02000030BE6 /* TransactionOverviewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionOverviewViewController.swift; sourceTree = "<group>"; };
 		414761302260C1F700030BE6 /* PHFonts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PHFonts.swift; sourceTree = "<group>"; };
+		414761322260D14E00030BE6 /* TransactionTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionTableViewCell.swift; sourceTree = "<group>"; };
+		414761352260DB2B00030BE6 /* TransactionNotificationTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionNotificationTableViewCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -147,8 +151,9 @@
 		414761272260A77A00030BE6 /* Transaction Flow */ = {
 			isa = PBXGroup;
 			children = (
-				414760F8226089BD00030BE6 /* TransactionFlowContainerViewController.swift */,
+				414761342260D17700030BE6 /* Cells */,
 				4147612E2260C02000030BE6 /* TransactionOverviewViewController.swift */,
+				414760F8226089BD00030BE6 /* TransactionFlowContainerViewController.swift */,
 			);
 			path = "Transaction Flow";
 			sourceTree = "<group>";
@@ -167,6 +172,15 @@
 				4147612B2260B65100030BE6 /* TransactionNotification.swift */,
 			);
 			path = Models;
+			sourceTree = "<group>";
+		};
+		414761342260D17700030BE6 /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				414761322260D14E00030BE6 /* TransactionTableViewCell.swift */,
+				414761352260DB2B00030BE6 /* TransactionNotificationTableViewCell.swift */,
+			);
+			name = Cells;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -301,6 +315,8 @@
 			files = (
 				414760F9226089BD00030BE6 /* TransactionFlowContainerViewController.swift in Sources */,
 				414761252260A64300030BE6 /* PHColors.swift in Sources */,
+				414761362260DB2B00030BE6 /* TransactionNotificationTableViewCell.swift in Sources */,
+				414761332260D14E00030BE6 /* TransactionTableViewCell.swift in Sources */,
 				4147612F2260C02000030BE6 /* TransactionOverviewViewController.swift in Sources */,
 				4147612C2260B65100030BE6 /* TransactionNotification.swift in Sources */,
 				414760F7226089BD00030BE6 /* AppDelegate.swift in Sources */,
