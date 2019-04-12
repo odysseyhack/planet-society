@@ -172,44 +172,49 @@ func preTransact(conn *Transport) error {
 	return nil
 }
 
+func sign(query string, keychain *cryptography.Keychain) (string, error) {
+	signer := cryptography.NewSigner(keychain.SignaturePrivateKey, keychain.SignaturePublicKey)
+	signature, err := signer.Sign([]byte(query))
+	return string(signature), err
+}
+
 func transact(conn *Transport) error {
+	signature, err := sign(query, keychain)
+	if err != nil {
+		return err
+	}
 	fmt.Println("-> sending transaction request")
-	err := conn.SendMessage(
+	err = conn.SendMessage(
 		protocol.TopicTransactionRequest,
 		&models.TransactionRequest{
 			TransactionID: models.Key32{Key: *transactionID},
 			Query:         query,
 			Reason:        "please provide me following details to finalize shipment",
 			LawApplying:   "European Union",
+			Signature:     signature,
 		},
 	)
 	if err != nil {
-		fmt.Println("-> sending transaction request failed", err)
-		os.Exit(1)
+		return err
 	}
 
 	fmt.Println("-> Waiting for transaction reply")
 	msg, err := conn.Read()
 	if err != nil {
-		fmt.Println("-> Read failed", err)
-		os.Exit(1)
+		return err
 	}
 
 	var transactionReply models.TransactionReply
 	if err := gob.NewDecoder(bytes.NewBuffer(msg.Body.Payload)).Decode(&transactionReply); err != nil {
-		// invalid data, cannot reply
-		fmt.Println("-> transaction reply: invalid payload:", err)
-		os.Exit(1)
+		return err
 	}
 
 	if transactionReply.Error != nil {
-		fmt.Println("-> transaction failed:", *transactionReply.Error)
-		os.Exit(1)
+		return fmt.Errorf("errors in response: %v", *transactionReply.Error)
 	}
 
 	if transactionReply.Content == nil {
-		fmt.Println("-> transaction failed: content is nil")
-		os.Exit(1)
+		return fmt.Errorf("-> transaction failed: content is nil")
 	}
 
 	fmt.Println("-> received positive transaction response")

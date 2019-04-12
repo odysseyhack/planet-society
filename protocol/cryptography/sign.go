@@ -13,6 +13,13 @@ type Signer struct {
 	publicKey  Key32
 }
 
+func NewSigner(privateKey Key64, publicKey Key32) *Signer {
+	return &Signer{
+		publicKey:  publicKey,
+		privateKey: privateKey,
+	}
+}
+
 // Sign signs message using public key cryptography
 func (s *Signer) Sign(message []byte) ([]byte, error) {
 	if message == nil {

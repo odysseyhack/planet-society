@@ -138,7 +138,7 @@ func (g *generator) generateAddresses(db *database.Database) error {
 	return nil
 }
 
-func (g *generator) generateDocuments(db *database.Database) error {
+func (g *generator) generatePaymentCard(db *database.Database) error {
 	for i := range g.identities {
 		name := g.randomName()
 		surname := g.randomSurname()
@@ -154,6 +154,18 @@ func (g *generator) generateDocuments(db *database.Database) error {
 			Currency:     g.randomCurrency(),
 		}
 
+		if _, err := db.PaymentCardAdd(paymentCard); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+func (g *generator) generatePassport(db *database.Database) error {
+	for i := range g.identities {
+		name := g.randomName()
+		surname := g.randomSurname()
+
 		passport := models.PassportInput{
 			Identity:    g.identities[i].ID,
 			Name:        name,
@@ -164,6 +176,18 @@ func (g *generator) generateDocuments(db *database.Database) error {
 			Country:     g.randomCountry(),
 		}
 
+		if _, err := db.PassportAdd(passport); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+func (g *generator) generateIdentityDocument(db *database.Database) error {
+	for i := range g.identities {
+		name := g.randomName()
+		surname := g.randomSurname()
+
 		identityCard := models.IdentityDocumentInput{
 			Identity:    g.identities[i].ID,
 			Name:        name,
@@ -173,21 +197,23 @@ func (g *generator) generateDocuments(db *database.Database) error {
 			DisplayName: "my_id_document",
 			Expiration:  time.Now().Format(time.RFC3339),
 		}
-
-		if _, err := db.PassportAdd(passport); err != nil {
-			return err
-		}
-
-		if _, err := db.PaymentCardAdd(paymentCard); err != nil {
-			return err
-		}
-
 		if _, err := db.IdentityDocumentAdd(identityCard); err != nil {
 			return err
 		}
-
 	}
+	return nil
+}
 
+func (g *generator) generateDocuments(db *database.Database) error {
+	if err := g.generateIdentityDocument(db); err != nil {
+		return err
+	}
+	if err := g.generatePassport(db); err != nil {
+		return err
+	}
+	if err := g.generatePaymentCard(db); err != nil {
+		return err
+	}
 	return nil
 }
 
