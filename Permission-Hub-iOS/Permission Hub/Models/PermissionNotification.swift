@@ -8,9 +8,19 @@
 
 import Foundation
 
+struct PermissionItem: Decodable {
+    let item: String
+    let fields: [String]
+
+    private enum CodingKeys: String, CodingKey {
+        case item = "Item"
+        case fields = "Fields"
+    }
+}
+
 struct PermissionNotification: Decodable {
     let transactionID: String
-    //    let item: [String: Any]
+    let item: [PermissionItem]
     let reason: String
     let verification: [String]
     let date: Date
@@ -31,7 +41,7 @@ struct PermissionNotification: Decodable {
 
     init(
         transactionID: String,
-        //    let item: [String: Any]
+        item: [PermissionItem],
         reason: String,
         verification: [String],
         date: Date,
@@ -39,6 +49,7 @@ struct PermissionNotification: Decodable {
         requesterPublicKey: String) {
 
         self.transactionID = transactionID
+        self.item = item
         self.reason = reason
         self.verification = verification
         self.date = date
@@ -50,7 +61,7 @@ struct PermissionNotification: Decodable {
 
         let container = try decoder.container(keyedBy: CodingKeys.self)
         let transactionID = try container.decode(String.self, forKey: .transactionID)
-        //        let item = try container.decode(String.self, forKey: .item)
+        let item = try container.decode([PermissionItem].self, forKey: .item)
         let reason = try container.decode(String.self, forKey: .reason)
         let verification = try container.decode([String].self, forKey: .verification)
 
@@ -70,6 +81,7 @@ struct PermissionNotification: Decodable {
 
         self.init(
             transactionID: transactionID,
+            item: item,
             reason: reason,
             verification: verification,
             date: date,
