@@ -29,7 +29,7 @@ enum TransactionOverviewViewCellType {
     case transactionItem(item: TransactionItem)
 }
 
-final class TransactionOverviewViewController: UIViewController {
+final class PHTableViewController: UIViewController {
 
     // MARK: - Private properties
 
@@ -151,7 +151,7 @@ final class TransactionOverviewViewController: UIViewController {
     }
 }
 
-extension TransactionOverviewViewController: UITableViewDataSource {
+extension PHTableViewController: UITableViewDataSource {
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return cells.count
@@ -197,7 +197,7 @@ extension TransactionOverviewViewController: UITableViewDataSource {
     }
 }
 
-extension TransactionOverviewViewController: UITableViewDelegate {
+extension PHTableViewController: UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
 
