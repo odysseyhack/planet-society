@@ -14,7 +14,7 @@ final class PermissionFlowViewController: UIViewController {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
 
-        view.backgroundColor = .white
+        view.backgroundColor = Colors.lightGray
     }
 }
 
