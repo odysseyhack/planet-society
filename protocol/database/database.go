@@ -451,6 +451,16 @@ func (d *Database) PaymentCardList(identity string) (list []models.PaymentCard, 
 	return list, err
 }
 
+func (d *Database) passportInputToPassport(passport *models.PassportInput, added *models.Passport) {
+	added.ID = d.newID()
+	added.Expiration = passport.Expiration
+	added.DisplayName = passport.DisplayName
+	added.Number = passport.Number
+	added.Surname = passport.Surname
+	added.Name = passport.Name
+	added.Country = passport.Country
+}
+
 // PassportAdd adds new passport
 func (d *Database) PassportAdd(passport models.PassportInput) (added models.Passport, err error) {
 	err = d.db.Update(func(tx *bolt.Tx) error {
@@ -469,15 +479,7 @@ func (d *Database) PassportAdd(passport models.PassportInput) (added models.Pass
 			return ErrBucketNotFound(bucketPassports)
 		}
 
-		added = models.Passport{
-			ID:          d.newID(),
-			Expiration:  passport.Expiration,
-			DisplayName: passport.DisplayName,
-			Number:      passport.Number,
-			Surname:     passport.Surname,
-			Name:        passport.Name,
-			Country:     passport.Country,
-		}
+		d.passportInputToPassport(&passport, &added)
 
 		if err := d.put(passportBucket, []byte(added.ID), &added); err != nil {
 			return err
@@ -518,6 +520,16 @@ func (d *Database) PassportList(identity string) (list []models.Passport, err er
 	return list, err
 }
 
+func (d *Database) identityDocumentInputToDocument(identityDocument *models.IdentityDocumentInput, document *models.IdentityDocument) {
+	document.ID = d.newID()
+	document.Expiration = identityDocument.Expiration
+	document.DisplayName = identityDocument.DisplayName
+	document.Number = identityDocument.Number
+	document.Surname = identityDocument.Surname
+	document.Name = identityDocument.Name
+	document.Country = identityDocument.Country
+}
+
 // IdentityDocumentAdd adds new identity document
 func (d *Database) IdentityDocumentAdd(identityDocument models.IdentityDocumentInput) (document models.IdentityDocument, err error) {
 	err = d.db.Update(func(tx *bolt.Tx) error {
@@ -537,15 +549,7 @@ func (d *Database) IdentityDocumentAdd(identityDocument models.IdentityDocumentI
 			return ErrBucketNotFound(bucketIdentityDocuments)
 		}
 
-		document = models.IdentityDocument{
-			ID:          d.newID(),
-			Expiration:  identityDocument.Expiration,
-			DisplayName: identityDocument.DisplayName,
-			Number:      identityDocument.Number,
-			Surname:     identityDocument.Surname,
-			Name:        identityDocument.Name,
-			Country:     identityDocument.Country,
-		}
+		d.identityDocumentInputToDocument(&identityDocument, &document)
 
 		if err := d.put(identityDocumentBucket, []byte(document.ID), &document); err != nil {
 			return err
