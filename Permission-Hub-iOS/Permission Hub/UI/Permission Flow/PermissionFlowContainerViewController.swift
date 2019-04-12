@@ -19,6 +19,8 @@ final class PermissionFlowContainerViewController: UIPageViewController {
     private let steps: [PermissionFlowStep]
     private var currentStepIndex = 0
 
+    private let service = NetworkingService()
+
     // MARK: - Initialization
 
     init(steps: [PermissionFlowStep]) {
@@ -49,6 +51,23 @@ final class PermissionFlowContainerViewController: UIPageViewController {
                 [viewController],
                 direction: .forward,
                 animated: false)
+        }
+
+        pollForNotifications()
+    }
+
+    // MARK: - Networking
+
+    private func pollForNotifications() {
+
+        try! service.getNotifications { result in
+
+            switch result {
+            case .success(let notification):
+                print(notification)
+            case .failure(let error):
+                print(error)
+            }
         }
     }
 }
