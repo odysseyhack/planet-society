@@ -40,7 +40,6 @@ final class TransactionOverviewViewController: UIViewController {
 
         tableView.rowHeight = UITableView.automaticDimension
         tableView.estimatedRowHeight = 66
-        tableView.allowsSelection = false
         tableView.separatorStyle = .none
 
         tableView.dataSource = self

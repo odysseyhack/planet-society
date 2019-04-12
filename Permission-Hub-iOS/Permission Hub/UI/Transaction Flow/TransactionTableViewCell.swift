@@ -122,6 +122,8 @@ final class TransactionTableViewCell: UITableViewCell {
 
     private func configure() {
 
+        selectionStyle = .none
+
         addSubview(stackView)
         addSubview(separatorView)
 

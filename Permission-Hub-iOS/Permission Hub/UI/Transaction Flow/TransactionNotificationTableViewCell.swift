@@ -101,6 +101,8 @@ final class TransactionNotificationTableViewCell: UITableViewCell {
 
     private func configure() {
 
+        selectionStyle = .none
+
         addSubview(stackView)
         addSubview(separatorView)
 
