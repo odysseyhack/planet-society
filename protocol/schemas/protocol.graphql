@@ -25,3 +25,18 @@ type TransactionRequestReply {
     transactionID: Key32!
     content: String!
 }
+
+type ItemField {
+    Item: String!
+    Fields: [String!]!
+}
+
+type PermissionNotificationRequest {
+    transactionID: String!
+    item: [ItemField!]!
+    reason: String!
+    verification: [String!]
+    date: String!
+    requesterName: String!
+    RequesterPublicKey: String!
+}
