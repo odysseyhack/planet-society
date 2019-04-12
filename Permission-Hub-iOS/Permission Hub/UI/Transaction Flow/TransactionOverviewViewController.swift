@@ -205,6 +205,9 @@ extension TransactionOverviewViewController: UITableViewDelegate {
 
             let viewController = UITableViewController()
             navigationController?.pushViewController(viewController, animated: true)
+
+        default:
+            break
         }
     }
 }
