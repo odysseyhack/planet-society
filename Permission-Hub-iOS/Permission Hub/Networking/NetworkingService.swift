@@ -46,14 +46,19 @@ final class NetworkingService {
         let task = URLSession.shared.dataTask(with: url) { data, response, error in
 
             if let error = error {
-                completion(.failure(error))
+                DispatchQueue.main.async {
+                    completion(.failure(error))
+                }
             }
 
             if let data = data {
 
                 let decoder = JSONDecoder()
                 let notification = try! decoder.decode(TransactionNotification.self, from: data)
-                completion(.success(notification))
+
+                DispatchQueue.main.async {
+                    completion(.success(notification))
+                }
             }
         }
 
