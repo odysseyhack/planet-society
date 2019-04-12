@@ -56,7 +56,8 @@ func (r *mutationResolver) AddressDel(ctx context.Context, id string) (string, e
 }
 
 func (r *mutationResolver) IdentityAdd(ctx context.Context, identities models.IdentityInput) (*models.Identity, error) {
-	panic("not implemented")
+	identity, err := r.db.IdentityAdd(identities)
+	return &identity, err
 }
 
 func (r *mutationResolver) IdentityDel(ctx context.Context, id string) (string, error) {
@@ -222,6 +223,15 @@ func transact(ctx context.Context, db *database.Database) (*Transaction, error) 
 
 	cache[transactionID] = transaction
 	tr := randomTransaction()
+	fillPermitedNodes(ctx, tr, transaction)
+
+	if _, err := db.PermissionAdd(*tr); err != nil {
+		return nil, err
+	}
+	return transaction, nil
+}
+
+func fillPermitedNodes(ctx context.Context, tr *models.Permission, transaction *Transaction) {
 	fields := graphql.CollectAllFields(ctx)
 	for _, field := range fields {
 		switch field {
@@ -237,10 +247,6 @@ func transact(ctx context.Context, db *database.Database) (*Transaction, error) 
 			tr.PermissionNodes = append(tr.PermissionNodes, models.PermissionNodes{NodeID: transaction.IdentityDocument.ID})
 		}
 	}
-	if _, err := db.PermissionAdd(*tr); err != nil {
-		return nil, err
-	}
-	return transaction, nil
 }
 
 func fillTransaction(db *database.Database) (transaction *Transaction, err error) {
