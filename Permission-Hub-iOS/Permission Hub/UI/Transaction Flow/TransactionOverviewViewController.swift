@@ -41,6 +41,7 @@ final class TransactionOverviewViewController: UIViewController {
         tableView.rowHeight = UITableView.automaticDimension
         tableView.estimatedRowHeight = 66
         tableView.separatorStyle = .none
+        tableView.allowsMultipleSelection = true
 
         tableView.dataSource = self
         tableView.delegate = self
@@ -204,6 +205,20 @@ extension TransactionOverviewViewController: UITableViewDelegate {
         case .notification:
             let viewController = UITableViewController()
             navigationController?.pushViewController(viewController, animated: true)
+
+        case .transactionItem:
+            tableView.cellForRow(at: indexPath)?.isSelected = true
+
+        default:
+            break
+        }
+    }
+
+    func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
+
+        switch cells[indexPath.row] {
+        case .transactionItem:
+            tableView.cellForRow(at: indexPath)?.isSelected = false
 
         default:
             break
