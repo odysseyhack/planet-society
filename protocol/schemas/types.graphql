@@ -1,0 +1,110 @@
+type Core {
+    personal_details: PersonalDetails!
+    identities: [Identity!]
+}
+
+type PersonalDetails {
+    id: ID!
+    public_key: Key32!
+    signature_key: Key32!
+    name: String!
+    surname: String!
+    country: String!
+    birth_date: String!
+}
+
+type Identity implements Node {
+    id: ID!
+    display_name: String!
+}
+
+type Address implements Node {
+    id: ID!
+    display_name: String!
+    country: String!
+    city: String!
+    street: String!
+}
+
+type Wallet implements Node {
+    id: ID!
+    payment_cards: [PaymentCard!]
+    passports: [Passport!]
+    identity_documents: [IdentityDocument!]
+}
+
+type PaymentCard implements Node & Document {
+    id: ID!
+    display_name: String!
+    name: String!
+    surname: String!
+    currency: String!
+    number: String!
+    expiration: String!
+    security_code: String!
+}
+
+type Passport implements Node & Document {
+    id: ID!
+    display_name: String!
+    name: String!
+    surname: String!
+    country: String!
+    number: String!
+    expiration: String!
+}
+
+type IdentityDocument implements Node & Document {
+    id: ID!
+    display_name: String!
+    name: String!
+    surname: String!
+    country: String!
+    number: String!
+    expiration: String!
+}
+
+type Contact implements Node {
+    id: ID!
+    public_key: Key32!
+    signature_key: Key32!
+    display_name: String!
+    name: String!
+    surname: String!
+    country: String!
+}
+
+type Permission {
+    id: ID!
+    transaction_id: ID!
+    expiration: String!
+    reason: String!
+    requester_public_key: Key32!
+    requester_signature_key: Key32!
+    requester_signature: String!
+    responder_signature: String!
+    permissionNodes: [PermissionNodes!]
+    revokable: Boolean!
+    revoked_at: String!
+    revokation_ID: ID!
+    lawApplying: String!
+}
+
+type PermissionInput {
+    transaction_id: ID!
+    created: String!
+    expiration: String!
+    reason: String!
+    requester_public_key: Key32!
+    requester_signature_key: Key32!
+    requester_signature: String!
+    responder_signature: String!
+    PermissionNodes: [PermissionNodes!]
+    revokable: Boolean!
+    lawApplying: String!
+}
+
+type PermissionNodes {
+    node_id: ID!
+    fields: [String!]
+}

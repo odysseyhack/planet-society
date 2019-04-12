@@ -1,0 +1,27 @@
+type TransactionReply {
+    transactionID: ID!
+    error: String
+    content: String
+}
+
+type PreTransactionRequest {
+    transactionID: Key32!
+    mainPublicKey:  Key32!
+    signaturePublicKey: Key32!
+    requester: String!
+}
+
+type PreTransactionReply {
+    transactionID: Key32!
+    success: Boolean!
+}
+
+type TransactionRequest {
+    transactionID: Key32!
+    query: String!
+}
+
+type TransactionRequestReply {
+    transactionID: Key32!
+    content: String!
+}

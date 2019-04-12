@@ -1,0 +1,17 @@
+type Query {
+    # public
+    personalDetails: PersonalDetails!
+    address: Address!
+    paymentCard: PaymentCard!
+    passport: Passport!
+    identityDocument: IdentityDocument!
+
+    # private
+    identity: [Identity!]
+    permissionListByPublicKey(public_key: Key32!): [Permission!]
+    permissionListByResource(id: ID!): [Permission!]
+    permissionList: [Permission!]
+    paymentCardList(identity: ID!): [PaymentCard!]
+    passportList(identity: ID!): [Passport!]
+    identityDocumentList(identity: ID!): [IdentityDocument!]
+}

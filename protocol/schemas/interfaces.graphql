@@ -1,0 +1,11 @@
+interface Node {
+    id: ID!
+}
+
+interface Document {
+    display_name: String!
+    name: String!
+    surname: String!
+    number: String!
+}
+

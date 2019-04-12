@@ -1,0 +1,23 @@
+type Mutation {
+    personalDetailsUpdate(input: PersonalDetailsInput!): PersonalDetails!
+
+    contactAdd(contacts: ContactInput!): Contact!
+    contactDel(id: ID!): ID!
+
+    addressAdd(addresses: AddressInput!): Address!
+    addressDel(id: ID!): ID!
+
+    identityAdd(identities: IdentityInput!): Identity!
+    identityDel(id: ID!): ID!
+
+    paymentCardAdd(payment_cards: PaymentCardInput!): PaymentCard!
+    paymentCardDel(id: ID!): ID!
+
+    passportAdd(passports: PassportInput!): Passport!
+    passportDel(id: ID!): ID!
+
+    identityDocumentAdd(identityDocument: IdentityDocumentInput!): IdentityDocument!
+    identityDocumentDel(id: ID!): ID!
+
+    # permissionRevoke(revocation: PermissionRevocationInput!): Permission!
+}

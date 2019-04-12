@@ -1,0 +1,71 @@
+input AddressInput {
+    identity: ID!
+    display_name: String!
+    country: String
+    city: String
+    street: String
+}
+
+input ContactInput {
+    identity: ID!
+    public_key: Key32!
+    signature_key: Key32!
+    display_name: String!
+    name: String
+    surname: String
+    country: String
+}
+
+input IdentityInput {
+    display_name: String!
+}
+
+input PaymentCardInput {
+    identity: ID!
+    display_name: String!
+    name: String!
+    surname: String!
+    currency: String!
+    number: String!
+    expiration: String!
+    security_code: String!
+}
+
+input PassportInput {
+    identity: ID!
+    display_name: String!
+    name: String!
+    surname: String!
+    country: String!
+    number: String!
+    expiration: String!
+}
+
+input IdentityDocumentInput {
+    identity: ID!
+    display_name: String!
+    name: String!
+    surname: String!
+    country: String!
+    number: String!
+    expiration: String!
+}
+
+input PersonalDetailsInput {
+    name: String
+    surname: String
+    country: String
+    birth_date: String
+}
+
+input PermissionRevocationInput {
+    transaction_id: ID!
+    created: String!
+    reason: String!
+    requester_public_key: Key32!
+    requester_signature_key: Key32!
+    requester_signature: String!
+    responder_signature: String!
+    PermissionID: ID!
+    lawApplying: String!
+}
