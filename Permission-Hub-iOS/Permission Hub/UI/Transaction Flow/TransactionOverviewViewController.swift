@@ -122,7 +122,7 @@ final class TransactionOverviewViewController: UIViewController {
         bottomStackView.heightAnchor.constraint(equalToConstant: 75).isActive = true
         bottomStackView.topAnchor.constraint(equalTo: tableView.bottomAnchor).isActive = true
         bottomStackView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        bottomStackView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
+        bottomStackView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor).isActive = true
 
         for i in 0..<2 {
 
