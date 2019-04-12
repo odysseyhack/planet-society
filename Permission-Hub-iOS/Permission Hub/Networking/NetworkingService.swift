@@ -22,6 +22,11 @@ extension PHNetworkingError: LocalizedError {
     }
 }
 
+enum PHNetworkingResult<T> {
+    case success(T)
+    case failure(Error)
+}
+
 final class NetworkingService {
 
     // MARK: - Private properties
@@ -31,13 +36,27 @@ final class NetworkingService {
     // MARK: - Endpoints
 
     // endpoint to poll for notifications
-    func getNotifications() throws {
+    func getNotifications(completion: @escaping  (_ result: PHNetworkingResult<PermissionNotification>) -> Void) throws {
 
         // construct URL
         guard let url = URL(string: baseUrl + "/notification-get") else {
             throw PHNetworkingError.invalidUrl
         }
 
-        // TODO: make request
+        let task = URLSession.shared.dataTask(with: url) { data, response, error in
+
+            if let error = error {
+                completion(.failure(error))
+            }
+
+            if let data = data {
+
+                let decoder = JSONDecoder()
+                let notification = try! decoder.decode(PermissionNotification.self, from: data)
+                completion(.success(notification))
+            }
+        }
+
+        task.resume()
     }
 }
