@@ -54,6 +54,7 @@ final class NetworkingService {
             if let data = data {
 
                 let decoder = JSONDecoder()
+                decoder.dateDecodingStrategy = .iso8601
                 let notification = try! decoder.decode(TransactionNotification.self, from: data)
 
                 DispatchQueue.main.async {
