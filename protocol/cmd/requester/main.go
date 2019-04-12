@@ -181,7 +181,7 @@ func sign() (string, error) {
 func createTransactMessage() (*models.TransactionRequest, error) {
 	signature, err := sign()
 	if err != nil {
-		return nilerr
+		return nil, err
 	}
 
 	return &models.TransactionRequest{
@@ -221,7 +221,7 @@ func transact(conn *Transport) error {
 	if transactionReply.Content == nil {
 		return fmt.Errorf("-> transaction failed: content is nil")
 	}
-	PrintReply(transactionReply)
+	PrintReply(&transactionReply)
 	return nil
 }
 

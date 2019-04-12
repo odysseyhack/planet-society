@@ -154,6 +154,38 @@ func (d *Database) PersonalDetails() (details models.PersonalDetails, err error)
 	return details, err
 }
 
+func (d *Database) createNewIdentitySubBuckets(identitiesBucket *bolt.Bucket, newIdentity *models.Identity) error {
+	newIdentityBucket, err := identitiesBucket.CreateBucketIfNotExists([]byte(newIdentity.ID))
+	if err != nil {
+		return err
+	}
+
+	if err := d.put(newIdentityBucket, []byte(identityMetadataKey), &newIdentity); err != nil {
+		return err
+	}
+
+	if _, err := newIdentityBucket.CreateBucketIfNotExists([]byte(bucketContacts)); err != nil {
+		return err
+	}
+
+	if _, err := newIdentityBucket.CreateBucketIfNotExists([]byte(bucketAddress)); err != nil {
+		return err
+	}
+
+	if _, err := newIdentityBucket.CreateBucketIfNotExists([]byte(bucketPassports)); err != nil {
+		return err
+	}
+
+	if _, err := newIdentityBucket.CreateBucketIfNotExists([]byte(bucketPaymentCards)); err != nil {
+		return err
+	}
+
+	if _, err := newIdentityBucket.CreateBucketIfNotExists([]byte(bucketIdentityDocuments)); err != nil {
+		return err
+	}
+	return nil
+}
+
 // IdentityAdd adds new identities
 func (d *Database) IdentityAdd(identity models.IdentityInput) (newIdentity models.Identity, err error) {
 	err = d.db.Update(func(tx *bolt.Tx) error {
@@ -167,32 +199,7 @@ func (d *Database) IdentityAdd(identity models.IdentityInput) (newIdentity model
 			DisplayName: identity.DisplayName,
 		}
 
-		newIdentityBucket, err := identitiesBucket.CreateBucketIfNotExists([]byte(newIdentity.ID))
-		if err != nil {
-			return err
-		}
-
-		if err := d.put(newIdentityBucket, []byte(identityMetadataKey), &newIdentity); err != nil {
-			return err
-		}
-
-		if _, err := newIdentityBucket.CreateBucketIfNotExists([]byte(bucketContacts)); err != nil {
-			return err
-		}
-
-		if _, err := newIdentityBucket.CreateBucketIfNotExists([]byte(bucketAddress)); err != nil {
-			return err
-		}
-
-		if _, err := newIdentityBucket.CreateBucketIfNotExists([]byte(bucketPassports)); err != nil {
-			return err
-		}
-
-		if _, err := newIdentityBucket.CreateBucketIfNotExists([]byte(bucketPaymentCards)); err != nil {
-			return err
-		}
-
-		if _, err := newIdentityBucket.CreateBucketIfNotExists([]byte(bucketIdentityDocuments)); err != nil {
+		if err := d.createNewIdentitySubBuckets(identitiesBucket, &newIdentity); err != nil {
 			return err
 		}
 
@@ -228,6 +235,25 @@ func (d *Database) IdentityList() (list []models.Identity, err error) {
 	return list, err
 }
 
+func (d *Database) contactInputToContact(contact *models.ContactInput, newContact *models.Contact) {
+	newContact.ID = d.newID()
+	newContact.DisplayName = contact.DisplayName
+	newContact.PublicKey = contact.PublicKey
+	newContact.SignatureKey = contact.SignatureKey
+
+	if contact.Name != nil {
+		newContact.Name = *contact.Name
+	}
+
+	if contact.Surname != nil {
+		newContact.Surname = *contact.Surname
+	}
+
+	if contact.Country != nil {
+		newContact.Country = *contact.Country
+	}
+}
+
 // ContactAdd adds new contact to database
 func (d *Database) ContactAdd(contact models.ContactInput) (newContact models.Contact, err error) {
 	err = d.db.Update(func(tx *bolt.Tx) error {
@@ -245,24 +271,7 @@ func (d *Database) ContactAdd(contact models.ContactInput) (newContact models.Co
 			return ErrBucketNotFound(bucketContacts)
 		}
 
-		newContact = models.Contact{
-			ID:           d.newID(),
-			DisplayName:  contact.DisplayName,
-			PublicKey:    contact.PublicKey,
-			SignatureKey: contact.SignatureKey,
-		}
-
-		if contact.Name != nil {
-			newContact.Name = *contact.Name
-		}
-
-		if contact.Surname != nil {
-			newContact.Surname = *contact.Surname
-		}
-
-		if contact.Country != nil {
-			newContact.Country = *contact.Country
-		}
+		d.contactInputToContact(&contact, &newContact)
 
 		if err := d.put(contactBucket, []byte(newContact.ID), &newContact); err != nil {
 			return err
@@ -304,6 +313,21 @@ func (d *Database) ContactList(identity string) (list []models.Contact, err erro
 	return list, err
 }
 
+func (d *Database) addressInputToAddress(inputAddress *models.AddressInput, address *models.Address) {
+	address.ID = d.newID()
+	address.DisplayName = inputAddress.DisplayName
+
+	if inputAddress.Country != nil {
+		address.Country = *inputAddress.Country
+	}
+	if inputAddress.Street != nil {
+		address.Street = *inputAddress.Street
+	}
+	if inputAddress.City != nil {
+		address.City = *inputAddress.City
+	}
+}
+
 // AddressAdd adds new address
 func (d *Database) AddressAdd(addresses models.AddressInput) (added models.Address, err error) {
 	err = d.db.Update(func(tx *bolt.Tx) error {
@@ -319,19 +343,7 @@ func (d *Database) AddressAdd(addresses models.AddressInput) (added models.Addre
 		if addressBucket == nil {
 			return ErrBucketNotFound(bucketAddress)
 		}
-		added = models.Address{
-			ID:          d.newID(),
-			DisplayName: addresses.DisplayName,
-		}
-		if addresses.Country != nil {
-			added.Country = *addresses.Country
-		}
-		if addresses.Street != nil {
-			added.Street = *addresses.Street
-		}
-		if addresses.City != nil {
-			added.City = *addresses.City
-		}
+		d.addressInputToAddress(&addresses, &added)
 		if err := d.put(addressBucket, []byte(added.ID), &added); err != nil {
 			return err
 		}
