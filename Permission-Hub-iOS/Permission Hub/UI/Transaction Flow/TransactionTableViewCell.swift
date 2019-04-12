@@ -38,7 +38,7 @@ final class TransactionTableViewCell: UITableViewCell {
 
         imageView.contentMode = .center
 
-        let dimension: CGFloat = 30
+        let dimension: CGFloat = 44
         imageView.widthAnchor.constraint(equalToConstant: dimension).isActive = true
         imageView.heightAnchor.constraint(equalToConstant: dimension).isActive = true
 
