@@ -27,36 +27,17 @@ var (
 
 func main() {
 	utils.ConfigureLogger()
-	log.Infoln("responder application")
-
 	log.Infoln("creating temporary directory")
 	dir, err := ioutil.TempDir("", "responder")
 	if err != nil {
 		log.Fatalln("failed to create temporary dir:", err)
 	}
 	log.Infoln("using temporary directory:", dir)
-
-	defer func() {
-		log.Infoln("removing temporary directory:", dir)
-		if err := os.RemoveAll(dir); err != nil {
-			log.Warningln("failed to clean temporary directory:", err)
-		}
-	}()
+	defer cleanup(dir)
 
 	if err := createKeychain(); err != nil {
 		log.Fatalln("failed to generate keychain:", err)
 	}
-
-	if err := utils.WriteKeyToDir(keychain.MainPublicKey); err != nil {
-		log.Fatalln("failed to write public key:", err)
-	}
-
-	defer func() {
-		log.Infoln("removing public key")
-		if err := utils.CleanKey(); err != nil {
-			log.Warningln("cleaning key failed:", err)
-		}
-	}()
 
 	db, err := createDatabase(dir)
 	if err != nil {
@@ -72,6 +53,18 @@ func main() {
 
 	if err := serve(db); err != nil {
 		log.Warningf("%s", err)
+	}
+}
+
+func cleanup(dir string) {
+	log.Infoln("removing public key")
+	if err := utils.CleanKey(); err != nil {
+		log.Warningln("cleaning key failed:", err)
+	}
+
+	log.Infoln("removing temporary directory:", dir)
+	if err := os.RemoveAll(dir); err != nil {
+		log.Warningln("failed to clean temporary directory:", err)
 	}
 }
 
@@ -111,10 +104,15 @@ func Middleware(db *database.Database) func(http.Handler) http.Handler {
 
 func createKeychain() (err error) {
 	log.Infoln("generating one shot keychain")
-	keychain, err := cryptography.OneShotKeychain()
+	keychain, err = cryptography.OneShotKeychain()
 	if err != nil {
 		return err
 	}
+
+	if err := utils.WriteKeyToDir(keychain.MainPublicKey); err != nil {
+		return err
+	}
+
 	log.Infoln("keychain main public key:", keychain.MainPublicKey.String())
 	log.Infoln("keychain signature key:  ", keychain.SignaturePublicKey.String())
 	return nil
