@@ -2,3 +2,6 @@
 /protocol/notification-server
 /protocol/requester
 /protocol/responder
+/protocol/generated.go
+/protocol/generated_resolver.go
+/protocol/models/generated.go
