@@ -96,6 +96,16 @@ final class TransactionTableViewCell: UITableViewCell {
         return imageView
     }()
 
+    private lazy var separatorView: UIView = {
+
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+
+        view.backgroundColor = PHColors.grey.withAlphaComponent(0.5)
+
+        return view
+    }()
+
     // MARK: - Initialization
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -113,12 +123,19 @@ final class TransactionTableViewCell: UITableViewCell {
     private func configure() {
 
         addSubview(stackView)
+        addSubview(separatorView)
 
         let margin: CGFloat = 15
+        stackView.topAnchor.constraint(equalTo: topAnchor, constant: margin).isActive = true
         stackView.leftAnchor.constraint(equalTo: leftAnchor, constant: margin).isActive = true
         stackView.rightAnchor.constraint(equalTo: rightAnchor, constant: -margin).isActive = true
-        stackView.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
 
+        separatorView.topAnchor.constraint(equalTo: stackView.bottomAnchor, constant: margin).isActive = true
+        separatorView.leftAnchor.constraint(equalTo: leftAnchor).isActive = true
+        separatorView.rightAnchor.constraint(equalTo: rightAnchor).isActive = true
+        separatorView.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
+        separatorView.heightAnchor.constraint(equalToConstant: 1).isActive = true
+        
         stackView.addArrangedSubview(itemImageView)
         stackView.addArrangedSubview(verticalStackView)
         verticalStackView.addArrangedSubview(itemTitleLabel)
