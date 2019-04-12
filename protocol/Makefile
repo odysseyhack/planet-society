@@ -1,6 +1,6 @@
-.PHONY: all clean-generated graphql-generate test notification-server requester
+.PHONY: all clean-generated graphql-generate test notification-server requester responder
 
-all: graphql-generate notification-server requester
+all: graphql-generate notification-server requester responder
 
 graphql-generate: clean-generated
 	@gqlgen
@@ -19,6 +19,9 @@ test:
 
 requester:
 	@go build ./cmd/requester
+
+responder:
+	@go build ./cmd/responder
 
 notification-server:
 	@GOOS=linux go build ./cmd/notification-server
