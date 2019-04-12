@@ -87,7 +87,7 @@ func main() {
 		log.Warningln(http.ListenAndServe(":8088", router))
 	}()
 
-	proto := protocol.NewProtocol(nil)
+	proto := protocol.NewProtocol(&AlwaysAcceptPlugin{})
 	go proto.Loop()
 
 	ws := transport.NewWebsocket(proto.Connections)
