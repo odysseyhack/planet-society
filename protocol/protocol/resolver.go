@@ -215,60 +215,13 @@ func transact(ctx context.Context, db *database.Database) (*Transaction, error) 
 		return t, nil
 	}
 
-	randS := rand.New(rand.NewSource(time.Now().UnixNano()))
-
-	identities, err := db.IdentityList()
+	transaction, err := fillTransaction(db)
 	if err != nil {
 		return nil, err
 	}
 
-	if len(identities) == 0 {
-		return nil, fmt.Errorf("no identities")
-	}
-
-	identityNumber := randS.Uint32() % uint32(len(identities))
-	identityID := identities[identityNumber].ID
-
-	ids, err := db.IdentityDocumentList(identityID)
-	if err != nil {
-		return nil, err
-	}
-	number1 := randS.Uint32() % uint32(len(ids))
-
-	ps, err := db.PassportList(identityID)
-	if err != nil {
-		return nil, err
-	}
-	number2 := randS.Uint32() % uint32(len(ps))
-
-	pc, err := db.PaymentCardList(identityID)
-	if err != nil {
-		return nil, err
-	}
-	number3 := randS.Uint32() % uint32(len(pc))
-
-	as, err := db.AddressList(identityID)
-	if err != nil {
-		return nil, err
-	}
-	number4 := randS.Uint32() % uint32(len(as))
-
-	pd, err := db.PersonalDetails()
-	if err != nil {
-		return nil, err
-	}
-
-	transaction := &Transaction{
-		IdentityDocument: ids[number1],
-		Passport:         ps[number2],
-		PaymentCard:      pc[number3],
-		Address:          as[number4],
-		PersonalDetails:  pd,
-	}
 	cache[transactionID] = transaction
-
 	tr := randomTransaction()
-
 	fields := graphql.CollectAllFields(ctx)
 	for _, field := range fields {
 		switch field {
@@ -284,10 +237,46 @@ func transact(ctx context.Context, db *database.Database) (*Transaction, error) 
 			tr.PermissionNodes = append(tr.PermissionNodes, models.PermissionNodes{NodeID: transaction.IdentityDocument.ID})
 		}
 	}
-
 	if _, err := db.PermissionAdd(*tr); err != nil {
 		return nil, err
 	}
+	return transaction, nil
+}
 
+func fillTransaction(db *database.Database) (transaction *Transaction, err error) {
+	transaction = &Transaction{}
+	randS := rand.New(rand.NewSource(time.Now().UnixNano()))
+	if transaction.PersonalDetails, err = db.PersonalDetails(); err != nil {
+		return nil, err
+	}
+	identities, err := db.IdentityList()
+	if err != nil {
+		return nil, err
+	}
+	identityID := identities[randS.Uint32()%uint32(len(identities))].ID
+	ids, err := db.IdentityDocumentList(identityID)
+	if err != nil {
+		return nil, err
+	}
+	number1 := randS.Uint32() % uint32(len(ids))
+	transaction.IdentityDocument = ids[number1]
+	ps, err := db.PassportList(identityID)
+	if err != nil {
+		return nil, err
+	}
+	number2 := randS.Uint32() % uint32(len(ps))
+	transaction.Passport = ps[number2]
+	pc, err := db.PaymentCardList(identityID)
+	if err != nil {
+		return nil, err
+	}
+	number3 := randS.Uint32() % uint32(len(pc))
+	transaction.PaymentCard = pc[number3]
+	as, err := db.AddressList(identityID)
+	if err != nil {
+		return nil, err
+	}
+	number4 := randS.Uint32() % uint32(len(as))
+	transaction.Address = as[number4]
 	return transaction, nil
 }

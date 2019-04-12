@@ -172,47 +172,60 @@ func preTransact(conn *Transport) error {
 	return nil
 }
 
-func transact(conn *Transport) error {
-	fmt.Println("-> sending transaction request")
-	err := conn.SendMessage(
-		protocol.TopicTransactionRequest,
-		&models.TransactionRequest{
-			TransactionID: models.Key32{Key: *transactionID},
-			Query:         query,
-			Reason:        "please provide me following details to finalize shipment",
-			LawApplying:   "European Union",
-		},
-	)
+func sign() (string, error) {
+	signer := cryptography.NewSigner(keychain.SignaturePrivateKey, keychain.SignaturePublicKey)
+	signature, err := signer.Sign([]byte(query))
+	return string(signature), err
+}
+
+func createTransactMessage() (*models.TransactionRequest, error) {
+	signature, err := sign()
 	if err != nil {
-		fmt.Println("-> sending transaction request failed", err)
-		os.Exit(1)
+		return nilerr
+	}
+
+	return &models.TransactionRequest{
+		TransactionID: models.Key32{Key: *transactionID},
+		Query:         query,
+		Reason:        "please provide me following details to finalize shipment",
+		LawApplying:   "European Union",
+		Signature:     signature,
+	}, nil
+}
+
+func transact(conn *Transport) error {
+	smsg, err := createTransactMessage()
+	if err != nil {
+		return err
+	}
+	fmt.Println("-> sending transaction request")
+	if err := conn.SendMessage(protocol.TopicTransactionRequest, smsg); err != nil {
+		return err
 	}
 
 	fmt.Println("-> Waiting for transaction reply")
 	msg, err := conn.Read()
 	if err != nil {
-		fmt.Println("-> Read failed", err)
-		os.Exit(1)
+		return err
 	}
 
 	var transactionReply models.TransactionReply
 	if err := gob.NewDecoder(bytes.NewBuffer(msg.Body.Payload)).Decode(&transactionReply); err != nil {
-		// invalid data, cannot reply
-		fmt.Println("-> transaction reply: invalid payload:", err)
-		os.Exit(1)
+		return err
 	}
 
 	if transactionReply.Error != nil {
-		fmt.Println("-> transaction failed:", *transactionReply.Error)
-		os.Exit(1)
+		return fmt.Errorf("errors in response: %v", *transactionReply.Error)
 	}
 
 	if transactionReply.Content == nil {
-		fmt.Println("-> transaction failed: content is nil")
-		os.Exit(1)
+		return fmt.Errorf("-> transaction failed: content is nil")
 	}
-
-	fmt.Println("-> received positive transaction response")
-	fmt.Println("Transaction content:", *transactionReply.Content)
+	PrintReply(transactionReply)
 	return nil
+}
+
+func PrintReply(reply *models.TransactionReply) {
+	fmt.Println("-> received positive transaction response")
+	fmt.Println("Transaction content:", *reply.Content)
 }

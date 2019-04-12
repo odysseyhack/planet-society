@@ -307,46 +307,36 @@ func (d *Database) ContactList(identity string) (list []models.Contact, err erro
 // AddressAdd adds new address
 func (d *Database) AddressAdd(addresses models.AddressInput) (added models.Address, err error) {
 	err = d.db.Update(func(tx *bolt.Tx) error {
-
 		identitiesBucket := tx.Bucket([]byte(bucketIdentities))
 		if identitiesBucket == nil {
 			return ErrBucketNotFound(bucketIdentities)
 		}
-
 		idBucket := identitiesBucket.Bucket([]byte(addresses.Identity))
 		if idBucket == nil {
 			return ErrBucketNotFound(addresses.Identity)
 		}
-
 		addressBucket := idBucket.Bucket([]byte(bucketAddress))
 		if addressBucket == nil {
 			return ErrBucketNotFound(bucketAddress)
 		}
-
 		added = models.Address{
 			ID:          d.newID(),
 			DisplayName: addresses.DisplayName,
 		}
-
 		if addresses.Country != nil {
 			added.Country = *addresses.Country
 		}
-
 		if addresses.Street != nil {
 			added.Street = *addresses.Street
 		}
-
 		if addresses.City != nil {
 			added.City = *addresses.City
 		}
-
 		if err := d.put(addressBucket, []byte(added.ID), &added); err != nil {
 			return err
 		}
-
 		return nil
 	})
-
 	return added, err
 }
 
@@ -384,23 +374,19 @@ func (d *Database) AddressList(identity string) (list []models.Address, err erro
 // PaymentCardAdd adds new payment card
 func (d *Database) PaymentCardAdd(paymentCard models.PaymentCardInput) (added models.PaymentCard, err error) {
 	err = d.db.Update(func(tx *bolt.Tx) error {
-
 		identitiesBucket := tx.Bucket([]byte(bucketIdentities))
 		if identitiesBucket == nil {
 			return ErrBucketNotFound(bucketIdentities)
 		}
-
 		// check if identities exist
 		idBucket := identitiesBucket.Bucket([]byte(paymentCard.Identity))
 		if idBucket == nil {
 			return ErrBucketNotFound(paymentCard.Identity)
 		}
-
 		paymentCardBucket := idBucket.Bucket([]byte(bucketPaymentCards))
 		if paymentCardBucket == nil {
 			return ErrBucketNotFound(bucketPaymentCards)
 		}
-
 		added = models.PaymentCard{
 			ID:           d.newID(),
 			Expiration:   paymentCard.Expiration,
@@ -411,14 +397,11 @@ func (d *Database) PaymentCardAdd(paymentCard models.PaymentCardInput) (added mo
 			Surname:      paymentCard.Surname,
 			Name:         paymentCard.Name,
 		}
-
 		if err := d.put(paymentCardBucket, []byte(added.ID), &added); err != nil {
 			return err
 		}
-
 		return nil
 	})
-
 	return added, err
 }
 
