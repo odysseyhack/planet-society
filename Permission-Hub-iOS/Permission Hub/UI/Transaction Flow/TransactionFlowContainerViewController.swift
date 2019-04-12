@@ -43,6 +43,10 @@ final class TransactionFlowContainerViewController: UIPageViewController {
 
         view.backgroundColor = PHColors.lightGray
 
+        // configure navigation bar
+        navigationController?.navigationBar.tintColor = PHColors.greyishBrown
+        navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
+
         // set initial viewcontroller
         let firstViewControllerOrNil = self.steps.map { $0.viewController }.first
         if let viewController = firstViewControllerOrNil {
