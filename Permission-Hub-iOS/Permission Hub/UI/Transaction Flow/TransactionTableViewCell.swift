@@ -48,7 +48,7 @@ final class TransactionTableViewCell: UITableViewCell {
     private let itemTitleLabel: UILabel = {
 
         let label = UILabel()
-        label.font = PHFonts.regular(ofSize: 12)
+        label.font = PHFonts.regular()
         label.textColor = PHColors.greyishBrown
 
         return label
