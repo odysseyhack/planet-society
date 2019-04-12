@@ -20,7 +20,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         // set permission flow as main view controller
         let steps = [TransactionFlowStep(), TransactionFlowStep()]
-        window?.rootViewController = TransactionFlowContainerViewController(steps: steps)
+        let transactionFlowContainerViewController = TransactionFlowContainerViewController(steps: steps)
+        let navigationController = UINavigationController(rootViewController: transactionFlowContainerViewController)
+        window?.rootViewController = navigationController
         window?.makeKeyAndVisible()
 
         return true
