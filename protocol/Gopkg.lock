@@ -2,6 +2,41 @@
 
 
 [[projects]]
+  digest = "1:b9468d3b03470cfb04cb9c866e00084223afbac15670e9c3ea6a148adf83f51c"
+  name = "github.com/99designs/gqlgen"
+  packages = [
+    "graphql",
+    "graphql/introspection",
+  ]
+  pruneopts = "UT"
+  revision = "010a79b66f08732cb70d133dcab297a8ee895572"
+  version = "v0.8.3"
+
+[[projects]]
+  digest = "1:786e862ec180708b60ee670723e3edd969fd4309e7b1c315cd7de058ac62a011"
+  name = "github.com/agnivade/levenshtein"
+  packages = ["."]
+  pruneopts = "UT"
+  revision = "51b298ff305e72cfd29166dccc3f9878e82f9fdc"
+  version = "v1.0.2"
+
+[[projects]]
+  branch = "master"
+  digest = "1:991cb80cb297f20716d9e95b6f1b32c95c8f5ef46857eceae8d599e6da98c0ec"
+  name = "github.com/andrewromanenco/gcrypt"
+  packages = ["."]
+  pruneopts = "UT"
+  revision = "e59381f875eeb6ca165971f709af965c270299f6"
+
+[[projects]]
+  digest = "1:0f98f59e9a2f4070d66f0c9c39561f68fcd1dc837b22a852d28d0003aebd1b1e"
+  name = "github.com/boltdb/bolt"
+  packages = ["."]
+  pruneopts = "UT"
+  revision = "2f1ce7a837dcb8da3ec595b1dac9d0632f0f99e8"
+  version = "v1.3.1"
+
+[[projects]]
   digest = "1:d5f97fc268267ec1b61c3453058c738246fc3e746f14b1ae25161513b7367b0c"
   name = "github.com/gorilla/mux"
   packages = ["."]
@@ -19,9 +54,12 @@
 
 [[projects]]
   branch = "master"
-  digest = "1:9f8d2751f35056aff96210bd92b2e46126e200457a69446f10e39645fd80770e"
+  digest = "1:ec5a9f2ba92ccd41d45249eaf9667a39cf8fa6463f3f35b31cb0201c8361d5ae"
   name = "github.com/planet-platform/transaction-protocol-poc"
-  packages = ["cryptography"]
+  packages = [
+    "cryptography",
+    "models",
+  ]
   pruneopts = "UT"
   revision = "834c7ef612372f23970f6c48fc045c7a48f2e0fa"
 
@@ -34,8 +72,32 @@
   version = "v1.4.1"
 
 [[projects]]
+  digest = "1:b4e8aaca88f799355f4ac560bce4293fb85ff21003dd0d5741ca503f7a788e91"
+  name = "github.com/vektah/gqlparser"
+  packages = [
+    ".",
+    "ast",
+    "gqlerror",
+    "lexer",
+    "parser",
+    "validator",
+    "validator/rules",
+  ]
+  pruneopts = "UT"
+  revision = "05741cdb0871330d8bc980d4afd21ab34eceee83"
+  version = "v1.1.2"
+
+[[projects]]
   branch = "master"
-  digest = "1:1c13c5c9eb88b108c8303f738c074a767dac1f3a0b193482f1be6b790ef04af6"
+  digest = "1:fbbce3ff584585118f3c270df893dea88eb3e7ddbece46ea322410af9ae27829"
+  name = "github.com/xlab/treeprint"
+  packages = ["."]
+  pruneopts = "UT"
+  revision = "a009c3971eca89777614839eb7f69abed3ea3959"
+
+[[projects]]
+  branch = "master"
+  digest = "1:0b36512841c2f5fa1fc0dac0b82e38f29271adb15289b9fe031666a4ce4eb6b8"
   name = "golang.org/x/crypto"
   packages = [
     "blake2b",
@@ -46,8 +108,10 @@
     "nacl/box",
     "nacl/secretbox",
     "nacl/sign",
+    "pbkdf2",
     "poly1305",
     "salsa20/salsa",
+    "scrypt",
   ]
   pruneopts = "UT"
   revision = "88737f569e3a9c7ab309cdc09a07fe7fc87233c3"
@@ -67,9 +131,21 @@
   analyzer-name = "dep"
   analyzer-version = 1
   input-imports = [
+    "github.com/99designs/gqlgen/graphql",
+    "github.com/99designs/gqlgen/graphql/introspection",
+    "github.com/andrewromanenco/gcrypt",
+    "github.com/boltdb/bolt",
     "github.com/gorilla/mux",
     "github.com/planet-platform/transaction-protocol-poc/cryptography",
+    "github.com/planet-platform/transaction-protocol-poc/models",
     "github.com/sirupsen/logrus",
+    "github.com/vektah/gqlparser",
+    "github.com/vektah/gqlparser/ast",
+    "github.com/xlab/treeprint",
+    "golang.org/x/crypto/blake2b",
+    "golang.org/x/crypto/nacl/box",
+    "golang.org/x/crypto/nacl/secretbox",
+    "golang.org/x/crypto/nacl/sign",
   ]
   solver-name = "gps-cdcl"
   solver-version = 1
