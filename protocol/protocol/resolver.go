@@ -210,6 +210,7 @@ func transact(ctx context.Context, db *database.Database) (*Transaction, error) 
 	if !ok {
 		return nil, fmt.Errorf("not found")
 	}
+
 	if t, ok := cache[transactionID]; ok {
 		return t, nil
 	}
@@ -284,7 +285,6 @@ func transact(ctx context.Context, db *database.Database) (*Transaction, error) 
 		}
 	}
 
-	fmt.Println("adding new permission")
 	if _, err := db.PermissionAdd(*tr); err != nil {
 		return nil, err
 	}
