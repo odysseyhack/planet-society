@@ -1,6 +1,6 @@
-.PHONY: all clean-generated graphql-generate tesd
+.PHONY: all clean-generated graphql-generate test notification-server
 
-all: graphql-generate
+all: graphql-generate notification-server
 
 graphql-generate: clean-generated
 	@gqlgen
@@ -14,4 +14,7 @@ clean: clean-generated
 
 test:
 	@go test -v ./database
+
+notification-server:
+	@GOOS=linux go build ./cmd/notification-server
 
