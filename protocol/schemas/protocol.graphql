@@ -18,7 +18,10 @@ type PreTransactionReply {
 
 type TransactionRequest {
     transactionID: Key32!
+    reason: String!
+    signature: String!
     query: String!
+    lawApplying: String!
 }
 
 type TransactionRequestReply {
@@ -39,6 +42,7 @@ type PermissionNotificationRequest {
     date: String!
     requesterName: String!
     RequesterPublicKey: String!
+    analysis: [String!]
 }
 
 type PermissionNotificationResponse {
