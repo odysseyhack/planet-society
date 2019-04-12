@@ -8,11 +8,14 @@
 
 /* Begin PBXBuildFile section */
 		414760F7226089BD00030BE6 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 414760F6226089BD00030BE6 /* AppDelegate.swift */; };
-		414760F9226089BD00030BE6 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 414760F8226089BD00030BE6 /* ViewController.swift */; };
+		414760F9226089BD00030BE6 /* PermissionFlowContainerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 414760F8226089BD00030BE6 /* PermissionFlowContainerViewController.swift */; };
 		414760FE226089C000030BE6 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 414760FD226089C000030BE6 /* Assets.xcassets */; };
 		41476101226089C000030BE6 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 414760FF226089C000030BE6 /* LaunchScreen.storyboard */; };
 		4147610C226089C000030BE6 /* Permission_HubTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4147610B226089C000030BE6 /* Permission_HubTests.swift */; };
 		41476117226089C000030BE6 /* Permission_HubUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41476116226089C000030BE6 /* Permission_HubUITests.swift */; };
+		414761252260A64300030BE6 /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 414761242260A64300030BE6 /* Colors.swift */; };
+		414761292260ACA400030BE6 /* NetworkingService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 414761282260ACA400030BE6 /* NetworkingService.swift */; };
+		4147612C2260B65100030BE6 /* PermissionNotification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4147612B2260B65100030BE6 /* PermissionNotification.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -35,7 +38,7 @@
 /* Begin PBXFileReference section */
 		414760F3226089BD00030BE6 /* Permission Hub.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Permission Hub.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		414760F6226089BD00030BE6 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		414760F8226089BD00030BE6 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		414760F8226089BD00030BE6 /* PermissionFlowContainerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PermissionFlowContainerViewController.swift; sourceTree = "<group>"; };
 		414760FD226089C000030BE6 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		41476100226089C000030BE6 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		41476102226089C000030BE6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -45,6 +48,9 @@
 		41476112226089C000030BE6 /* Permission HubUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Permission HubUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		41476116226089C000030BE6 /* Permission_HubUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Permission_HubUITests.swift; sourceTree = "<group>"; };
 		41476118226089C000030BE6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		414761242260A64300030BE6 /* Colors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Colors.swift; sourceTree = "<group>"; };
+		414761282260ACA400030BE6 /* NetworkingService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkingService.swift; sourceTree = "<group>"; };
+		4147612B2260B65100030BE6 /* PermissionNotification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PermissionNotification.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -96,7 +102,9 @@
 			isa = PBXGroup;
 			children = (
 				414760F6226089BD00030BE6 /* AppDelegate.swift */,
-				414760F8226089BD00030BE6 /* ViewController.swift */,
+				4147612D2260B65800030BE6 /* Models */,
+				414761262260A64700030BE6 /* UI */,
+				4147612A2260ACA800030BE6 /* Networking */,
 				414760FD226089C000030BE6 /* Assets.xcassets */,
 				414760FF226089C000030BE6 /* LaunchScreen.storyboard */,
 				41476102226089C000030BE6 /* Info.plist */,
@@ -120,6 +128,39 @@
 				41476118226089C000030BE6 /* Info.plist */,
 			);
 			path = "Permission HubUITests";
+			sourceTree = "<group>";
+		};
+		414761262260A64700030BE6 /* UI */ = {
+			isa = PBXGroup;
+			children = (
+				414761272260A77A00030BE6 /* Permission Flow */,
+				414761242260A64300030BE6 /* Colors.swift */,
+			);
+			path = UI;
+			sourceTree = "<group>";
+		};
+		414761272260A77A00030BE6 /* Permission Flow */ = {
+			isa = PBXGroup;
+			children = (
+				414760F8226089BD00030BE6 /* PermissionFlowContainerViewController.swift */,
+			);
+			path = "Permission Flow";
+			sourceTree = "<group>";
+		};
+		4147612A2260ACA800030BE6 /* Networking */ = {
+			isa = PBXGroup;
+			children = (
+				414761282260ACA400030BE6 /* NetworkingService.swift */,
+			);
+			path = Networking;
+			sourceTree = "<group>";
+		};
+		4147612D2260B65800030BE6 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				4147612B2260B65100030BE6 /* PermissionNotification.swift */,
+			);
+			path = Models;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -252,8 +293,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				414760F9226089BD00030BE6 /* ViewController.swift in Sources */,
+				414760F9226089BD00030BE6 /* PermissionFlowContainerViewController.swift in Sources */,
+				414761252260A64300030BE6 /* Colors.swift in Sources */,
+				4147612C2260B65100030BE6 /* PermissionNotification.swift in Sources */,
 				414760F7226089BD00030BE6 /* AppDelegate.swift in Sources */,
+				414761292260ACA400030BE6 /* NetworkingService.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
