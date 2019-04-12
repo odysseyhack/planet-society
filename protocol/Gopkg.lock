@@ -2,11 +2,13 @@
 
 
 [[projects]]
-  digest = "1:b9468d3b03470cfb04cb9c866e00084223afbac15670e9c3ea6a148adf83f51c"
+  digest = "1:7ea2faecf1d650c855ee70f55b934cc2265404625b7114e048ac7d6a64c23b41"
   name = "github.com/99designs/gqlgen"
   packages = [
+    "complexity",
     "graphql",
     "graphql/introspection",
+    "handler",
   ]
   pruneopts = "UT"
   revision = "010a79b66f08732cb70d133dcab297a8ee895572"
@@ -37,6 +39,14 @@
   version = "v1.3.1"
 
 [[projects]]
+  digest = "1:1c70b4d7285f792bd387c1adac08825715147fa210b3d2826ffd2bf56be9455b"
+  name = "github.com/go-chi/chi"
+  packages = ["."]
+  pruneopts = "UT"
+  revision = "da24bba8dcd4021cafac38724bf10dccc97c3e36"
+  version = "v4.0.2"
+
+[[projects]]
   digest = "1:d5f97fc268267ec1b61c3453058c738246fc3e746f14b1ae25161513b7367b0c"
   name = "github.com/gorilla/mux"
   packages = ["."]
@@ -45,23 +55,31 @@
   version = "v1.7.1"
 
 [[projects]]
+  digest = "1:7b5c6e2eeaa9ae5907c391a91c132abfd5c9e8a784a341b5625e750c67e6825d"
+  name = "github.com/gorilla/websocket"
+  packages = ["."]
+  pruneopts = "UT"
+  revision = "66b9c49e59c6c48f0ffce28c2d8b8a5678502c6d"
+  version = "v1.4.0"
+
+[[projects]]
+  digest = "1:d15ee511aa0f56baacc1eb4c6b922fa1c03b38413b6be18166b996d82a0156ea"
+  name = "github.com/hashicorp/golang-lru"
+  packages = [
+    ".",
+    "simplelru",
+  ]
+  pruneopts = "UT"
+  revision = "7087cb70de9f7a8bc0a10c375cb0d2280a8edf9c"
+  version = "v0.5.1"
+
+[[projects]]
   digest = "1:31e761d97c76151dde79e9d28964a812c46efc5baee4085b86f68f0c654450de"
   name = "github.com/konsorten/go-windows-terminal-sequences"
   packages = ["."]
   pruneopts = "UT"
   revision = "f55edac94c9bbba5d6182a4be46d86a2c9b5b50e"
   version = "v1.0.2"
-
-[[projects]]
-  branch = "master"
-  digest = "1:ec5a9f2ba92ccd41d45249eaf9667a39cf8fa6463f3f35b31cb0201c8361d5ae"
-  name = "github.com/planet-platform/transaction-protocol-poc"
-  packages = [
-    "cryptography",
-    "models",
-  ]
-  pruneopts = "UT"
-  revision = "834c7ef612372f23970f6c48fc045c7a48f2e0fa"
 
 [[projects]]
   digest = "1:fd61cf4ae1953d55df708acb6b91492d538f49c305b364a014049914495db426"
@@ -133,11 +151,12 @@
   input-imports = [
     "github.com/99designs/gqlgen/graphql",
     "github.com/99designs/gqlgen/graphql/introspection",
+    "github.com/99designs/gqlgen/handler",
     "github.com/andrewromanenco/gcrypt",
     "github.com/boltdb/bolt",
+    "github.com/go-chi/chi",
     "github.com/gorilla/mux",
-    "github.com/planet-platform/transaction-protocol-poc/cryptography",
-    "github.com/planet-platform/transaction-protocol-poc/models",
+    "github.com/gorilla/websocket",
     "github.com/sirupsen/logrus",
     "github.com/vektah/gqlparser",
     "github.com/vektah/gqlparser/ast",
