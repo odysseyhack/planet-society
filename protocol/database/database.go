@@ -383,6 +383,17 @@ func (d *Database) AddressList(identity string) (list []models.Address, err erro
 	return list, err
 }
 
+func (d *Database) paymentCardInputToPaymentCard(paymentCard *models.PaymentCardInput, added *models.PaymentCard) {
+	added.ID = d.newID()
+	added.Expiration = paymentCard.Expiration
+	added.DisplayName = paymentCard.DisplayName
+	added.Currency = paymentCard.Currency
+	added.SecurityCode = paymentCard.SecurityCode
+	added.Number = paymentCard.Number
+	added.Surname = paymentCard.Surname
+	added.Name = paymentCard.Name
+}
+
 // PaymentCardAdd adds new payment card
 func (d *Database) PaymentCardAdd(paymentCard models.PaymentCardInput) (added models.PaymentCard, err error) {
 	err = d.db.Update(func(tx *bolt.Tx) error {
@@ -399,16 +410,9 @@ func (d *Database) PaymentCardAdd(paymentCard models.PaymentCardInput) (added mo
 		if paymentCardBucket == nil {
 			return ErrBucketNotFound(bucketPaymentCards)
 		}
-		added = models.PaymentCard{
-			ID:           d.newID(),
-			Expiration:   paymentCard.Expiration,
-			DisplayName:  paymentCard.DisplayName,
-			Currency:     paymentCard.Currency,
-			SecurityCode: paymentCard.SecurityCode,
-			Number:       paymentCard.Number,
-			Surname:      paymentCard.Surname,
-			Name:         paymentCard.Name,
-		}
+
+		d.paymentCardInputToPaymentCard(&paymentCard, &added)
+
 		if err := d.put(paymentCardBucket, []byte(added.ID), &added); err != nil {
 			return err
 		}
