@@ -50,8 +50,8 @@ final class TransactionOverviewViewController: UIViewController {
             forCellReuseIdentifier: String(describing: TransactionTableViewCell.self))
 
         tableView.register(
-            UITableViewCell.self,
-            forCellReuseIdentifier: String(describing: UITableViewCell.self))
+            TransactionDescriptionTableViewCell.self,
+            forCellReuseIdentifier: String(describing: TransactionDescriptionTableViewCell.self))
 
         tableView.register(
             TransactionNotificationTableViewCell.self,
@@ -169,12 +169,10 @@ extension TransactionOverviewViewController: UITableViewDataSource {
         case .description(let text):
 
             let cell = tableView.dequeueReusableCell(
-                withIdentifier: String(describing: UITableViewCell.self),
-                for: indexPath)
+                withIdentifier: String(describing: TransactionDescriptionTableViewCell.self),
+                for: indexPath) as! TransactionDescriptionTableViewCell
 
-            cell.textLabel?.font = PHFonts.regular()
-            cell.textLabel?.textColor = PHColors.greyishBrown
-            cell.textLabel?.text = text
+            cell.configure(withText: text)
 
             return cell
 
