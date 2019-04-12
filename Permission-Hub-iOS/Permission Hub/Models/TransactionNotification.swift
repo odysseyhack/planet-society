@@ -41,7 +41,7 @@ struct TransactionNotification: Decodable {
 
     init(
         transactionID: String,
-        item: [TransactionItem],
+        items: [TransactionItem],
         reason: String,
         verification: [String],
         date: Date,
@@ -49,7 +49,7 @@ struct TransactionNotification: Decodable {
         requesterPublicKey: String) {
 
         self.transactionID = transactionID
-        self.items = item
+        self.items = items
         self.reason = reason
         self.verification = verification
         self.date = date
@@ -61,7 +61,7 @@ struct TransactionNotification: Decodable {
 
         let container = try decoder.container(keyedBy: CodingKeys.self)
         let transactionID = try container.decode(String.self, forKey: .transactionID)
-        let item = try container.decode([TransactionItem].self, forKey: .item)
+        let items = try container.decode([TransactionItem].self, forKey: .items)
         let reason = try container.decode(String.self, forKey: .reason)
         let verification = try container.decode([String].self, forKey: .verification)
 
@@ -81,7 +81,7 @@ struct TransactionNotification: Decodable {
 
         self.init(
             transactionID: transactionID,
-            item: item,
+            items: items,
             reason: reason,
             verification: verification,
             date: date,
