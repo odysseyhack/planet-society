@@ -1,6 +1,6 @@
 .PHONY: all clean-generated graphql-generate test notification-server requester responder
 
-all: graphql-generate notification-server requester responder
+all: graphql-generate binaries
 
 graphql-generate: clean-generated
 	@gqlgen
@@ -17,6 +17,7 @@ test:
 	go test -v ./cryptography
 
 # binaries
+binaries: requester responder notification-server
 
 requester:
 	@go build ./cmd/requester
