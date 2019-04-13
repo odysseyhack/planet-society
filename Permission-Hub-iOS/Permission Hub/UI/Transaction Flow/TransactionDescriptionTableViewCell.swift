@@ -28,7 +28,7 @@ final class TransactionDescriptionTableViewCell: UITableViewCell {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
 
-        label.font = PHFonts.bold(ofSize: 14)
+        label.font = PHFonts.bold(ofSize: 16)
         label.textColor = PHColors.greyishBrown
 
         return label
@@ -79,7 +79,7 @@ final class TransactionDescriptionTableViewCell: UITableViewCell {
         addSubview(descriptionLabel)
         addSubview(separatorView)
 
-        let spacing: CGFloat = 5
+        let spacing: CGFloat = 8
         let margin: CGFloat = 20
         dateLabel.topAnchor.constraint(equalTo: topAnchor, constant: margin).isActive = true
         dateLabel.leftAnchor.constraint(equalTo: leftAnchor, constant: margin).isActive = true
