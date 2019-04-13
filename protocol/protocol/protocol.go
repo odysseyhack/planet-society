@@ -274,6 +274,7 @@ func post(query string, transactionRequest *models.TransactionRequest, entry *En
 		return "", err
 	}
 
+	request.Header.Add("permission-type", transactionRequest.Type)
 	request.Header.Add("title", transactionRequest.Title)
 	request.Header.Add("description", transactionRequest.Description)
 	request.Header.Add("TransactionID", transactionRequest.TransactionID.Key.String())

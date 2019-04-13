@@ -22,6 +22,7 @@ type TransactionRequest {
     title: String!
     signature: String!
     query: String!
+    type: String!
     lawApplying: String!
 }
 
@@ -50,4 +51,11 @@ type PermissionNotificationRequest {
 type PermissionNotificationResponse {
     transactionID: String!
     accepted: Boolean!
+}
+
+type LegalReliationships {
+    myRights: [String!]
+    theirDuties: [String!]
+    myPowers: [String!]
+    theirLiability: [String!]
 }

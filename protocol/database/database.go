@@ -810,6 +810,7 @@ func (d *Database) PermissionAdd(permission models.Permission) (added models.Per
 			Revokable:             permission.Revokable,
 			ID:                    d.newID(),
 			LawApplying:           permission.LawApplying,
+			LegalReliationships:   permission.LegalReliationships,
 		}
 
 		if err := d.put(permissionBucket, []byte(added.ID), &added); err != nil {

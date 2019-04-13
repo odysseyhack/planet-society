@@ -200,6 +200,7 @@ func createTransactMessage() (*models.TransactionRequest, error) {
 		Title:         "Provide permission for completing",
 		Description:   "T-mobile monthly plan(unlimited data), 65 euro, iPhone XR 256GB",
 		LawApplying:   "European Union",
+		Type:          "digital telecommunication agreement",
 		Signature:     signature,
 	}, nil
 }

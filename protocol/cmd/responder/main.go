@@ -124,6 +124,15 @@ func getMetadata(r *http.Request) context.Context {
 		ResponderSignature: sign(r.Header.Get("requester")),
 	}
 
+	if r.Header.Get("permission-type") == "digital telecommunication agreement" {
+		permission.LegalReliationships = models.LegalReliationships{
+			MyRights:       []string{"use telecommunication services until agreement expires"},
+			TheirDuties:    []string{"provide high availability telecommunication service"},
+			MyPowers:       []string{"cancel contract within 14 days from signing"},
+			TheirLiability: []string{"liable for the consequences of the agreement termination"},
+		}
+	}
+
 	utils.AddPermission(permission)
 
 	return ctx
