@@ -18,24 +18,22 @@ final class TransactionPluginTableViewCell: UITableViewCell {
         stackView.translatesAutoresizingMaskIntoConstraints = false
 
         stackView.axis = .horizontal
-        stackView.spacing = 10
+        stackView.spacing = 20
         stackView.alignment = .center
-        stackView.distribution = .equalSpacing
 
         return stackView
     }()
 
-    private lazy var digiDButton: UIButton = {
+    private lazy var pluginButton: UIButton = {
 
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
 
-        let image = UIImage(named: "digid_button")
-        button.setImage(image, for: .normal)
+        button.setContentHuggingPriority(.required, for: .horizontal)
 
         button.addTarget(
             self,
-            action: #selector(digiDButtonTapped),
+            action: #selector(pluginButtonTapped),
             for: .touchUpInside)
 
         return button
@@ -49,8 +47,6 @@ final class TransactionPluginTableViewCell: UITableViewCell {
         label.textColor = PHColors.greyishBrown
         label.numberOfLines = 0
 
-        label.text = "Use the external DigiD plug-in to fill in your personal information (optional)."
-
         return label
     }()
 
@@ -63,6 +59,8 @@ final class TransactionPluginTableViewCell: UITableViewCell {
 
         return view
     }()
+
+    private var callback: (() -> Void)?
 
     // MARK: - Initialization
 
@@ -92,7 +90,7 @@ final class TransactionPluginTableViewCell: UITableViewCell {
 
         configureSeparatorView()
 
-        stackView.addArrangedSubview(digiDButton)
+        stackView.addArrangedSubview(pluginButton)
         stackView.addArrangedSubview(descriptionLabel)
     }
 
@@ -106,9 +104,21 @@ final class TransactionPluginTableViewCell: UITableViewCell {
         separatorView.heightAnchor.constraint(equalToConstant: 1).isActive = true
     }
 
+    func configure(withImage
+        image: UIImage?, andText
+        text: String,
+        callback: @escaping () -> Void) {
+
+        pluginButton.setImage(image, for: .normal)
+        descriptionLabel.text = text
+        self.callback = callback
+        
+        setNeedsLayout()
+    }
+
     // MARK: - Selectors
 
-    @objc private func digiDButtonTapped(_ sender: UIButton) {
-        // ...
+    @objc private func pluginButtonTapped(_ sender: UIButton) {
+        callback?()
     }
 }
