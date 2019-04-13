@@ -43,7 +43,7 @@ final class TransactionFlowViewController: UIPageViewController {
         navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
 
         // set initial viewcontroller
-        let firstViewControllerOrNil = self.steps.map { $0.viewController }.first
+        let firstViewControllerOrNil = self.steps.map { $0.viewController(withTransaction: transaction) }.first
         if let viewController = firstViewControllerOrNil {
 
             setViewControllers(

@@ -81,7 +81,7 @@ class PHTableViewController: UIViewController {
     // MARK: - Initialization
 
     init(
-        title: String,
+        title: String? = nil,
         items: [PHTableViewViewCellType]) {
 
         self.items = items

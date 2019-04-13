@@ -26,10 +26,10 @@ enum TransactionFlowStep: CaseIterable {
         }
     }
 
-    var viewController: UIViewController {
+    func viewController(withTransaction transaction: TransactionNotification) -> UIViewController {
         switch self {
         case .overview:
-            return TransactionOverViewViewController()
+            return TransactionOverViewViewController(transaction: transaction)
         case .personalDetails:
             return PHTableViewController(title: title, items: [PHTableViewViewCellType]())
         case .identityDocuments:
