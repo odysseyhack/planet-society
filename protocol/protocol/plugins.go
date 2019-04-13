@@ -37,8 +37,8 @@ func (b *BlockChainExample) Validate(request *models.PreTransactionRequest) bool
 	if err != nil {
 		return false
 	}
-
-	resp, err := http.Client{}.Post("http://block-chain-verification.com:3033", "json", bytes.NewReader(data))
+	client := http.Client{}
+	resp, err := client.Post("http://block-chain-verification.com:3033", "json", bytes.NewReader(data))
 	if err != nil {
 		return false
 	}

@@ -258,6 +258,17 @@ type Request struct {
 	Query string `json:"query"`
 }
 
+func fillHeader(request *http.Request, transactionRequest *models.TransactionRequest, entry *Entry) {
+	request.Header.Add("permission-type", transactionRequest.Type)
+	request.Header.Add("title", transactionRequest.Title)
+	request.Header.Add("description", transactionRequest.Description)
+	request.Header.Add("TransactionID", transactionRequest.TransactionID.Key.String())
+	request.Header.Add("signature", transactionRequest.Signature)
+	request.Header.Add("requester", entry.RequesterPublicKey.String())
+	request.Header.Add("requester-name", entry.RequesterName)
+	request.Header.Set("Content-Type", "application/json")
+}
+
 func post(query string, transactionRequest *models.TransactionRequest, entry *Entry) (string, error) {
 	r := Request{
 		Query: query,
@@ -273,15 +284,8 @@ func post(query string, transactionRequest *models.TransactionRequest, entry *En
 	if err != nil {
 		return "", err
 	}
+	fillHeader(request, transactionRequest, entry)
 
-	request.Header.Add("permission-type", transactionRequest.Type)
-	request.Header.Add("title", transactionRequest.Title)
-	request.Header.Add("description", transactionRequest.Description)
-	request.Header.Add("TransactionID", transactionRequest.TransactionID.Key.String())
-	request.Header.Add("signature", transactionRequest.Signature)
-	request.Header.Add("requester", entry.RequesterPublicKey.String())
-	request.Header.Add("requester-name", entry.RequesterName)
-	request.Header.Set("Content-Type", "application/json")
 	rawResponse, err := client.Do(request)
 	if err != nil {
 		return "", err
