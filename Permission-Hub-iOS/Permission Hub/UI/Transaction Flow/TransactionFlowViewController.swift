@@ -92,8 +92,8 @@ final class TransactionFlowViewController: PHTableViewController {
 
         var items = [PHTableViewViewCellType]()
         items.append(.notification(
-            type: .notification,
-            text: "Verified"))
+            type: .verification,
+            text: "This company is verified"))
         items.append(.notification(
             type: .warning,
             text: "Permission warning!"))
@@ -178,11 +178,27 @@ extension TransactionFlowViewController: PHTableViewControllerDelegate {
     func didSelect(item: PHTableViewViewCellType) {
 
         switch item {
-        case .notification(_, let text):
-            let items: [PHTableViewViewCellType] = transaction.analysis.map { .description(
-                date: Date(),
-                title: "",
-                description: $0) }
+        case .notification(let type, let text):
+
+            let items: [PHTableViewViewCellType]
+            switch type {
+            case .warning:
+                items = transaction.analysis.map { .description(
+                    date: Date(),
+                    title: "",
+                    description: $0) }
+                let viewController = PHTableViewController(
+                    title: text,
+                    items: items)
+                navigationController?.pushViewController(viewController, animated: true)
+
+            case .verification:
+                 items = transaction.verification.map { .description(
+                    date: Date(),
+                    title: "",
+                    description: $0) }
+            }
+
             let viewController = PHTableViewController(
                 title: text,
                 items: items)
