@@ -25,15 +25,21 @@ enum PHTableViewViewCellType {
     case notification(
         type: TransactionNotificationType,
         text: String)
-    case description(text: String)
+    case warning(text: String)
+    case description(date: Date, title: String, description: String)
     case transactionItem(item: TransactionItem)
+    case form
 }
 
-final class PHTableViewController: UIViewController {
+protocol PHTableViewControllerDelegate: class {
+    func didSelect(item: PHTableViewViewCellType)
+}
+
+class PHTableViewController: UIViewController {
 
     // MARK: - Private properties
 
-    private lazy var tableView: UITableView = {
+    lazy var tableView: UITableView = {
 
         let tableView = UITableView()
         tableView.translatesAutoresizingMaskIntoConstraints = false
@@ -58,23 +64,18 @@ final class PHTableViewController: UIViewController {
             TransactionNotificationTableViewCell.self,
             forCellReuseIdentifier: String(describing: TransactionNotificationTableViewCell.self))
 
+        tableView.register(
+            FormTextInputCell.self,
+            forCellReuseIdentifier: String(describing: FormTextInputCell.self))
+
         return tableView
     }()
 
-    private lazy var bottomStackView: UIStackView = {
-
-        let stackView = UIStackView()
-        stackView.translatesAutoresizingMaskIntoConstraints = false
-
-        stackView.axis = .horizontal
-        stackView.alignment = .center
-        stackView.distribution = .equalCentering
-        stackView.spacing = 20
-
-        return stackView
-    }()
-
     private var items: [PHTableViewViewCellType]
+
+    // MARK: - Properties
+
+    weak var delegate: PHTableViewControllerDelegate?
 
     // MARK: - Initialization
 
@@ -95,40 +96,16 @@ final class PHTableViewController: UIViewController {
 
         view.backgroundColor = PHColors.lightGray
 
+        // configure navigation bar
+        navigationController?.navigationBar.tintColor = PHColors.greyishBrown
+        navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
+
         view.addSubview(tableView)
-        view.addSubview(bottomStackView)
 
         tableView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
         tableView.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
         tableView.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
-        bottomStackView.heightAnchor.constraint(equalToConstant: 75).isActive = true
-        bottomStackView.topAnchor.constraint(equalTo: tableView.bottomAnchor).isActive = true
-        bottomStackView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        bottomStackView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor).isActive = true
-
-        for i in 0..<2 {
-
-            let button = UIButton()
-            button.translatesAutoresizingMaskIntoConstraints = false
-
-            button.widthAnchor.constraint(equalToConstant: 92).isActive = true
-            button.heightAnchor.constraint(equalToConstant: 34).isActive = true
-
-            button.titleLabel?.font = PHFonts.regular()
-
-            let color = i == 0 ? PHColors.greyishBrown : PHColors.topaz
-            button.setTitleColor(color, for: .normal)
-            button.backgroundColor = .white
-
-            button.layer.cornerRadius = 5
-            button.layer.borderWidth = 1
-            button.layer.borderColor = color.cgColor
-
-            let title = i == 0 ? "Decline" : "Continue"
-            button.setTitle(title, for: .normal)
-            
-            bottomStackView.addArrangedSubview(button)
-        }
+        tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
     }
 }
 
@@ -151,13 +128,13 @@ extension PHTableViewController: UITableViewDataSource {
 
             return cell
 
-        case .description(let text):
+        case .description(let date, let title, let description):
 
             let cell = tableView.dequeueReusableCell(
                 withIdentifier: String(describing: TransactionDescriptionTableViewCell.self),
                 for: indexPath) as! TransactionDescriptionTableViewCell
 
-            cell.configure(withText: text)
+            cell.configure(withDate: date, andTitle: title, andDescription: description)
 
             return cell
 
@@ -174,6 +151,32 @@ extension PHTableViewController: UITableViewDataSource {
             cell.configure(withViewModel: viewModel)
 
             return cell
+
+        case .warning(let text):
+
+            let cell = tableView.dequeueReusableCell(
+                withIdentifier: String(describing: TransactionTableViewCell.self),
+                for: indexPath) as! TransactionTableViewCell
+
+            let viewModel = TransactionTableViewCellViewModel(
+                image: UIImage(),
+                title: text,
+                subtitle: "")
+            cell.configure(withViewModel: viewModel)
+
+            return cell
+
+        case .form:
+
+            let cell = tableView.dequeueReusableCell(
+                withIdentifier: String(describing: FormTextInputCell.self),
+                for: indexPath) as! FormTextInputCell
+
+            cell.configure(withPlaceholder: "text") { text in
+                print(text)
+            }
+
+            return cell
         }
     }
 }
@@ -181,12 +184,9 @@ extension PHTableViewController: UITableViewDataSource {
 extension PHTableViewController: UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        delegate?.didSelect(item: items[indexPath.row])
 
         switch items[indexPath.row] {
-        case .notification:
-            let viewController = UITableViewController()
-            navigationController?.pushViewController(viewController, animated: true)
-
         case .transactionItem:
             tableView.cellForRow(at: indexPath)?.isSelected = true
 

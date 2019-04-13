@@ -23,11 +23,15 @@ extension PHNetworkingError: LocalizedError {
 }
 
 enum PHNetworkingResult<T> {
-    case success(T)
+    case success(T?)
     case failure(Error)
 }
 
 final class NetworkingService {
+
+    // MARK: - Static properties
+
+    static let shared = NetworkingService()
 
     // MARK: - Private properties
 
@@ -43,7 +47,13 @@ final class NetworkingService {
             throw PHNetworkingError.invalidUrl
         }
 
+        // make request
         let task = URLSession.shared.dataTask(with: url) { data, response, error in
+
+            guard let response = response as? HTTPURLResponse,
+                response.statusCode == 200 else {
+                    return
+            }
 
             if let error = error {
                 DispatchQueue.main.async {
@@ -55,11 +65,63 @@ final class NetworkingService {
 
                 let decoder = JSONDecoder()
                 decoder.dateDecodingStrategy = .iso8601
-                let notification = try! decoder.decode(TransactionNotification.self, from: data)
 
-                DispatchQueue.main.async {
-                    completion(.success(notification))
+                do {
+                    let notification = try decoder.decode(TransactionNotification.self, from: data)
+                    DispatchQueue.main.async {
+                        completion(.success(notification))
+                    }
+                } catch {
+                    DispatchQueue.main.async {
+                        completion(.failure(error))
+                    }
                 }
+            }
+        }
+
+        task.resume()
+    }
+
+    func respondToTransaction(withId
+        id: String,
+        isAccepted: Bool,
+        completion: @escaping  (_ result: PHNetworkingResult<TransactionNotification>) -> Void) throws {
+
+        // construct URL
+        guard let url = URL(string: baseUrl + "/reply-put") else {
+            throw PHNetworkingError.invalidUrl
+        }
+
+        // create request
+        var request = URLRequest(
+            url: url,
+            cachePolicy: .reloadIgnoringLocalAndRemoteCacheData,
+            timeoutInterval: 10)
+
+        let requestBody: [String: Any] = [
+            "transactionID": id,
+            "accepted": isAccepted,
+        ]
+
+        request.httpMethod = "POST"
+        request.httpBody = try JSONSerialization.data(withJSONObject: requestBody)
+
+        // make request
+        let task = URLSession.shared.dataTask(with: request) { data, response, error in
+
+            guard let response = response as? HTTPURLResponse,
+                response.statusCode == 200 else {
+                    return
+            }
+
+            if let error = error {
+                DispatchQueue.main.async {
+                    completion(.failure(error))
+                }
+            }
+
+            DispatchQueue.main.async {
+                completion(.success(nil))
             }
         }
 
