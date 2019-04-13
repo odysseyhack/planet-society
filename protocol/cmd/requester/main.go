@@ -127,16 +127,7 @@ func (t *Transport) SendMessage(topic cryptography.Key32, payload interface{}, c
 		return err
 	}
 
-	msg := &protocol.Message{
-		Header: protocol.Header{
-			Source:      ctx.keychain.MainPublicKey,
-			Destination: *ctx.responderPublicKey,
-			Topic:       topic,
-		},
-		Body: protocol.Body{
-			Payload: buffer.Bytes(),
-		},
-	}
+	msg := &protocol.Message{Header: protocol.Header{Source: ctx.keychain.MainPublicKey, Destination: *ctx.responderPublicKey, Topic: topic}, Body: protocol.Body{Payload: buffer.Bytes()}}
 	return t.conn.Write(msg)
 }
 
@@ -166,25 +157,20 @@ func decodePreTrasanctionReply(data []byte) (*models.PreTransactionReply, error)
 }
 
 func preTransact(conn *Transport, ctx *Context) error {
-	fmt.Println("-> sending pre transaction request")
 	if err := conn.SendMessage(protocol.TopicPreTransactionRequest, makePretransactionRequest(ctx), ctx); err != nil {
 		return err
 	}
-
 	msg, err := conn.Read()
 	if err != nil {
 		return err
 	}
-
 	preTransactionReply, err := decodePreTrasanctionReply(msg.Body.Payload)
 	if err != nil {
 		return err
 	}
-
 	if !preTransactionReply.Success {
 		return fmt.Errorf("pre transaction was not successful")
 	}
-	fmt.Println("-> received positive pre transaction response")
 	return nil
 }
 
@@ -226,7 +212,10 @@ func transact(conn *Transport, ctx *Context) error {
 	if err != nil {
 		return err
 	}
+	return handleTransactReply(msg)
+}
 
+func handleTransactReply(msg *protocol.Message) error {
 	var transactionReply models.TransactionReply
 	if err := gob.NewDecoder(bytes.NewBuffer(msg.Body.Payload)).Decode(&transactionReply); err != nil {
 		return err
@@ -239,6 +228,7 @@ func transact(conn *Transport, ctx *Context) error {
 	if transactionReply.Content == nil {
 		return fmt.Errorf("-> transaction failed: content is nil")
 	}
+
 	PrintReply(&transactionReply)
 	return nil
 }
