@@ -25,12 +25,7 @@ func OneShotKeychain() (*Keychain, error) {
 		return nil, err
 	}
 
-	return &Keychain{
-		MainPublicKey:       mainBox.publicKey,
-		MainPrivateKey:      mainBox.privateKey,
-		StoragePublicKey:    storageBox.publicKey,
-		StoragePrivateKey:   storageBox.privateKey,
-		SignaturePublicKey:  signer.publicKey,
-		SignaturePrivateKey: signer.privateKey,
-	}, nil
+	return &Keychain{MainPublicKey: mainBox.publicKey, MainPrivateKey: mainBox.privateKey,
+		StoragePublicKey: storageBox.publicKey, StoragePrivateKey: storageBox.privateKey,
+		SignaturePublicKey: signer.publicKey, SignaturePrivateKey: signer.privateKey}, nil
 }
