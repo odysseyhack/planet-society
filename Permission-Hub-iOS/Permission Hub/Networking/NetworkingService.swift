@@ -29,6 +29,10 @@ enum PHNetworkingResult<T> {
 
 final class NetworkingService {
 
+    // MARK: - Static properties
+
+    static let shared = NetworkingService()
+
     // MARK: - Private properties
 
     private let baseUrl = "http://51.15.52.136"
