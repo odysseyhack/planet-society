@@ -148,19 +148,26 @@ func (t *Transport) Read() (*protocol.Message, error) {
 	return t.conn.Read()
 }
 
+func makePretransactionRequest(ctx *Context) *models.PreTransactionRequest {
+	return &models.PreTransactionRequest{
+		TransactionID:      models.Key32{Key: *ctx.transactionID},
+		SignaturePublicKey: models.Key32{Key: ctx.keychain.SignaturePublicKey},
+		MainPublicKey:      models.Key32{Key: ctx.keychain.MainPublicKey},
+		Requester:          "John Smith",
+	}
+}
+
+func decodePreTrasanctionReply(data []byte) (*models.PreTransactionReply, error) {
+	var preTransactionReply models.PreTransactionReply
+	if err := gob.NewDecoder(bytes.NewBuffer(data)).Decode(&preTransactionReply); err != nil {
+		return nil, fmt.Errorf("pre transaction reply invalid payload: %s", err)
+	}
+	return &preTransactionReply, nil
+}
+
 func preTransact(conn *Transport, ctx *Context) error {
 	fmt.Println("-> sending pre transaction request")
-
-	if err := conn.SendMessage(
-		protocol.TopicPreTransactionRequest,
-		&models.PreTransactionRequest{
-			TransactionID:      models.Key32{Key: *ctx.transactionID},
-			SignaturePublicKey: models.Key32{Key: ctx.keychain.SignaturePublicKey},
-			MainPublicKey:      models.Key32{Key: ctx.keychain.MainPublicKey},
-			Requester:          "John Smith",
-		},
-		ctx,
-	); err != nil {
+	if err := conn.SendMessage(protocol.TopicPreTransactionRequest, makePretransactionRequest(ctx), ctx); err != nil {
 		return err
 	}
 
@@ -169,9 +176,9 @@ func preTransact(conn *Transport, ctx *Context) error {
 		return err
 	}
 
-	var preTransactionReply models.PreTransactionReply
-	if err := gob.NewDecoder(bytes.NewBuffer(msg.Body.Payload)).Decode(&preTransactionReply); err != nil {
-		return fmt.Errorf("pre transaction reply invalid payload: %s", err)
+	preTransactionReply, err := decodePreTrasanctionReply(msg.Body.Payload)
+	if err != nil {
+		return err
 	}
 
 	if !preTransactionReply.Success {

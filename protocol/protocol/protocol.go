@@ -291,20 +291,23 @@ func post(query string, transactionRequest *models.TransactionRequest, entry *En
 		return "", err
 	}
 
-	content, err := ioutil.ReadAll(rawResponse.Body)
+	return handlePostResponse(rawResponse)
+}
+
+func handlePostResponse(response *http.Response) (string, error) {
+	content, err := ioutil.ReadAll(response.Body)
 	if err != nil {
 		return "", err
 	}
 
 	var reply Reply
 	if err := json.Unmarshal(content, &reply); err != nil {
-		log.Warningln("failed to unmarshal reply from permission:", err)
+		return "", err
 	}
 
 	if len(reply.Errors) > 0 {
 		return "", fmt.Errorf("query failed: %v", reply.Errors)
 	}
-
 	return dataReplyTorString(reply.Data)
 }
 
