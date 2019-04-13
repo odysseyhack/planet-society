@@ -26,7 +26,7 @@ enum PHTableViewViewCellType {
         type: TransactionNotificationType,
         text: String)
     case warning(text: String)
-    case description(title: String, description: String)
+    case description(date: Date, title: String, description: String)
     case transactionItem(item: TransactionItem)
     case form
 }
@@ -105,6 +105,7 @@ class PHTableViewController: UIViewController {
         tableView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
         tableView.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
         tableView.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
+        tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
     }
 }
 
@@ -127,13 +128,13 @@ extension PHTableViewController: UITableViewDataSource {
 
             return cell
 
-        case .description(let title, let description):
+        case .description(let date, let title, let description):
 
             let cell = tableView.dequeueReusableCell(
                 withIdentifier: String(describing: TransactionDescriptionTableViewCell.self),
                 for: indexPath) as! TransactionDescriptionTableViewCell
 
-            cell.configure(withTitle: title, andDescription: description)
+            cell.configure(withDate: date, andTitle: title, andDescription: description)
 
             return cell
 
