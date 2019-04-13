@@ -75,7 +75,6 @@ final class TransactionDescriptionTableViewCell: UITableViewCell {
         descriptionLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 2).isActive = true
         descriptionLabel.leftAnchor.constraint(equalTo: leftAnchor, constant: margin).isActive = true
         descriptionLabel.rightAnchor.constraint(equalTo: rightAnchor, constant: -margin).isActive = true
-        descriptionLabel.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -margin).isActive = true
 
         separatorView.topAnchor.constraint(equalTo: descriptionLabel.bottomAnchor, constant: margin).isActive = true
         separatorView.leftAnchor.constraint(equalTo: leftAnchor).isActive = true
