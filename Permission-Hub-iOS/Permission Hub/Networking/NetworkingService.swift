@@ -46,7 +46,7 @@ final class NetworkingService {
         let task = URLSession.shared.dataTask(with: url) { data, response, error in
 
             guard let response = response as? HTTPURLResponse,
-                response.statusCode == 500 else {
+                response.statusCode == 200 else {
                     return
             }
 
