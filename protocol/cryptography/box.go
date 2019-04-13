@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"io"
 	"io/ioutil"
-	"os"
 
 	"golang.org/x/crypto/nacl/box"
 )
@@ -46,79 +45,8 @@ func NewOneShotBox() (*Box, error) {
 	}, nil
 }
 
-// GenerateKeysToFile generates pair of public and private keys.
-// It stores keys in directory defined by path under names:
-// public.key and private.key
-// Keys will not be generate if files already exist.
-func GenerateKeysToFile(path string) error {
-	var (
-		privateKeyPath = fmt.Sprintf("%s/%s", path, privateKeyName)
-		publicKeyPath  = fmt.Sprintf("%s/%s", path, publicKeyName)
-	)
-
-	if _, err := os.Stat(privateKeyPath); err == nil {
-		return fmt.Errorf("private key already exist")
-	}
-
-	if _, err := os.Stat(publicKeyPath); err == nil {
-		return fmt.Errorf("public key already exist")
-	}
-
-	publicKey, privateKey, err := box.GenerateKey(rand.Reader)
-	if err != nil {
-		return err
-	}
-
-	if err := os.MkdirAll(path, 0700); err != nil {
-		return err
-	}
-
-	if err := storeKey(publicKey, publicKeyPath); err != nil {
-		return err
-	}
-
-	if err := storeKey(privateKey, privateKeyPath); err != nil {
-		return err
-	}
-
-	return nil
-}
-
 func storeKey(key *[32]byte, filepath string) error {
 	return ioutil.WriteFile(filepath, key[:], 0600)
-}
-
-// BoxLoad loads public and private keys from directory
-// defined in path and stores them in NaCl structure
-func BoxLoad(path string) (*Box, error) {
-	var (
-		privateKeyPath = fmt.Sprintf("%s/%s", path, privateKeyName)
-		publicKeyPath  = fmt.Sprintf("%s/%s", path, publicKeyName)
-	)
-
-	publicKey, err := ioutil.ReadFile(publicKeyPath)
-	if err != nil {
-		return nil, err
-	}
-
-	if len(publicKey) != KeySize {
-		return nil, fmt.Errorf("public key invalid length=%d", len(publicKey))
-	}
-
-	privateKey, err := ioutil.ReadFile(privateKeyPath)
-	if err != nil {
-		return nil, err
-	}
-
-	if len(privateKey) != KeySize {
-		return nil, fmt.Errorf("private key invalid length=%d", len(privateKey))
-	}
-
-	n := &Box{}
-	copy(n.privateKey[:], privateKey)
-	copy(n.publicKey[:], publicKey)
-
-	return n, nil
 }
 
 // Encrypt encrypts message using recipient public key.
