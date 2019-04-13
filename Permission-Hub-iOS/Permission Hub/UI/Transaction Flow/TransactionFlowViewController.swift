@@ -51,7 +51,7 @@ final class TransactionFlowViewController: UIViewController {
         button.layer.borderWidth = 1
         button.layer.borderColor = PHColors.greyishBrown.cgColor
 
-        button.setTitle("Decline", for: .normal)
+        button.setTitle("Cancel", for: .normal)
 
         button.addTarget(
             self,
@@ -196,7 +196,7 @@ final class TransactionFlowViewController: UIViewController {
     // MARK: - Selectors
 
     @objc private func declineButtonTapped(_ sender: UIButton) {
-        respondToTransaction(isAccepted: false)
+        presentCancellationAlert()
     }
 
     @objc private func continueButtonTapped(_ sender: UIButton) {
@@ -206,6 +206,30 @@ final class TransactionFlowViewController: UIViewController {
     }
 
     // MARK: - Helpers
+
+    private func presentCancellationAlert() {
+
+        let alert = UIAlertController(
+            title: "Cancel transaction",
+            message: "Are you sure you want to cancel?",
+            preferredStyle: .alert)
+
+        alert.addAction(UIAlertAction(
+            title: "Yes",
+            style: .destructive,
+            handler: { [unowned self] _ in
+                self.respondToTransaction(isAccepted: false)
+        }))
+
+        alert.addAction(UIAlertAction(
+            title: "No",
+            style: .default,
+            handler: { _ in
+                alert.dismiss(animated: true)
+        }))
+
+        present(alert, animated: true)
+    }
 
     private func validateSelection() {
 
