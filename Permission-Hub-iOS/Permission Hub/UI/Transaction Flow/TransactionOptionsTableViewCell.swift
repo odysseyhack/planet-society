@@ -18,7 +18,7 @@ final class TransactionOptionsTableViewCell: UITableViewCell {
         stackView.translatesAutoresizingMaskIntoConstraints = false
 
         stackView.axis = .vertical
-        stackView.spacing = 5
+        stackView.spacing = 20
         stackView.alignment = .leading
 
         return stackView
@@ -46,7 +46,7 @@ final class TransactionOptionsTableViewCell: UITableViewCell {
 
         addSubview(stackView)
 
-        let margin: CGFloat = 15
+        let margin: CGFloat = 20
         stackView.topAnchor.constraint(equalTo: topAnchor, constant: margin).isActive = true
         stackView.leftAnchor.constraint(equalTo: leftAnchor, constant: margin).isActive = true
         stackView.rightAnchor.constraint(equalTo: rightAnchor, constant: -margin).isActive = true
@@ -55,13 +55,38 @@ final class TransactionOptionsTableViewCell: UITableViewCell {
 
     func configure(withOptions options: [String]) {
 
-        for option in options {
+        for (index, option) in options.enumerated() {
+
+            let stackView = UIStackView()
+            stackView.translatesAutoresizingMaskIntoConstraints = false
+            stackView.tag = index
+
+            let tapGestureRecognizer = UITapGestureRecognizer(
+                target: self,
+                action: #selector(didSelectItem))
+            stackView.addGestureRecognizer(tapGestureRecognizer)
+
+            let image = UIImage(named: "personal_details")
+            let imageView = UIImageView(image: image)
+            imageView.contentMode = .center
+            stackView.addArrangedSubview(imageView)
 
             let label = UILabel()
             label.font = PHFonts.regular(ofSize: 14)
             label.textColor = PHColors.greyishBrown
             label.text = option
             stackView.addArrangedSubview(label)
+
+            self.stackView.addArrangedSubview(stackView)
         }
+    }
+
+    @objc private func didSelectItem(_ sender: UITapGestureRecognizer) {
+
+        guard let index = sender.view?.tag else {
+            return
+        }
+
+        stackView.arrangedSubviews[index].backgroundColor = .yellow
     }
 }
