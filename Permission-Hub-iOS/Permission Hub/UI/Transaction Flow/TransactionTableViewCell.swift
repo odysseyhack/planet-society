@@ -14,7 +14,7 @@ struct TransactionTableViewCellViewModel {
     let subtitle: String
 }
 
-final class TransactionTableViewCell: UITableViewCell {
+final class TransactionTableViewCell: PHBaseTableViewCell {
 
     // MARK: - Static properties
 
@@ -107,16 +107,6 @@ final class TransactionTableViewCell: UITableViewCell {
         return button
     }()
 
-    private lazy var separatorView: UIView = {
-
-        let view = UIView()
-        view.translatesAutoresizingMaskIntoConstraints = false
-
-        view.backgroundColor = PHColors.grey.withAlphaComponent(0.5)
-
-        return view
-    }()
-
     // MARK: - Properties
 
     override var isSelected: Bool {
@@ -144,18 +134,12 @@ final class TransactionTableViewCell: UITableViewCell {
         selectionStyle = .none
 
         addSubview(stackView)
-        addSubview(separatorView)
 
         let margin: CGFloat = 20
         stackView.topAnchor.constraint(equalTo: topAnchor, constant: margin).isActive = true
         stackView.leftAnchor.constraint(equalTo: leftAnchor, constant: margin).isActive = true
         stackView.rightAnchor.constraint(equalTo: rightAnchor, constant: -margin).isActive = true
-
-        separatorView.topAnchor.constraint(equalTo: stackView.bottomAnchor, constant: margin).isActive = true
-        separatorView.leftAnchor.constraint(equalTo: leftAnchor).isActive = true
-        separatorView.rightAnchor.constraint(equalTo: rightAnchor).isActive = true
-        separatorView.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
-        separatorView.heightAnchor.constraint(equalToConstant: 1).isActive = true
+        stackView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -margin).isActive = true
 
         stackView.addArrangedSubview(verticalStackView)
         verticalStackView.addArrangedSubview(itemTitleLabel)
