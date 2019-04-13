@@ -61,11 +61,10 @@ final class FormTextInputCell: UITableViewCell {
 
         addSubview(textField)
 
-        let margin: CGFloat = 15
         textField.heightAnchor.constraint(equalToConstant: 44).isActive = true
         textField.topAnchor.constraint(equalTo: topAnchor, constant: 5).isActive = true
-        textField.leftAnchor.constraint(equalTo: leftAnchor, constant: margin).isActive = true
-        textField.rightAnchor.constraint(equalTo: rightAnchor, constant: -margin).isActive = true
+        textField.leftAnchor.constraint(equalTo: leftAnchor, constant: 20).isActive = true
+        textField.rightAnchor.constraint(equalTo: rightAnchor, constant: -20).isActive = true
         textField.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -5).isActive = true
     }
 
