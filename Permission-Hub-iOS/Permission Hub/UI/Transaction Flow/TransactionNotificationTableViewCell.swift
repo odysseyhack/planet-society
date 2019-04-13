@@ -30,7 +30,7 @@ enum TransactionNotificationType {
     }
 }
 
-final class TransactionNotificationTableViewCell: UITableViewCell {
+final class TransactionNotificationTableViewCell: PHBaseTableViewCell {
 
     // MARK: - Private properties
 
@@ -84,16 +84,6 @@ final class TransactionNotificationTableViewCell: UITableViewCell {
         return label
     }()
 
-    private lazy var separatorView: UIView = {
-
-        let view = UIView()
-        view.translatesAutoresizingMaskIntoConstraints = false
-
-        view.backgroundColor = .white
-
-        return view
-    }()
-
     // MARK: - Initialization
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -113,29 +103,18 @@ final class TransactionNotificationTableViewCell: UITableViewCell {
         selectionStyle = .none
 
         addSubview(stackView)
-        addSubview(separatorView)
+        separatorView.backgroundColor = .white
 
         let margin: CGFloat = 15
         stackView.topAnchor.constraint(equalTo: topAnchor, constant: margin).isActive = true
         stackView.leftAnchor.constraint(equalTo: leftAnchor, constant: margin).isActive = true
         stackView.rightAnchor.constraint(equalTo: rightAnchor, constant: -margin).isActive = true
-
-        configureSeparatorView()
+        stackView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -margin).isActive = true
 
         stackView.addArrangedSubview(notificationImageView)
         stackView.addArrangedSubview(notificationLabel)
         stackView.addArrangedSubview(notificationSublabel)
         stackView.addArrangedSubview(disclosureImageView)
-    }
-
-    private func configureSeparatorView() {
-
-        let margin: CGFloat = 15
-        separatorView.topAnchor.constraint(equalTo: stackView.bottomAnchor, constant: margin).isActive = true
-        separatorView.leftAnchor.constraint(equalTo: leftAnchor).isActive = true
-        separatorView.rightAnchor.constraint(equalTo: rightAnchor).isActive = true
-        separatorView.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
-        separatorView.heightAnchor.constraint(equalToConstant: 1).isActive = true
     }
 
     func configure(withType type: TransactionNotificationType, andText text: String) {

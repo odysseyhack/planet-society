@@ -1,14 +1,14 @@
 //
-//  TransactionIdentityDocumentViewController.swift
+//  TransactionPaymentMethodViewController.swift
 //  Permission Hub
 //
 //  Created by Corné on 13/04/2019.
 //  Copyright © 2019 Planet. All rights reserved.
 //
 
-import UIKit
+import Foundation
 
-final class TransactionIdentityDocumentViewController: PHTableViewController {
+final class TransactionPaymentMethodViewController: PHTableViewController {
 
     // MARK: - Private properties
 
@@ -25,18 +25,14 @@ final class TransactionIdentityDocumentViewController: PHTableViewController {
                 text: "This company is verified"),
             .description(
                 date: transaction.date,
-                title: "Identity document (passport)",
-                description: "Please fill out your passport details."),
-            .selectionDisclosure(text: "Country of issue"),
-            .form(
-                placeholder: "Passport number",
-                text: nil,
-                keyboardType: .numbersAndPunctuation),
-            .form(
-                placeholder: "Expiration date",
-                text: nil,
-                keyboardType: .numbersAndPunctuation)
-        ])
+                title: "Payment method",
+                description: "Please select out your payment method"),
+            .selection(options: [
+                "Debit card / Credit card",
+                "Paypal",
+                "Directly from account"
+                ])
+            ])
     }
 
     required init?(coder aDecoder: NSCoder) {

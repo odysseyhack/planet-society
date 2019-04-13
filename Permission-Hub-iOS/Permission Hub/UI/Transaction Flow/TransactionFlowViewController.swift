@@ -218,6 +218,11 @@ final class TransactionFlowViewController: UIViewController {
 
     private func continueFlow() {
 
+        guard currentStepIndex < steps.count else {
+            print("finished!")
+            return
+        }
+
         // set initial viewcontroller
         let viewController = self.steps.map { $0.viewController(withTransaction: transaction) }[currentStepIndex]
         pageViewController.setViewControllers(
@@ -227,6 +232,11 @@ final class TransactionFlowViewController: UIViewController {
 
         // increment for next step
         currentStepIndex += 1
+
+        // last step!
+        if currentStepIndex == steps.count {
+            continueButton.setTitle("Finish!", for: .normal)
+        }
     }
 
     // MARK: - Networking
@@ -273,7 +283,34 @@ final class TransactionFlowViewController: UIViewController {
     }
 
     @objc private func optionsButtonTapped(_ sender: UIButton) {
-        // ...
+
+        let alert = UIAlertController(
+            title: "External verification options",
+            message: nil,
+            preferredStyle: .actionSheet)
+
+        alert.addAction(UIAlertAction(
+            title: "Share with a contact",
+            style: .default,
+            handler: { _ in
+                alert.dismiss(animated: true)
+        }))
+
+        alert.addAction(UIAlertAction(
+            title: "Use audit tool",
+            style: .default,
+            handler: { _ in
+                alert.dismiss(animated: true)
+        }))
+
+        alert.addAction(UIAlertAction(
+            title: "Cancel",
+            style: .cancel,
+            handler: { _ in
+                alert.dismiss(animated: true)
+        }))
+
+        present(alert, animated: true)
     }
 
     @objc private func declineButtonTapped(_ sender: UIButton) {

@@ -60,7 +60,6 @@ extension TransactionOverviewViewController: PHTableViewControllerDelegate {
 
         switch item {
         case .notification(let type, let text):
-
             let items: [PHTableViewViewCellType]
             switch type {
             case .warning:
@@ -68,9 +67,7 @@ extension TransactionOverviewViewController: PHTableViewControllerDelegate {
                     date: Date(),
                     title: "",
                     description: $0) }
-                let viewController = PHTableViewController(
-                    title: text,
-                    items: items)
+                let viewController = PHTableViewController(title: text, items: items)
 
                 let notification = Notification(
                     name: Notification.Name("show warning"),
@@ -84,9 +81,7 @@ extension TransactionOverviewViewController: PHTableViewControllerDelegate {
                     title: "",
                     description: $0) }
 
-                 let viewController = PHTableViewController(
-                    title: text,
-                    items: items)
+                 let viewController = PHTableViewController(title: text, items: items)
 
                  let notification = Notification(
                     name: Notification.Name("show verification"),
@@ -94,15 +89,11 @@ extension TransactionOverviewViewController: PHTableViewControllerDelegate {
                     userInfo: nil)
                  NotificationCenter.default.post(notification)
             }
-
         case .transactionItem(let item):
             if let index = self.transaction.items.index(of: item) {
                 transaction.items[index].isAccepted = true
             }
-//            validateSelection()
-
-        default:
-            break
+        default: break
         }
     }
 

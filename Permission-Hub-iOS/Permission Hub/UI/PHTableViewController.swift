@@ -27,16 +27,56 @@ enum PHTableViewViewCellType {
         text: String)
     case warning(text: String)
     case description(date: Date, title: String, description: String)
-    case plugin
+    case plugin(image: UIImage?, text: String)
     case transactionItem(item: TransactionItem)
     case selectionDisclosure(text: String)
     case selection(options: [String])
-    case form(placeholder: String)
+    case form(placeholder: String, text: String?, keyboardType: UIKeyboardType)
 }
 
 protocol PHTableViewControllerDelegate: class {
     func didSelect(item: PHTableViewViewCellType)
     func didDeselect(item: PHTableViewViewCellType)
+}
+
+struct ReloadedItems {
+
+    let items: [PHTableViewViewCellType] = [
+        .notification(
+            type: .verification,
+            text: "This company is verified"),
+        .description(
+            date: Date(),
+            title: "Personal details",
+            description: "Please fill out your personal details."),
+        .plugin(
+            image: UIImage(named: "digid_button"),
+            text: "Use the external DigiD plug-in to fill in your personal information (optional)."),
+        .form(
+            placeholder: "First name",
+            text: "Gerard",
+            keyboardType: .default),
+        .form(
+            placeholder: "Last name",
+            text: "Huizinga",
+            keyboardType: .default),
+        .form(
+            placeholder: "Date of birth",
+            text: "04-11-1964",
+            keyboardType: .numbersAndPunctuation),
+        .form(
+            placeholder: "Address",
+            text: "Weesperplein 43-2, Amsterdam",
+            keyboardType: .default),
+        .form(
+            placeholder: "Email",
+            text: "gerard.huizinga@gmail.com",
+            keyboardType: .emailAddress),
+        .form(
+            placeholder: "BSN number",
+            text: "264036232",
+            keyboardType: .numbersAndPunctuation)
+    ]
 }
 
 class PHTableViewController: UIViewController {
@@ -58,6 +98,10 @@ class PHTableViewController: UIViewController {
         tableView.register(
             UITableViewCell.self,
             forCellReuseIdentifier: String(describing: UITableViewCell.self))
+
+        tableView.register(
+            TransactionOptionsTableViewCell.self,
+            forCellReuseIdentifier: String(describing: TransactionOptionsTableViewCell.self))
 
         tableView.register(
             TransactionTableViewCell.self,
@@ -83,6 +127,15 @@ class PHTableViewController: UIViewController {
     }()
 
     private var items: [PHTableViewViewCellType]
+
+    private let activityIndicatorViewController: PHActivityIndicatorViewController = {
+
+        let viewController = PHActivityIndicatorViewController()
+        viewController.modalPresentationStyle = .overCurrentContext
+        viewController.modalTransitionStyle = .crossDissolve
+
+        return viewController
+    }()
 
     // MARK: - Properties
 
@@ -115,6 +168,7 @@ class PHTableViewController: UIViewController {
         // configure navigation bar
         configureNavigationBar()
         configureTableView()
+        addHideKeyboardGestureRecognizer()
     }
 
     // MARK: - Configuration
@@ -139,6 +193,20 @@ class PHTableViewController: UIViewController {
         tableView.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
         tableView.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
         tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
+    }
+
+    private func addHideKeyboardGestureRecognizer() {
+
+        let hideKeyboardTapGestureRecognizer = UITapGestureRecognizer(
+            target: self,
+            action: #selector(hideKeyboard))
+        view.addGestureRecognizer(hideKeyboardTapGestureRecognizer)
+    }
+
+    // MARK: - Selectors
+
+    @objc private func hideKeyboard(_ sender: Any) {
+        view.endEditing(true)
     }
 }
 
@@ -199,10 +267,21 @@ extension PHTableViewController: UITableViewDataSource {
 
             return cell
 
-        case .plugin:
+        case .plugin(let image, let text):
             let cell = tableView.dequeueReusableCell(
                 withIdentifier: String(describing: TransactionPluginTableViewCell.self),
                 for: indexPath) as! TransactionPluginTableViewCell
+
+            cell.configure(
+                withImage: image,
+                andText: text,
+                callback: { [unowned self] in
+                    self.present(self.activityIndicatorViewController, animated: false)
+                    self.perform(
+                        #selector(self.dismissActivityIndicator),
+                        with: nil,
+                        afterDelay: 2)
+            })
 
             return cell
 
@@ -220,23 +299,38 @@ extension PHTableViewController: UITableViewDataSource {
 
         case .selection(let options):
             let cell = tableView.dequeueReusableCell(
-                withIdentifier: String(describing: UITableViewCell.self),
-                for: indexPath)
+                withIdentifier: String(describing: TransactionOptionsTableViewCell.self),
+                for: indexPath) as! TransactionOptionsTableViewCell
+
+            cell.configure(withOptions: options)
 
             return cell
 
-        case .form(let placeholder):
+        case .form(let placeholder, let text, let keyboardType):
 
             let cell = tableView.dequeueReusableCell(
                 withIdentifier: String(describing: FormTextInputCell.self),
                 for: indexPath) as! FormTextInputCell
 
-            cell.configure(withPlaceholder: placeholder) { text in
-                print(text)
+            cell.configure(
+                withPlaceholder: placeholder,
+                andText: text,
+                andKeyboardType: keyboardType) { text in
+                    print(text)
             }
 
             return cell
         }
+    }
+
+    // MARK: - Selectors
+
+    @objc private func dismissActivityIndicator(_ sender: Any) {
+        activityIndicatorViewController.dismiss(animated: true)
+
+        items = ReloadedItems().items
+
+        tableView.reloadData()
     }
 }
 
