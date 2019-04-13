@@ -16,6 +16,7 @@ test:
 	go test -v ./database
 	go test -v ./cryptography
 	go test -v ./utils
+	go test -v ./protocol
 
 # binaries
 binaries: requester responder notification-server
