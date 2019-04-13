@@ -27,6 +27,7 @@ struct TransactionNotification: Decodable {
     let date: Date
     let requesterName: String
     let requesterPublicKey: String
+    let analysis: [String]
 
     private enum CodingKeys: String, CodingKey {
         case transactionID
@@ -37,5 +38,6 @@ struct TransactionNotification: Decodable {
         case date
         case requesterName
         case requesterPublicKey = "RequesterPublicKey"
+        case analysis
     }
 }
