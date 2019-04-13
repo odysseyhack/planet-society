@@ -142,8 +142,16 @@ final class TransactionFlowViewController: UIViewController {
 
     private func configureNavigationBar() {
 
-        navigationItem.title = "Phone House - Mobile subscription"
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.text = "Phone House - Mobile subscription"
+        label.textAlignment = .left
+        label.font = PHFonts.bold(ofSize: 16)
+        label.textColor = PHColors.greyishBrown
+        navigationItem.titleView = label
+
         navigationController?.navigationBar.tintColor = PHColors.greyishBrown
+
         navigationItem.backBarButtonItem = UIBarButtonItem(
             title: "",
             style: .plain,
