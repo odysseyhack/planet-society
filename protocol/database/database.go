@@ -3,14 +3,12 @@ package database
 import (
 	"bytes"
 	"encoding/gob"
-	"fmt"
 	"os"
 	"path/filepath"
 
 	"github.com/boltdb/bolt"
 	"github.com/odysseyhack/planet-society/protocol/cryptography"
 	"github.com/odysseyhack/planet-society/protocol/models"
-	"github.com/xlab/treeprint"
 )
 
 // Db root tree:
@@ -33,7 +31,6 @@ type Database struct {
 // If the database is not existing it will be created and initialized with buckets.
 func LoadDatabase(filePath string, keychain *cryptography.Keychain) (*Database, error) {
 	directory, _ := filepath.Split(filePath)
-
 	if err := os.MkdirAll(directory, 0700); err != nil {
 		return nil, err
 	}
@@ -49,19 +46,19 @@ func LoadDatabase(filePath string, keychain *cryptography.Keychain) (*Database, 
 		db:       db,
 		keychain: keychain,
 	}
-
-	if os.IsNotExist(statErr) {
-		if err := database.initialize(); err != nil {
-			return nil, err
-		}
+	if err := database.initialize(os.IsNotExist(statErr)); err != nil {
+		return nil, err
 	}
 
 	return database, nil
 }
 
 // Initialize initializes database with proper buckets
-func (d *Database) initialize() error {
-	return d.db.Update(d.bucketInitialize)
+func (d *Database) initialize(run bool) error {
+	if run {
+		return d.db.Update(d.bucketInitialize)
+	}
+	return nil
 }
 
 // Close closes database
@@ -107,6 +104,24 @@ func (d *Database) decode(value []byte, object interface{}) error {
 	return nil
 }
 
+func updatePersonalDetails(personal *models.PersonalDetailsInput, updatedDetail *models.PersonalDetails) {
+	if personal.Name != nil {
+		updatedDetail.Name = *personal.Name
+	}
+
+	if personal.Surname != nil {
+		updatedDetail.Surname = *personal.Surname
+	}
+
+	if personal.Country != nil {
+		updatedDetail.Country = *personal.Country
+	}
+
+	if personal.BirthDate != nil {
+		updatedDetail.BirthDate = *personal.BirthDate
+	}
+}
+
 // PersonalDetailsAdd adds personal details to the database
 func (d *Database) PersonalDetailsUpdate(personal models.PersonalDetailsInput) (updatedDetail models.PersonalDetails, err error) {
 	err = d.db.Update(func(tx *bolt.Tx) error {
@@ -119,21 +134,7 @@ func (d *Database) PersonalDetailsUpdate(personal models.PersonalDetailsInput) (
 			return err
 		}
 
-		if personal.Name != nil {
-			updatedDetail.Name = *personal.Name
-		}
-
-		if personal.Surname != nil {
-			updatedDetail.Surname = *personal.Surname
-		}
-
-		if personal.Country != nil {
-			updatedDetail.Country = *personal.Country
-		}
-
-		if personal.BirthDate != nil {
-			updatedDetail.BirthDate = *personal.BirthDate
-		}
+		updatePersonalDetails(&personal, &updatedDetail)
 
 		return d.put(bucket, []byte(personalDetailsKey), &updatedDetail)
 	})
@@ -275,12 +276,7 @@ func (d *Database) ContactAdd(contact models.ContactInput) (newContact models.Co
 		}
 
 		d.contactInputToContact(&contact, &newContact)
-
-		if err := d.put(contactBucket, []byte(newContact.ID), &newContact); err != nil {
-			return err
-		}
-
-		return nil
+		return d.put(contactBucket, []byte(newContact.ID), &newContact)
 	})
 
 	return newContact, err
@@ -347,10 +343,7 @@ func (d *Database) AddressAdd(addresses models.AddressInput) (added models.Addre
 			return ErrBucketNotFound(bucketAddress)
 		}
 		d.addressInputToAddress(&addresses, &added)
-		if err := d.put(addressBucket, []byte(added.ID), &added); err != nil {
-			return err
-		}
-		return nil
+		return d.put(addressBucket, []byte(added.ID), &added)
 	})
 	return added, err
 }
@@ -415,11 +408,7 @@ func (d *Database) PaymentCardAdd(paymentCard models.PaymentCardInput) (added mo
 		}
 
 		d.paymentCardInputToPaymentCard(&paymentCard, &added)
-
-		if err := d.put(paymentCardBucket, []byte(added.ID), &added); err != nil {
-			return err
-		}
-		return nil
+		return d.put(paymentCardBucket, []byte(added.ID), &added)
 	})
 	return added, err
 }
@@ -483,12 +472,7 @@ func (d *Database) PassportAdd(passport models.PassportInput) (added models.Pass
 		}
 
 		d.passportInputToPassport(&passport, &added)
-
-		if err := d.put(passportBucket, []byte(added.ID), &added); err != nil {
-			return err
-		}
-
-		return nil
+		return d.put(passportBucket, []byte(added.ID), &added)
 	})
 	return added, err
 }
@@ -536,7 +520,6 @@ func (d *Database) identityDocumentInputToDocument(identityDocument *models.Iden
 // IdentityDocumentAdd adds new identity document
 func (d *Database) IdentityDocumentAdd(identityDocument models.IdentityDocumentInput) (document models.IdentityDocument, err error) {
 	err = d.db.Update(func(tx *bolt.Tx) error {
-
 		identitiesBucket := tx.Bucket([]byte(bucketIdentities))
 		if identitiesBucket == nil {
 			return ErrBucketNotFound(bucketIdentities)
@@ -553,12 +536,7 @@ func (d *Database) IdentityDocumentAdd(identityDocument models.IdentityDocumentI
 		}
 
 		d.identityDocumentInputToDocument(&identityDocument, &document)
-
-		if err := d.put(identityDocumentBucket, []byte(document.ID), &document); err != nil {
-			return err
-		}
-
-		return nil
+		return d.put(identityDocumentBucket, []byte(document.ID), &document)
 	})
 
 	return document, err
@@ -611,49 +589,6 @@ func (d *Database) PermissionList() (list []models.Permission, err error) {
 		})
 	})
 	return list, err
-}
-
-func (d *Database) PrintTree() {
-	tree := treeprint.New()
-
-	err := d.db.View(func(tx *bolt.Tx) error {
-		permissionBucket := tx.Bucket([]byte(bucketPermissionsGranted))
-		if permissionBucket != nil {
-			branch := tree.AddBranch(bucketPermissionsGranted)
-			d.treeAddNode(permissionBucket, branch)
-		}
-
-		personalBucket := tx.Bucket([]byte(personalDetailsKey))
-		if personalBucket != nil {
-			tree.AddNode(personalDetailsKey)
-		}
-
-		identityBucket := tx.Bucket([]byte(bucketIdentities))
-		if identityBucket != nil {
-			branch := tree.AddBranch(bucketIdentities)
-			d.treeAddNode(identityBucket, branch)
-		}
-		return nil
-	})
-
-	if err != nil {
-		fmt.Println(err)
-		return
-	}
-	fmt.Println(tree)
-}
-
-func (d *Database) treeAddNode(bucket *bolt.Bucket, tree treeprint.Tree) {
-	_ = bucket.ForEach(func(k, v []byte) error {
-		subBucket := bucket.Bucket(k)
-		if subBucket == nil {
-			tree.AddNode(string(k))
-		} else {
-			subBranch := tree.AddBranch(string(k))
-			d.treeAddNode(subBucket, subBranch)
-		}
-		return nil
-	})
 }
 
 // IdentityDel removed identity from database
