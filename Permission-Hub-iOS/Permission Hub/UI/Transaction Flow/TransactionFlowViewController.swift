@@ -25,6 +25,65 @@ final class TransactionFlowViewController: PHTableViewController {
         return stackView
     }()
 
+    private lazy var declineButton: UIButton = {
+
+        let button = UIButton()
+        button.translatesAutoresizingMaskIntoConstraints = false
+
+        button.widthAnchor.constraint(equalToConstant: 92).isActive = true
+        button.heightAnchor.constraint(equalToConstant: 34).isActive = true
+
+        button.titleLabel?.font = PHFonts.regular()
+
+        button.setTitleColor(PHColors.greyishBrown, for: .normal)
+        button.backgroundColor = .white
+        button.isEnabled = false
+
+        button.layer.cornerRadius = 5
+        button.layer.borderWidth = 1
+        button.layer.borderColor = PHColors.greyishBrown.cgColor
+
+        button.setTitle("Decline", for: .normal)
+
+        button.addTarget(
+            self,
+            action: #selector(declineButtonTapped),
+            for: .touchUpInside)
+
+        return button
+    }()
+
+    private lazy var continueButton: UIButton = {
+
+        let button = UIButton()
+        button.translatesAutoresizingMaskIntoConstraints = false
+
+        button.widthAnchor.constraint(equalToConstant: 92).isActive = true
+        button.heightAnchor.constraint(equalToConstant: 34).isActive = true
+
+        button.titleLabel?.font = PHFonts.regular()
+
+        button.setTitleColor(PHColors.topaz.withAlphaComponent(0.5), for: .disabled)
+        button.setTitleColor(.white, for: .normal)
+        button.backgroundColor = .white
+
+        button.layer.cornerRadius = 5
+        button.layer.borderWidth = 1
+        button.layer.borderColor = PHColors.topaz.cgColor
+
+        button.setTitle("Continue", for: .normal)
+
+        button.addTarget(
+            self,
+            action: #selector(declineButtonTapped),
+            for: .touchUpInside)
+
+        // disabled by default
+        button.isEnabled = false
+
+        return button
+    }()
+
     private let transaction: TransactionNotification
 
     // MARK: - Life cycle
@@ -40,6 +99,7 @@ final class TransactionFlowViewController: PHTableViewController {
             type: .warning,
             text: "Permission warning!"))
         items.append(.description(
+            date: transaction.date,
             title: transaction.title,
             description: transaction.description))
 
@@ -66,41 +126,8 @@ final class TransactionFlowViewController: PHTableViewController {
         bottomStackView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         bottomStackView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor).isActive = true
 
-        for i in 0..<2 {
-
-            let button = UIButton()
-            button.translatesAutoresizingMaskIntoConstraints = false
-
-            button.widthAnchor.constraint(equalToConstant: 92).isActive = true
-            button.heightAnchor.constraint(equalToConstant: 34).isActive = true
-
-            button.titleLabel?.font = PHFonts.regular()
-
-            let color = i == 0 ? PHColors.greyishBrown : PHColors.topaz
-            button.setTitleColor(color, for: .normal)
-            button.backgroundColor = .white
-
-            button.layer.cornerRadius = 5
-            button.layer.borderWidth = 1
-            button.layer.borderColor = color.cgColor
-
-            let title = i == 0 ? "Decline" : "Continue"
-            button.setTitle(title, for: .normal)
-
-            if i == 0 {
-                button.addTarget(
-                    self,
-                    action: #selector(declineButtonTapped),
-                    for: .touchUpInside)
-            } else {
-                button.addTarget(
-                    self,
-                    action: #selector(continueButtonTapped),
-                    for: .touchUpInside)
-            }
-
-            bottomStackView.addArrangedSubview(button)
-        }
+        bottomStackView.addArrangedSubview(declineButton)
+        bottomStackView.addArrangedSubview(continueButton)
     }
 
     // MARK: - Networking
@@ -142,13 +169,12 @@ extension TransactionFlowViewController: PHTableViewControllerDelegate {
 
         switch item {
         case .notification:
-            let items: [PHTableViewViewCellType] = [
-                .warning(text: "Basic informations are not needed."),
-                .warning(text: "Health records are not mandatory.")
-            ]
+            let items: [PHTableViewViewCellType] = transaction.analysis.map { .description(
+                date: Date(),
+                title: "",
+                description: $0) }
             let viewController = PHTableViewController(items: items)
             navigationController?.pushViewController(viewController, animated: true)
-
         default:
             break
         }
