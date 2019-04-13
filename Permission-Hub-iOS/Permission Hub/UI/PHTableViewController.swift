@@ -60,6 +60,10 @@ class PHTableViewController: UIViewController {
             forCellReuseIdentifier: String(describing: UITableViewCell.self))
 
         tableView.register(
+            TransactionOptionsTableViewCell.self,
+            forCellReuseIdentifier: String(describing: TransactionOptionsTableViewCell.self))
+
+        tableView.register(
             TransactionTableViewCell.self,
             forCellReuseIdentifier: String(describing: TransactionTableViewCell.self))
 
@@ -255,8 +259,10 @@ extension PHTableViewController: UITableViewDataSource {
 
         case .selection(let options):
             let cell = tableView.dequeueReusableCell(
-                withIdentifier: String(describing: UITableViewCell.self),
-                for: indexPath)
+                withIdentifier: String(describing: TransactionOptionsTableViewCell.self),
+                for: indexPath) as! TransactionOptionsTableViewCell
+
+            cell.configure(withOptions: options)
 
             return cell
 

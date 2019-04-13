@@ -20,6 +20,7 @@
 		4146819722628D8F0094311A /* TransactionPaymentMethodViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4146819622628D8F0094311A /* TransactionPaymentMethodViewController.swift */; };
 		4146819922628F6A0094311A /* TransactionPaymentConfirmationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4146819822628F6A0094311A /* TransactionPaymentConfirmationViewController.swift */; };
 		4146819B226299C90094311A /* PHActivityIndicatorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4146819A226299C90094311A /* PHActivityIndicatorViewController.swift */; };
+		4146819D2262A18D0094311A /* TransactionOptionsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4146819C2262A18D0094311A /* TransactionOptionsTableViewCell.swift */; };
 		414760F7226089BD00030BE6 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 414760F6226089BD00030BE6 /* AppDelegate.swift */; };
 		414760F9226089BD00030BE6 /* TransactionWalletViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 414760F8226089BD00030BE6 /* TransactionWalletViewController.swift */; };
 		414760FE226089C000030BE6 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 414760FD226089C000030BE6 /* Assets.xcassets */; };
@@ -70,6 +71,7 @@
 		4146819622628D8F0094311A /* TransactionPaymentMethodViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionPaymentMethodViewController.swift; sourceTree = "<group>"; };
 		4146819822628F6A0094311A /* TransactionPaymentConfirmationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionPaymentConfirmationViewController.swift; sourceTree = "<group>"; };
 		4146819A226299C90094311A /* PHActivityIndicatorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PHActivityIndicatorViewController.swift; sourceTree = "<group>"; };
+		4146819C2262A18D0094311A /* TransactionOptionsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionOptionsTableViewCell.swift; sourceTree = "<group>"; };
 		414760F3226089BD00030BE6 /* Permission Hub.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Permission Hub.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		414760F6226089BD00030BE6 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		414760F8226089BD00030BE6 /* TransactionWalletViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionWalletViewController.swift; sourceTree = "<group>"; };
@@ -246,6 +248,7 @@
 				414761352260DB2B00030BE6 /* TransactionNotificationTableViewCell.swift */,
 				414761392261225A00030BE6 /* TransactionDescriptionTableViewCell.swift */,
 				414681922262868B0094311A /* TransactionPluginTableViewCell.swift */,
+				4146819C2262A18D0094311A /* TransactionOptionsTableViewCell.swift */,
 				41D26A092261F5A800C95CCD /* FormTextInputCell.swift */,
 			);
 			name = Cells;
@@ -413,6 +416,7 @@
 				4146819B226299C90094311A /* PHActivityIndicatorViewController.swift in Sources */,
 				414761312260C1F700030BE6 /* PHFonts.swift in Sources */,
 				414681932262868B0094311A /* TransactionPluginTableViewCell.swift in Sources */,
+				4146819D2262A18D0094311A /* TransactionOptionsTableViewCell.swift in Sources */,
 				41D26A0A2261F5A800C95CCD /* FormTextInputCell.swift in Sources */,
 				41D26A0C22621AEF00C95CCD /* TransactionOverviewViewController.swift.swift in Sources */,
 			);
