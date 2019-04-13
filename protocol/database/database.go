@@ -282,6 +282,17 @@ func (d *Database) ContactAdd(contact models.ContactInput) (newContact models.Co
 	return newContact, err
 }
 
+func (d *Database) collectContacts(list *[]models.Contact, bucket *bolt.Bucket) error {
+	return bucket.ForEach(func(k, v []byte) error {
+		var contact models.Contact
+		if err := d.decode(v, &contact); err != nil {
+			return err
+		}
+		*list = append(*list, contact)
+		return nil
+	})
+}
+
 // ContactList lists contacts in given identity
 func (d *Database) ContactList(identity string) (list []models.Contact, err error) {
 	err = d.db.Update(func(tx *bolt.Tx) error {
@@ -299,15 +310,8 @@ func (d *Database) ContactList(identity string) (list []models.Contact, err erro
 		if contactBucket == nil {
 			return ErrBucketNotFound(bucketContacts)
 		}
+		return d.collectContacts(&list, contactBucket)
 
-		return contactBucket.ForEach(func(k, v []byte) error {
-			var contact models.Contact
-			if err := d.decode(v, &contact); err != nil {
-				return err
-			}
-			list = append(list, contact)
-			return nil
-		})
 	})
 	return list, err
 }
@@ -348,6 +352,17 @@ func (d *Database) AddressAdd(addresses models.AddressInput) (added models.Addre
 	return added, err
 }
 
+func (d *Database) collectAddresses(list *[]models.Address, bucket *bolt.Bucket) error {
+	return bucket.ForEach(func(k, v []byte) error {
+		var address models.Address
+		if err := d.decode(v, &address); err != nil {
+			return err
+		}
+		*list = append(*list, address)
+		return nil
+	})
+}
+
 // AddressList lists known addresses
 func (d *Database) AddressList(identity string) (list []models.Address, err error) {
 	err = d.db.Update(func(tx *bolt.Tx) error {
@@ -365,15 +380,7 @@ func (d *Database) AddressList(identity string) (list []models.Address, err erro
 		if addrBucket == nil {
 			return ErrBucketNotFound(bucketAddress)
 		}
-
-		return addrBucket.ForEach(func(k, v []byte) error {
-			var address models.Address
-			if err := d.decode(v, &address); err != nil {
-				return err
-			}
-			list = append(list, address)
-			return nil
-		})
+		return d.collectAddresses(&list, addrBucket)
 
 	})
 	return list, err
