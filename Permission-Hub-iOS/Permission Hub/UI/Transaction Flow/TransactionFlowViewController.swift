@@ -37,7 +37,6 @@ final class TransactionFlowViewController: PHTableViewController {
 
         button.setTitleColor(PHColors.greyishBrown, for: .normal)
         button.backgroundColor = .white
-        button.isEnabled = false
 
         button.layer.cornerRadius = 5
         button.layer.borderWidth = 1
@@ -75,7 +74,7 @@ final class TransactionFlowViewController: PHTableViewController {
 
         button.addTarget(
             self,
-            action: #selector(declineButtonTapped),
+            action: #selector(continueButtonTapped),
             for: .touchUpInside)
 
         // disabled by default
@@ -107,7 +106,9 @@ final class TransactionFlowViewController: PHTableViewController {
             items.append(.transactionItem(item: $0))
         }
 
-        super.init(items: items)
+        super.init(
+            title: transaction.requesterName,
+            items: items)
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -140,11 +141,12 @@ final class TransactionFlowViewController: PHTableViewController {
                 withId: transaction.transactionID,
                 isAccepted: true) { [unowned self] response in
 
+                    self.dismiss(animated: true)
+
                     switch response {
-                    case .success:
-                        self.dismiss(animated: true)
                     case .failure(let error):
                         print(error)
+                    default: break
                     }
             }
         } catch {
@@ -176,12 +178,14 @@ extension TransactionFlowViewController: PHTableViewControllerDelegate {
     func didSelect(item: PHTableViewViewCellType) {
 
         switch item {
-        case .notification:
+        case .notification(_, let text):
             let items: [PHTableViewViewCellType] = transaction.analysis.map { .description(
                 date: Date(),
                 title: "",
                 description: $0) }
-            let viewController = PHTableViewController(items: items)
+            let viewController = PHTableViewController(
+                title: text,
+                items: items)
             navigationController?.pushViewController(viewController, animated: true)
 
         case .transactionItem(let item):
