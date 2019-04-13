@@ -39,6 +39,46 @@ protocol PHTableViewControllerDelegate: class {
     func didDeselect(item: PHTableViewViewCellType)
 }
 
+struct ReloadedItems {
+
+    let items: [PHTableViewViewCellType] = [
+        .notification(
+            type: .verification,
+            text: "This company is verified"),
+        .description(
+            date: Date(),
+            title: "Personal details",
+            description: "Please fill out your personal details."),
+        .plugin(
+            image: UIImage(named: "digid_button"),
+            text: "Use the external DigiD plug-in to fill in your personal information (optional)."),
+        .form(
+            placeholder: "First name",
+            text: "Gerard",
+            keyboardType: .default),
+        .form(
+            placeholder: "Last name",
+            text: "Huizinga",
+            keyboardType: .default),
+        .form(
+            placeholder: "Date of birth",
+            text: "04-11-1964",
+            keyboardType: .numbersAndPunctuation),
+        .form(
+            placeholder: "Address",
+            text: "Weesperplein 43-2, Amsterdam",
+            keyboardType: .default),
+        .form(
+            placeholder: "Email",
+            text: "gerard.huizinga@gmail.com",
+            keyboardType: .emailAddress),
+        .form(
+            placeholder: "BSN number",
+            text: "264036232",
+            keyboardType: .numbersAndPunctuation)
+    ]
+}
+
 class PHTableViewController: UIViewController {
 
     // MARK: - Private properties
@@ -288,42 +328,7 @@ extension PHTableViewController: UITableViewDataSource {
     @objc private func dismissActivityIndicator(_ sender: Any) {
         activityIndicatorViewController.dismiss(animated: true)
 
-        items = [
-            .notification(
-                type: .verification,
-                text: "This company is verified"),
-            .description(
-                date: Date(),
-                title: "Personal details",
-                description: "Please fill out your personal details."),
-            .plugin(
-                image: UIImage(named: "digid_button"),
-                text: "Use the external DigiD plug-in to fill in your personal information (optional)."),
-            .form(
-                placeholder: "First name",
-                text: "Gerard",
-                keyboardType: .default),
-            .form(
-                placeholder: "Last name",
-                text: "Huizinga",
-                keyboardType: .default),
-            .form(
-                placeholder: "Date of birth",
-                text: "04-11-1964",
-                keyboardType: .numbersAndPunctuation),
-            .form(
-                placeholder: "Address",
-                text: "Weesperplein 43-2, Amsterdam",
-                keyboardType: .default),
-            .form(
-                placeholder: "Email",
-                text: "gerard.huizinga@gmail.com",
-                keyboardType: .emailAddress),
-            .form(
-                placeholder: "BSN number",
-                text: "264036232",
-                keyboardType: .numbersAndPunctuation)
-        ]
+        items = ReloadedItems().items
 
         tableView.reloadData()
     }
