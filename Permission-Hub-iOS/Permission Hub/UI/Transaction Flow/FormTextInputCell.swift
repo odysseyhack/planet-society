@@ -20,7 +20,7 @@ final class FormTextInputCell: UITableViewCell {
         textField.textColor = PHColors.greyishBrown
         textField.tintColor = PHColors.greyishBrown
         textField.clearButtonMode = .whileEditing
-        textField.backgroundColor = .clear
+        textField.backgroundColor = PHColors.formGray
 
         textField.addTarget(
             self,
@@ -52,19 +52,20 @@ final class FormTextInputCell: UITableViewCell {
 
         textField.attributedPlaceholder = NSAttributedString(
             string: placeholder,
-            attributes: [.foregroundColor: PHColors.greyishBrown])
+            attributes: [.foregroundColor: PHColors.greyishBrown.withAlphaComponent(0.5)])
 
         self.callback = callback
     }
 
     private func configure() {
 
-        contentView.addSubview(textField)
-        textField.topAnchor.constraint(equalTo: topAnchor).isActive = true
-        textField.rightAnchor.constraint(equalTo: rightAnchor).isActive = true
-        textField.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
-        textField.leftAnchor.constraint(equalTo: leftAnchor, constant: 16).isActive = true
+        addSubview(textField)
+
         textField.heightAnchor.constraint(equalToConstant: 44).isActive = true
+        textField.topAnchor.constraint(equalTo: topAnchor, constant: 5).isActive = true
+        textField.leftAnchor.constraint(equalTo: leftAnchor, constant: 20).isActive = true
+        textField.rightAnchor.constraint(equalTo: rightAnchor, constant: -20).isActive = true
+        textField.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -5).isActive = true
     }
 
     // MARK: - Selectors

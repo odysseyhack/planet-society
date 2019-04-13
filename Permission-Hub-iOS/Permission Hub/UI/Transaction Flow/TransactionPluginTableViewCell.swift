@@ -1,36 +1,14 @@
 //
-//  TransactionNotificationTableViewCell.swift
+//  TransactionPluginTableViewCell.swift
 //  Permission Hub
 //
-//  Created by Corné on 12/04/2019.
+//  Created by Corné on 13/04/2019.
 //  Copyright © 2019 Planet. All rights reserved.
 //
 
 import UIKit
 
-enum TransactionNotificationType {
-    case verification, warning
-
-    var image: UIImage? {
-        switch self {
-        case .verification:
-            return UIImage(named: "checkmark_small")
-        case .warning:
-            return UIImage(named: "warning")
-        }
-    }
-
-    var color: UIColor {
-        switch self {
-        case .verification:
-            return PHColors.topaz
-        case .warning:
-            return PHColors.red
-        }
-    }
-}
-
-final class TransactionNotificationTableViewCell: UITableViewCell {
+final class TransactionPluginTableViewCell: UITableViewCell {
 
     // MARK: - Private properties
 
@@ -42,44 +20,36 @@ final class TransactionNotificationTableViewCell: UITableViewCell {
         stackView.axis = .horizontal
         stackView.spacing = 10
         stackView.alignment = .center
+        stackView.distribution = .equalSpacing
 
         return stackView
     }()
 
-    private lazy var notificationImageView: UIImageView = {
+    private lazy var digiDButton: UIButton = {
 
-        let imageView = UIImageView()
-        imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageView.setContentHuggingPriority(.required, for: .horizontal)
+        let button = UIButton()
+        button.translatesAutoresizingMaskIntoConstraints = false
 
-        return imageView
+        let image = UIImage(named: "digid_button")
+        button.setImage(image, for: .normal)
+
+        button.addTarget(
+            self,
+            action: #selector(digiDButtonTapped),
+            for: .touchUpInside)
+
+        return button
     }()
 
-    private lazy var disclosureImageView: UIImageView = {
-
-        let image = UIImage(named: "disclosure_indicator")
-        let imageView = UIImageView(image: image)
-        imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageView.setContentHuggingPriority(.required, for: .horizontal)
-
-        return imageView
-    }()
-
-    private lazy var notificationLabel: UILabel = {
+    private lazy var descriptionLabel: UILabel = {
 
         let label = UILabel()
-        label.font = PHFonts.wesBold()
-        label.textColor = .white
-        label.textAlignment = .left
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.font = PHFonts.regular()
+        label.textColor = PHColors.greyishBrown
+        label.numberOfLines = 0
 
-        return label
-    }()
-
-    private lazy var notificationSublabel: UILabel = {
-
-        let label = UILabel()
-        label.font = PHFonts.wesRegular(ofSize: 10)
-        label.textColor = .white
+        label.text = "Use the external DigiD plug-in to fill in your personal information (optional)."
 
         return label
     }()
@@ -122,10 +92,8 @@ final class TransactionNotificationTableViewCell: UITableViewCell {
 
         configureSeparatorView()
 
-        stackView.addArrangedSubview(notificationImageView)
-        stackView.addArrangedSubview(notificationLabel)
-        stackView.addArrangedSubview(notificationSublabel)
-        stackView.addArrangedSubview(disclosureImageView)
+        stackView.addArrangedSubview(digiDButton)
+        stackView.addArrangedSubview(descriptionLabel)
     }
 
     private func configureSeparatorView() {
@@ -138,11 +106,9 @@ final class TransactionNotificationTableViewCell: UITableViewCell {
         separatorView.heightAnchor.constraint(equalToConstant: 1).isActive = true
     }
 
-    func configure(withType type: TransactionNotificationType, andText text: String) {
+    // MARK: - Selectors
 
-        notificationImageView.image = type.image
-        backgroundColor = type.color
-        notificationLabel.text = text
-        notificationSublabel.text = "See details"
+    @objc private func digiDButtonTapped(_ sender: UIButton) {
+        // ...
     }
 }

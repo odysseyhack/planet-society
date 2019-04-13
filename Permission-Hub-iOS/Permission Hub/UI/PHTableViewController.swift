@@ -27,8 +27,11 @@ enum PHTableViewViewCellType {
         text: String)
     case warning(text: String)
     case description(date: Date, title: String, description: String)
+    case plugin
     case transactionItem(item: TransactionItem)
-    case form
+    case selectionDisclosure(text: String)
+    case selection(options: [String])
+    case form(placeholder: String)
 }
 
 protocol PHTableViewControllerDelegate: class {
@@ -48,10 +51,13 @@ class PHTableViewController: UIViewController {
         tableView.rowHeight = UITableView.automaticDimension
         tableView.estimatedRowHeight = 66
         tableView.separatorStyle = .none
-        tableView.allowsMultipleSelection = true
 
         tableView.dataSource = self
         tableView.delegate = self
+
+        tableView.register(
+            UITableViewCell.self,
+            forCellReuseIdentifier: String(describing: UITableViewCell.self))
 
         tableView.register(
             TransactionTableViewCell.self,
@@ -60,6 +66,10 @@ class PHTableViewController: UIViewController {
         tableView.register(
             TransactionDescriptionTableViewCell.self,
             forCellReuseIdentifier: String(describing: TransactionDescriptionTableViewCell.self))
+
+        tableView.register(
+            TransactionPluginTableViewCell.self,
+            forCellReuseIdentifier: String(describing: TransactionPluginTableViewCell.self))
 
         tableView.register(
             TransactionNotificationTableViewCell.self,
@@ -80,10 +90,15 @@ class PHTableViewController: UIViewController {
 
     // MARK: - Initialization
 
-    init(items: [PHTableViewViewCellType]) {
+    init(
+        title: String? = nil,
+        items: [PHTableViewViewCellType]) {
+
         self.items = items
 
         super.init(nibName: nil, bundle: nil)
+
+        self.title = title
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -98,8 +113,25 @@ class PHTableViewController: UIViewController {
         view.backgroundColor = PHColors.lightGray
 
         // configure navigation bar
+        configureNavigationBar()
+        configureTableView()
+    }
+
+    // MARK: - Configuration
+
+    private func configureNavigationBar() {
+
+        navigationItem.title = title
         navigationController?.navigationBar.tintColor = PHColors.greyishBrown
         navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
+
+        navigationController?.navigationBar.titleTextAttributes = [
+            .font: PHFonts.wesBold(ofSize: 17),
+            .foregroundColor: PHColors.greyishBrown
+        ]
+    }
+
+    private func configureTableView() {
 
         view.addSubview(tableView)
 
@@ -167,13 +199,39 @@ extension PHTableViewController: UITableViewDataSource {
 
             return cell
 
-        case .form:
+        case .plugin:
+            let cell = tableView.dequeueReusableCell(
+                withIdentifier: String(describing: TransactionPluginTableViewCell.self),
+                for: indexPath) as! TransactionPluginTableViewCell
+
+            return cell
+
+        case .selectionDisclosure(let text):
+            let cell = tableView.dequeueReusableCell(
+                withIdentifier: String(describing: UITableViewCell.self),
+                for: indexPath)
+
+            cell.textLabel?.font = PHFonts.regular(ofSize: 14)
+            cell.textLabel?.textColor = PHColors.greyishBrown
+            cell.textLabel?.text = text
+            cell.accessoryType = .disclosureIndicator
+
+            return cell
+
+        case .selection(let options):
+            let cell = tableView.dequeueReusableCell(
+                withIdentifier: String(describing: UITableViewCell.self),
+                for: indexPath)
+
+            return cell
+
+        case .form(let placeholder):
 
             let cell = tableView.dequeueReusableCell(
                 withIdentifier: String(describing: FormTextInputCell.self),
                 for: indexPath) as! FormTextInputCell
 
-            cell.configure(withPlaceholder: "text") { text in
+            cell.configure(withPlaceholder: placeholder) { text in
                 print(text)
             }
 
@@ -190,18 +248,6 @@ extension PHTableViewController: UITableViewDelegate {
         switch items[indexPath.row] {
         case .transactionItem:
             tableView.cellForRow(at: indexPath)?.isSelected = true
-
-        default:
-            break
-        }
-    }
-
-    func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
-        delegate?.didDeselect(item: items[indexPath.row])
-
-        switch items[indexPath.row] {
-        case .transactionItem:
-            tableView.cellForRow(at: indexPath)?.isSelected = false
 
         default:
             break
