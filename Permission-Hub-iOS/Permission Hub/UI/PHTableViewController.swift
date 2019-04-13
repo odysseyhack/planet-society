@@ -281,8 +281,8 @@ extension PHTableViewController: UITableViewDataSource {
             .form(placeholder: "Last name", text: "Huizinga"),
             .form(placeholder: "Date of birth", text: "04-11-1964"),
             .form(placeholder: "Address", text: "Weesperplein 43-2, Amsterdam"),
-            .form(placeholder: "Email", text: "cdriesprong@gmail.com"),
-            .form(placeholder: "BSN number", text: "123023543")
+            .form(placeholder: "Email", text: "gerard.huizinga@gmail.com"),
+            .form(placeholder: "BSN number", text: "264036232")
         ]
 
         tableView.reloadData()
