@@ -1,6 +1,6 @@
 .PHONY: all clean-generated graphql-generate test notification-server requester responder
 
-all: graphql-generate binaries
+all: graphql-generate test binaries
 
 graphql-generate: clean-generated
 	@gqlgen
