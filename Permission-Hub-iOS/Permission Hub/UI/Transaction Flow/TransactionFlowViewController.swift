@@ -71,9 +71,8 @@ final class TransactionFlowViewController: UIViewController {
 
         button.titleLabel?.font = PHFonts.regular()
 
-        button.setTitleColor(PHColors.topaz.withAlphaComponent(0.5), for: .disabled)
         button.setTitleColor(.white, for: .normal)
-        button.backgroundColor = .white
+        button.backgroundColor = PHColors.topaz
 
         button.layer.cornerRadius = 5
         button.layer.borderWidth = 1
@@ -85,9 +84,6 @@ final class TransactionFlowViewController: UIViewController {
             self,
             action: #selector(continueButtonTapped),
             for: .touchUpInside)
-
-        // disabled by default
-//        button.isEnabled = false
 
         return button
     }()
@@ -148,7 +144,7 @@ final class TransactionFlowViewController: UIViewController {
         view.addSubview(bottomStackView)
         bottomStackView.heightAnchor.constraint(equalToConstant: 75).isActive = true
         bottomStackView.topAnchor.constraint(equalTo: pageViewController.view.bottomAnchor).isActive = true
-        bottomStackView.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor).isActive = true
+        bottomStackView.rightAnchor.constraint(equalTo: pageViewController.view.rightAnchor, constant: -20).isActive = true
         bottomStackView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor).isActive = true
 
         bottomStackView.addArrangedSubview(declineButton)
@@ -164,7 +160,7 @@ final class TransactionFlowViewController: UIViewController {
         pageViewController.setViewControllers(
             [viewController],
             direction: .forward,
-            animated: false)
+            animated: true)
 
         // increment for next step
         currentStepIndex += 1
