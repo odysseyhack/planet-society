@@ -9,7 +9,7 @@
 import UIKit
 
 struct TransactionTableViewCellViewModel {
-    let image: UIImage
+    let image: UIImage?
     let title: String
     let subtitle: String
 }
@@ -156,18 +156,20 @@ final class TransactionTableViewCell: UITableViewCell {
         separatorView.rightAnchor.constraint(equalTo: rightAnchor).isActive = true
         separatorView.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
         separatorView.heightAnchor.constraint(equalToConstant: 1).isActive = true
-        
-        stackView.addArrangedSubview(itemImageView)
+
         stackView.addArrangedSubview(verticalStackView)
         verticalStackView.addArrangedSubview(itemTitleLabel)
         verticalStackView.addArrangedSubview(itemSubtitleLabel)
-        stackView.addArrangedSubview(infoButton)
         stackView.addArrangedSubview(selectionButton)
     }
 
     func configure(withViewModel viewModel: TransactionTableViewCellViewModel) {
 
-        itemImageView.image = UIImage(named: "personal_details")
+        if let image = itemImageView.image {
+            stackView.addArrangedSubview(itemImageView)
+            itemImageView.image = image
+        }
+
         itemTitleLabel.text = viewModel.title
         itemSubtitleLabel.text = viewModel.subtitle
     }
