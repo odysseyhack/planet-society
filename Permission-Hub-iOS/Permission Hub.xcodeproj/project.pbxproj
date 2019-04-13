@@ -9,6 +9,11 @@
 /* Begin PBXBuildFile section */
 		414681722262635C0094311A /* TransactionFlowStep.swift in Sources */ = {isa = PBXBuildFile; fileRef = 414681712262635C0094311A /* TransactionFlowStep.swift */; };
 		41468174226264430094311A /* TransactionFlowViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41468173226264430094311A /* TransactionFlowViewController.swift */; };
+		4146818B22626E8B0094311A /* WesFY-Regular_S.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4146818622626E8A0094311A /* WesFY-Regular_S.ttf */; };
+		4146818C22626E8B0094311A /* WesFY-Bold_S.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4146818722626E8A0094311A /* WesFY-Bold_S.ttf */; };
+		4146818D22626E8B0094311A /* WesFY-Thin_S.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4146818822626E8A0094311A /* WesFY-Thin_S.ttf */; };
+		4146818E22626E8B0094311A /* wesfy.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4146818922626E8B0094311A /* wesfy.ttf */; };
+		4146818F22626E8B0094311A /* WesFY-Medium_S.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4146818A22626E8B0094311A /* WesFY-Medium_S.ttf */; };
 		414760F7226089BD00030BE6 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 414760F6226089BD00030BE6 /* AppDelegate.swift */; };
 		414760F9226089BD00030BE6 /* TransactionWalletViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 414760F8226089BD00030BE6 /* TransactionWalletViewController.swift */; };
 		414760FE226089C000030BE6 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 414760FD226089C000030BE6 /* Assets.xcassets */; };
@@ -48,6 +53,11 @@
 /* Begin PBXFileReference section */
 		414681712262635C0094311A /* TransactionFlowStep.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionFlowStep.swift; sourceTree = "<group>"; };
 		41468173226264430094311A /* TransactionFlowViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionFlowViewController.swift; sourceTree = "<group>"; };
+		4146818622626E8A0094311A /* WesFY-Regular_S.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "WesFY-Regular_S.ttf"; path = "Permission Hub/Resources/Fonts/WesFY-Regular_S.ttf"; sourceTree = SOURCE_ROOT; };
+		4146818722626E8A0094311A /* WesFY-Bold_S.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "WesFY-Bold_S.ttf"; path = "Permission Hub/Resources/Fonts/WesFY-Bold_S.ttf"; sourceTree = SOURCE_ROOT; };
+		4146818822626E8A0094311A /* WesFY-Thin_S.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "WesFY-Thin_S.ttf"; path = "Permission Hub/Resources/Fonts/WesFY-Thin_S.ttf"; sourceTree = SOURCE_ROOT; };
+		4146818922626E8B0094311A /* wesfy.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = wesfy.ttf; path = "Permission Hub/Resources/Fonts/wesfy.ttf"; sourceTree = SOURCE_ROOT; };
+		4146818A22626E8B0094311A /* WesFY-Medium_S.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "WesFY-Medium_S.ttf"; path = "Permission Hub/Resources/Fonts/WesFY-Medium_S.ttf"; sourceTree = SOURCE_ROOT; };
 		414760F3226089BD00030BE6 /* Permission Hub.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Permission Hub.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		414760F6226089BD00030BE6 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		414760F8226089BD00030BE6 /* TransactionWalletViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionWalletViewController.swift; sourceTree = "<group>"; };
@@ -98,6 +108,27 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		4146817F22626E4B0094311A /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				4146818522626E6A0094311A /* Fonts */,
+			);
+			name = Resources;
+			path = "New Group";
+			sourceTree = "<group>";
+		};
+		4146818522626E6A0094311A /* Fonts */ = {
+			isa = PBXGroup;
+			children = (
+				4146818722626E8A0094311A /* WesFY-Bold_S.ttf */,
+				4146818A22626E8B0094311A /* WesFY-Medium_S.ttf */,
+				4146818622626E8A0094311A /* WesFY-Regular_S.ttf */,
+				4146818822626E8A0094311A /* WesFY-Thin_S.ttf */,
+				4146818922626E8B0094311A /* wesfy.ttf */,
+			);
+			path = Fonts;
+			sourceTree = "<group>";
+		};
 		414760EA226089BD00030BE6 = {
 			isa = PBXGroup;
 			children = (
@@ -126,6 +157,7 @@
 				4147612D2260B65800030BE6 /* Models */,
 				414761262260A64700030BE6 /* UI */,
 				4147612A2260ACA800030BE6 /* Networking */,
+				4146817F22626E4B0094311A /* Resources */,
 				414760FD226089C000030BE6 /* Assets.xcassets */,
 				414760FF226089C000030BE6 /* LaunchScreen.storyboard */,
 				41476102226089C000030BE6 /* Info.plist */,
@@ -313,8 +345,13 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4146818B22626E8B0094311A /* WesFY-Regular_S.ttf in Resources */,
 				41476101226089C000030BE6 /* LaunchScreen.storyboard in Resources */,
+				4146818C22626E8B0094311A /* WesFY-Bold_S.ttf in Resources */,
 				414760FE226089C000030BE6 /* Assets.xcassets in Resources */,
+				4146818D22626E8B0094311A /* WesFY-Thin_S.ttf in Resources */,
+				4146818E22626E8B0094311A /* wesfy.ttf in Resources */,
+				4146818F22626E8B0094311A /* WesFY-Medium_S.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
