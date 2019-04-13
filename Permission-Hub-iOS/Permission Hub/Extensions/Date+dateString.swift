@@ -11,7 +11,7 @@ import Foundation
 extension Date {
 
     func dateAndTimeString(ofStyle style: DateFormatter.Style = .short) -> String {
-        return "\(dateString(ofStyle: style)) \(timeString(ofStyle: style))"
+        return "\(dateString(ofStyle: style)), \(timeString(ofStyle: style))"
     }
 
     func dateString(ofStyle style: DateFormatter.Style = .short) -> String {
