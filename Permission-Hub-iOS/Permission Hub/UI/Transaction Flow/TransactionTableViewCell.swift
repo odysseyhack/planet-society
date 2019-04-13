@@ -9,7 +9,7 @@
 import UIKit
 
 struct TransactionTableViewCellViewModel {
-    let image: UIImage
+    let image: UIImage?
     let title: String
     let subtitle: String
 }
@@ -48,7 +48,7 @@ final class TransactionTableViewCell: UITableViewCell {
     private let itemTitleLabel: UILabel = {
 
         let label = UILabel()
-        label.font = PHFonts.regular(ofSize: 12)
+        label.font = PHFonts.regular(ofSize: 14)
         label.textColor = PHColors.greyishBrown
 
         return label
@@ -57,7 +57,7 @@ final class TransactionTableViewCell: UITableViewCell {
     private let itemSubtitleLabel: UILabel = {
 
         let label = UILabel()
-        label.font = PHFonts.regular(ofSize: 11)
+        label.font = PHFonts.regular()
         label.textColor = PHColors.grey
 
         return label
@@ -146,7 +146,7 @@ final class TransactionTableViewCell: UITableViewCell {
         addSubview(stackView)
         addSubview(separatorView)
 
-        let margin: CGFloat = 15
+        let margin: CGFloat = 20
         stackView.topAnchor.constraint(equalTo: topAnchor, constant: margin).isActive = true
         stackView.leftAnchor.constraint(equalTo: leftAnchor, constant: margin).isActive = true
         stackView.rightAnchor.constraint(equalTo: rightAnchor, constant: -margin).isActive = true
@@ -156,18 +156,20 @@ final class TransactionTableViewCell: UITableViewCell {
         separatorView.rightAnchor.constraint(equalTo: rightAnchor).isActive = true
         separatorView.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
         separatorView.heightAnchor.constraint(equalToConstant: 1).isActive = true
-        
-        stackView.addArrangedSubview(itemImageView)
+
         stackView.addArrangedSubview(verticalStackView)
         verticalStackView.addArrangedSubview(itemTitleLabel)
         verticalStackView.addArrangedSubview(itemSubtitleLabel)
-        stackView.addArrangedSubview(infoButton)
         stackView.addArrangedSubview(selectionButton)
     }
 
     func configure(withViewModel viewModel: TransactionTableViewCellViewModel) {
 
-        itemImageView.image = UIImage(named: "personal_details")
+        if let image = itemImageView.image {
+            stackView.addArrangedSubview(itemImageView)
+            itemImageView.image = image
+        }
+
         itemTitleLabel.text = viewModel.title
         itemSubtitleLabel.text = viewModel.subtitle
     }

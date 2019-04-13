@@ -18,10 +18,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         window = UIWindow(frame: UIScreen.main.bounds)
 
-        // set permission flow as main view controller
-        let steps = [TransactionFlowStep(), TransactionFlowStep()]
-        let transactionFlowContainerViewController = TransactionFlowContainerViewController(steps: steps)
-        let navigationController = UINavigationController(rootViewController: transactionFlowContainerViewController)
+        // set permission wallet as main view controller
+        let transactionWalletViewController = TransactionWalletViewController(items: [PHTableViewViewCellType]())
+        let navigationController = UINavigationController(rootViewController: transactionWalletViewController)
         window?.rootViewController = navigationController
         window?.makeKeyAndVisible()
 

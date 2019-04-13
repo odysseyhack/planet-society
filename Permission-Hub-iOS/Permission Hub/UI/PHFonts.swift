@@ -10,11 +10,11 @@ import UIKit
 
 enum PHFonts {
 
-    static func bold(ofSize size: CGFloat = 12) -> UIFont {
+    static func bold(ofSize size: CGFloat = 13) -> UIFont {
         return UIFont(name: "Helvetica-Bold", size: size)!
     }
 
-    static func regular(ofSize size: CGFloat = 12) -> UIFont {
+    static func regular(ofSize size: CGFloat = 13) -> UIFont {
         return UIFont(name: "Helvetica", size: size)!
     }
 }

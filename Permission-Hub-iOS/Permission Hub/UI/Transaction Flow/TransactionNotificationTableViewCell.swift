@@ -68,7 +68,7 @@ final class TransactionNotificationTableViewCell: UITableViewCell {
     private lazy var notificationLabel: UILabel = {
 
         let label = UILabel()
-        label.font = PHFonts.bold(ofSize: 10)
+        label.font = PHFonts.bold()
         label.textColor = .white
         label.textAlignment = .left
 
@@ -106,7 +106,7 @@ final class TransactionNotificationTableViewCell: UITableViewCell {
         addSubview(stackView)
         addSubview(separatorView)
 
-        let margin: CGFloat = 10
+        let margin: CGFloat = 15
         stackView.topAnchor.constraint(equalTo: topAnchor, constant: margin).isActive = true
         stackView.leftAnchor.constraint(equalTo: leftAnchor, constant: margin).isActive = true
         stackView.rightAnchor.constraint(equalTo: rightAnchor, constant: -margin).isActive = true
