@@ -102,9 +102,24 @@ class PHTableViewController: UIViewController {
         view.backgroundColor = PHColors.lightGray
 
         // configure navigation bar
+        configureNavigationBar()
+        configureTableView()
+    }
+
+    // MARK: - Configuration
+
+    private func configureNavigationBar() {
+
         navigationItem.title = title
         navigationController?.navigationBar.tintColor = PHColors.greyishBrown
         navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
+
+        navigationController?.navigationBar.titleTextAttributes = [
+            .font: PHFonts.wesBold(ofSize: 17)
+        ]
+    }
+
+    private func configureTableView() {
 
         view.addSubview(tableView)
 
@@ -195,18 +210,6 @@ extension PHTableViewController: UITableViewDelegate {
         switch items[indexPath.row] {
         case .transactionItem:
             tableView.cellForRow(at: indexPath)?.isSelected = true
-
-        default:
-            break
-        }
-    }
-
-    func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
-        delegate?.didDeselect(item: items[indexPath.row])
-
-        switch items[indexPath.row] {
-        case .transactionItem:
-            tableView.cellForRow(at: indexPath)?.isSelected = false
 
         default:
             break
