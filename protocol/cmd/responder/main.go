@@ -123,7 +123,12 @@ func getMetadata(r *http.Request) context.Context {
 		TransactionID:      transactionID,
 		ResponderSignature: sign(r.Header.Get("requester")),
 	}
+	checkPermissionType(r, permission)
+	utils.AddPermission(permission)
+	return ctx
+}
 
+func checkPermissionType(r *http.Request, permission *models.Permission) {
 	if r.Header.Get("permission-type") == "digital telecommunication agreement" {
 		permission.LegalReliationships = models.LegalReliationships{
 			MyRights:       []string{"use telecommunication services until agreement expires"},
@@ -132,10 +137,6 @@ func getMetadata(r *http.Request) context.Context {
 			TheirLiability: []string{"liable for the consequences of the agreement termination"},
 		}
 	}
-
-	utils.AddPermission(permission)
-
-	return ctx
 }
 
 func sign(data string) string {
