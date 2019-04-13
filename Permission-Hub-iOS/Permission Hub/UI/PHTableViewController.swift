@@ -80,10 +80,15 @@ class PHTableViewController: UIViewController {
 
     // MARK: - Initialization
 
-    init(items: [PHTableViewViewCellType]) {
+    init(
+        title: String,
+        items: [PHTableViewViewCellType]) {
+
         self.items = items
 
         super.init(nibName: nil, bundle: nil)
+
+        self.title = title
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -98,6 +103,7 @@ class PHTableViewController: UIViewController {
         view.backgroundColor = PHColors.lightGray
 
         // configure navigation bar
+        navigationItem.title = title
         navigationController?.navigationBar.tintColor = PHColors.greyishBrown
         navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
 
