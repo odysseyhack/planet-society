@@ -52,9 +52,9 @@ final class TransactionWalletViewController: PHTableViewController {
 
     // MARK: - Helpers
 
-    private func presentTransactionOverviewViewController(transaction: TransactionNotification) {
+    private func presentTransactionFlowViewController(transaction: TransactionNotification) {
 
-        let viewController = TransactionOverViewViewController(transaction: transaction)
+        let viewController = TransactionFlowViewController(transaction: TransactionNotification)
         let navigationController = UINavigationController(rootViewController: viewController)
         present(navigationController, animated: true)
     }
