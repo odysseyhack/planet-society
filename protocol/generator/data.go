@@ -1,4 +1,4 @@
-package main
+package generator
 
 var names = []string{
 	"Perct",
