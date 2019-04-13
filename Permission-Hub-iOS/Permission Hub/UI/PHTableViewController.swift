@@ -31,7 +31,7 @@ enum PHTableViewViewCellType {
     case transactionItem(item: TransactionItem)
     case selectionDisclosure(text: String)
     case selection(options: [String])
-    case form(placeholder: String, text: String?)
+    case form(placeholder: String, text: String?, keyboardType: UIKeyboardType)
 }
 
 protocol PHTableViewControllerDelegate: class {
@@ -260,7 +260,7 @@ extension PHTableViewController: UITableViewDataSource {
 
             return cell
 
-        case .form(let placeholder, let text):
+        case .form(let placeholder, let text, let keyboardType):
 
             let cell = tableView.dequeueReusableCell(
                 withIdentifier: String(describing: FormTextInputCell.self),
@@ -268,7 +268,8 @@ extension PHTableViewController: UITableViewDataSource {
 
             cell.configure(
                 withPlaceholder: placeholder,
-                andText: text) { text in
+                andText: text,
+                andKeyboardType: keyboardType) { text in
                     print(text)
             }
 
@@ -292,12 +293,30 @@ extension PHTableViewController: UITableViewDataSource {
             .plugin(
                 image: UIImage(named: "digid_button"),
                 text: "Use the external DigiD plug-in to fill in your personal information (optional)."),
-            .form(placeholder: "First name", text: "Gerard"),
-            .form(placeholder: "Last name", text: "Huizinga"),
-            .form(placeholder: "Date of birth", text: "04-11-1964"),
-            .form(placeholder: "Address", text: "Weesperplein 43-2, Amsterdam"),
-            .form(placeholder: "Email", text: "gerard.huizinga@gmail.com"),
-            .form(placeholder: "BSN number", text: "264036232")
+            .form(
+                placeholder: "First name",
+                text: "Gerard",
+                keyboardType: .default),
+            .form(
+                placeholder: "Last name",
+                text: "Huizinga",
+                keyboardType: .default),
+            .form(
+                placeholder: "Date of birth",
+                text: "04-11-1964",
+                keyboardType: .numbersAndPunctuation),
+            .form(
+                placeholder: "Address",
+                text: "Weesperplein 43-2, Amsterdam",
+                keyboardType: .default),
+            .form(
+                placeholder: "Email",
+                text: "gerard.huizinga@gmail.com",
+                keyboardType: .emailAddress),
+            .form(
+                placeholder: "BSN number",
+                text: "264036232",
+                keyboardType: .numbersAndPunctuation)
         ]
 
         tableView.reloadData()
