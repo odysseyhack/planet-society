@@ -115,7 +115,8 @@ class PHTableViewController: UIViewController {
         navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
 
         navigationController?.navigationBar.titleTextAttributes = [
-            .font: PHFonts.wesBold(ofSize: 17)
+            .font: PHFonts.wesBold(ofSize: 17),
+            .foregroundColor: PHColors.greyishBrown
         ]
     }
 
