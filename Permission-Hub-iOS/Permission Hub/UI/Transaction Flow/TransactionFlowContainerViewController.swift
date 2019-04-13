@@ -66,17 +66,22 @@ final class TransactionFlowContainerViewController: UIPageViewController {
 
     // MARK: - Networking
 
-    private func pollForNotifications() {
+    @objc private func pollForNotifications() {
 
         try! service.getNotifications { result in
 
             switch result {
-            case .success(let transaction):
-                self.presentTransactionOverviewViewController(transaction: transaction)
+            case .success(let transactionOrNil):
+                if let transaction = transactionOrNil {
+                    self.presentTransactionOverviewViewController(transaction: transaction)
+                }
             case .failure(let error):
                 print(error)
             }
         }
+
+        // poll endpoint every second
+        perform(#selector(pollForNotifications), with: nil, afterDelay: 1)
     }
 
     // MARK: - Helpers
@@ -91,7 +96,9 @@ final class TransactionFlowContainerViewController: UIPageViewController {
         items.append(.notification(
             type: .warning,
             text: "Permission warning!"))
-        items.append(.description(text: transaction.reason))
+        items.append(.description(
+            title: transaction.title,
+            description: transaction.description))
 
         transaction.items.forEach {
             items.append(.transactionItem(item: $0))
