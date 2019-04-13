@@ -21,7 +21,8 @@ struct TransactionItem: Decodable {
 struct TransactionNotification: Decodable {
     let transactionID: String
     let items: [TransactionItem]
-    let reason: String
+    let title: String
+    let description: String
     let verification: [String]
     let date: Date
     let requesterName: String
@@ -30,7 +31,8 @@ struct TransactionNotification: Decodable {
     private enum CodingKeys: String, CodingKey {
         case transactionID
         case items = "item"
-        case reason
+        case title
+        case description
         case verification
         case date
         case requesterName
