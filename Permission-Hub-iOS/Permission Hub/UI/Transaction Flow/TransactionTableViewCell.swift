@@ -48,7 +48,7 @@ final class TransactionTableViewCell: UITableViewCell {
     private let itemTitleLabel: UILabel = {
 
         let label = UILabel()
-        label.font = PHFonts.regular()
+        label.font = PHFonts.regular(ofSize: 14)
         label.textColor = PHColors.greyishBrown
 
         return label
@@ -57,7 +57,7 @@ final class TransactionTableViewCell: UITableViewCell {
     private let itemSubtitleLabel: UILabel = {
 
         let label = UILabel()
-        label.font = PHFonts.regular(ofSize: 11)
+        label.font = PHFonts.regular()
         label.textColor = PHColors.grey
 
         return label
@@ -146,7 +146,7 @@ final class TransactionTableViewCell: UITableViewCell {
         addSubview(stackView)
         addSubview(separatorView)
 
-        let margin: CGFloat = 15
+        let margin: CGFloat = 20
         stackView.topAnchor.constraint(equalTo: topAnchor, constant: margin).isActive = true
         stackView.leftAnchor.constraint(equalTo: leftAnchor, constant: margin).isActive = true
         stackView.rightAnchor.constraint(equalTo: rightAnchor, constant: -margin).isActive = true
