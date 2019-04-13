@@ -790,6 +790,22 @@ func (d *Database) ContactDel(id string) (removedID string, err error) {
 	return id, err
 }
 
+func (d *Database) permissionInputToPermission(permission, added *models.Permission) {
+	added.TransactionID = permission.TransactionID
+	added.Expiration = permission.Expiration
+	added.Description = permission.Description
+	added.Title = permission.Title
+	added.RequesterPublicKey = permission.RequesterPublicKey
+	added.RequesterSignatureKey = permission.RequesterSignatureKey
+	added.RequesterSignature = permission.RequesterSignature
+	added.ResponderSignature = permission.ResponderSignature
+	added.PermissionNodes = permission.PermissionNodes
+	added.Revokable = permission.Revokable
+	added.ID = d.newID()
+	added.LawApplying = permission.LawApplying
+	added.LegalReliationships = permission.LegalReliationships
+}
+
 func (d *Database) PermissionAdd(permission models.Permission) (added models.Permission, err error) {
 	err = d.db.Update(func(tx *bolt.Tx) error {
 		permissionBucket := tx.Bucket([]byte(bucketPermissionsGranted))
@@ -797,21 +813,7 @@ func (d *Database) PermissionAdd(permission models.Permission) (added models.Per
 			return ErrBucketNotFound(bucketIdentities)
 		}
 
-		added = models.Permission{
-			TransactionID:         permission.TransactionID,
-			Expiration:            permission.Expiration,
-			Description:           permission.Description,
-			Title:                 permission.Title,
-			RequesterPublicKey:    permission.RequesterPublicKey,
-			RequesterSignatureKey: permission.RequesterSignatureKey,
-			RequesterSignature:    permission.RequesterSignature,
-			ResponderSignature:    permission.ResponderSignature,
-			PermissionNodes:       permission.PermissionNodes,
-			Revokable:             permission.Revokable,
-			ID:                    d.newID(),
-			LawApplying:           permission.LawApplying,
-			LegalReliationships:   permission.LegalReliationships,
-		}
+		d.permissionInputToPermission(&permission, &added)
 
 		if err := d.put(permissionBucket, []byte(added.ID), &added); err != nil {
 			return err

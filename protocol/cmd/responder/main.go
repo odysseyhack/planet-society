@@ -100,6 +100,17 @@ func Middleware(db *database.Database) func(http.Handler) http.Handler {
 	}
 }
 
+func permissionFromHeader(r *http.Request) *models.Permission {
+	return &models.Permission{
+		Title:              r.Header.Get("title"),
+		Description:        r.Header.Get("description"),
+		RequesterSignature: r.Header.Get("signature"),
+		ResponderSignature: sign(r.Header.Get("requester")),
+		Expiration:         time.Now().Add(time.Hour * 120).Format(time.RFC3339),
+		LawApplying:        "European Union",
+	}
+}
+
 func getMetadata(r *http.Request) context.Context {
 	var ctx = r.Context()
 	transactionID := r.Header.Get("TransactionID")
@@ -110,19 +121,12 @@ func getMetadata(r *http.Request) context.Context {
 		tid := cryptography.RandomKey32()
 		ctx = context.WithValue(ctx, "TransactionID", tid.String())
 	}
-
 	k, _ := cryptography.Key32FromString(r.Header.Get("requester"))
+	permission := permissionFromHeader(r)
 
-	permission := &models.Permission{
-		Title:              r.Header.Get("title"),
-		Description:        r.Header.Get("description"),
-		Expiration:         time.Now().Add(time.Hour * 120).Format(time.RFC3339),
-		RequesterSignature: r.Header.Get("signature"),
-		LawApplying:        "European Union",
-		RequesterPublicKey: models.Key32{Key: k},
-		TransactionID:      transactionID,
-		ResponderSignature: sign(r.Header.Get("requester")),
-	}
+	permission.RequesterPublicKey = models.Key32{Key: k}
+	permission.TransactionID = transactionID
+
 	checkPermissionType(r, permission)
 	utils.AddPermission(permission)
 	return ctx
