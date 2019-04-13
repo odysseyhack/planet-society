@@ -50,6 +50,8 @@ final class TransactionDescriptionTableViewCell: UITableViewCell {
 
     private func configure() {
 
+        selectionStyle = .none
+
         addSubview(descriptionLabel)
         addSubview(separatorView)
 

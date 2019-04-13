@@ -21,7 +21,7 @@ enum TransactionVerificationStatus {
     }
 }
 
-enum TransactionOverviewViewCellType {
+enum PHTableViewViewCellType {
     case notification(
         type: TransactionNotificationType,
         text: String)
@@ -29,7 +29,7 @@ enum TransactionOverviewViewCellType {
     case transactionItem(item: TransactionItem)
 }
 
-final class TransactionOverviewViewController: UIViewController {
+final class PHTableViewController: UIViewController {
 
     // MARK: - Private properties
 
@@ -40,10 +40,11 @@ final class TransactionOverviewViewController: UIViewController {
 
         tableView.rowHeight = UITableView.automaticDimension
         tableView.estimatedRowHeight = 66
-        tableView.allowsSelection = false
         tableView.separatorStyle = .none
+        tableView.allowsMultipleSelection = true
 
         tableView.dataSource = self
+        tableView.delegate = self
 
         tableView.register(
             TransactionTableViewCell.self,
@@ -73,28 +74,12 @@ final class TransactionOverviewViewController: UIViewController {
         return stackView
     }()
 
-    private let transaction: TransactionNotification
-
-    private var cells: [TransactionOverviewViewCellType] {
-
-        var cells = [TransactionOverviewViewCellType]()
-
-        cells.append(.notification(
-            type: .warning,
-            text: "Permission warning!"))
-        cells.append(.description(text: transaction.reason))
-
-        transaction.items.forEach {
-            cells.append(.transactionItem(item: $0))
-        }
-
-        return cells
-    }
+    private var items: [PHTableViewViewCellType]
 
     // MARK: - Initialization
 
-    init(transaction: TransactionNotification) {
-        self.transaction = transaction
+    init(items: [PHTableViewViewCellType]) {
+        self.items = items
 
         super.init(nibName: nil, bundle: nil)
     }
@@ -119,7 +104,7 @@ final class TransactionOverviewViewController: UIViewController {
         bottomStackView.heightAnchor.constraint(equalToConstant: 75).isActive = true
         bottomStackView.topAnchor.constraint(equalTo: tableView.bottomAnchor).isActive = true
         bottomStackView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        bottomStackView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
+        bottomStackView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor).isActive = true
 
         for i in 0..<2 {
 
@@ -147,15 +132,15 @@ final class TransactionOverviewViewController: UIViewController {
     }
 }
 
-extension TransactionOverviewViewController: UITableViewDataSource {
+extension PHTableViewController: UITableViewDataSource {
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return cells.count
+        return items.count
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 
-        switch cells[indexPath.row] {
+        switch items[indexPath.row] {
         case .notification(let type, let text):
 
             let cell = tableView.dequeueReusableCell(
@@ -189,6 +174,35 @@ extension TransactionOverviewViewController: UITableViewDataSource {
             cell.configure(withViewModel: viewModel)
 
             return cell
+        }
+    }
+}
+
+extension PHTableViewController: UITableViewDelegate {
+
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+
+        switch items[indexPath.row] {
+        case .notification:
+            let viewController = UITableViewController()
+            navigationController?.pushViewController(viewController, animated: true)
+
+        case .transactionItem:
+            tableView.cellForRow(at: indexPath)?.isSelected = true
+
+        default:
+            break
+        }
+    }
+
+    func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
+
+        switch items[indexPath.row] {
+        case .transactionItem:
+            tableView.cellForRow(at: indexPath)?.isSelected = false
+
+        default:
+            break
         }
     }
 }

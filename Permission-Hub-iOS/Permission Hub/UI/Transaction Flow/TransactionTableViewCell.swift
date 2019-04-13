@@ -24,7 +24,6 @@ final class TransactionTableViewCell: UITableViewCell {
         stackView.translatesAutoresizingMaskIntoConstraints = false
 
         stackView.axis = .horizontal
-        stackView.spacing = 20
         stackView.alignment = .center
 
         stackView.backgroundColor = .red
@@ -37,7 +36,9 @@ final class TransactionTableViewCell: UITableViewCell {
         let imageView = UIImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
 
-        let dimension: CGFloat = 30
+        imageView.contentMode = .center
+
+        let dimension: CGFloat = 44
         imageView.widthAnchor.constraint(equalToConstant: dimension).isActive = true
         imageView.heightAnchor.constraint(equalToConstant: dimension).isActive = true
 
@@ -79,21 +80,31 @@ final class TransactionTableViewCell: UITableViewCell {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
 
+        button.widthAnchor.constraint(equalToConstant: 44).isActive = true
+        button.heightAnchor.constraint(equalToConstant: 44).isActive = true
+
         let image = UIImage(named: "info_button")
         button.setImage(image, for: .normal)
 
         return button
     }()
 
-    private let checkmarkImageView: UIImageView = {
+    private let selectionButton: UIButton = {
 
-        let imageView = UIImageView()
-        imageView.translatesAutoresizingMaskIntoConstraints = false
+        let button = UIButton()
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.isUserInteractionEnabled = false
 
-        let image = UIImage(named: "checkmark")
-        imageView.image = image
+        button.widthAnchor.constraint(equalToConstant: 44).isActive = true
+        button.heightAnchor.constraint(equalToConstant: 44).isActive = true
 
-        return imageView
+        let unselectedImage = UIImage(named: "unselected")
+        button.setImage(unselectedImage, for: .normal)
+
+        let selectedImage = UIImage(named: "checkmark")
+        button.setImage(selectedImage, for: .selected)
+
+        return button
     }()
 
     private lazy var separatorView: UIView = {
@@ -105,6 +116,14 @@ final class TransactionTableViewCell: UITableViewCell {
 
         return view
     }()
+
+    // MARK: - Properties
+
+    override var isSelected: Bool {
+        didSet {
+            selectionButton.isSelected = isSelected
+        }
+    }
 
     // MARK: - Initialization
 
@@ -121,6 +140,8 @@ final class TransactionTableViewCell: UITableViewCell {
     // MARK: - Configuration
 
     private func configure() {
+
+        selectionStyle = .none
 
         addSubview(stackView)
         addSubview(separatorView)
@@ -141,11 +162,12 @@ final class TransactionTableViewCell: UITableViewCell {
         verticalStackView.addArrangedSubview(itemTitleLabel)
         verticalStackView.addArrangedSubview(itemSubtitleLabel)
         stackView.addArrangedSubview(infoButton)
-        stackView.addArrangedSubview(checkmarkImageView)
+        stackView.addArrangedSubview(selectionButton)
     }
 
     func configure(withViewModel viewModel: TransactionTableViewCellViewModel) {
 
+        itemImageView.image = UIImage(named: "personal_details")
         itemTitleLabel.text = viewModel.title
         itemSubtitleLabel.text = viewModel.subtitle
     }

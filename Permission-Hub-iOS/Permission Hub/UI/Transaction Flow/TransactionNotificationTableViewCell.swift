@@ -9,10 +9,12 @@
 import UIKit
 
 enum TransactionNotificationType {
-    case warning
+    case notification, warning
 
     var image: UIImage? {
         switch self {
+        case .notification:
+            return UIImage(named: "checkmark_small")
         case .warning:
             return UIImage(named: "warning")
         }
@@ -20,6 +22,8 @@ enum TransactionNotificationType {
 
     var color: UIColor {
         switch self {
+        case .notification:
+            return PHColors.topaz
         case .warning:
             return PHColors.red
         }
@@ -96,6 +100,8 @@ final class TransactionNotificationTableViewCell: UITableViewCell {
     // MARK: - Configuration
 
     private func configure() {
+
+        selectionStyle = .none
 
         addSubview(stackView)
         addSubview(separatorView)

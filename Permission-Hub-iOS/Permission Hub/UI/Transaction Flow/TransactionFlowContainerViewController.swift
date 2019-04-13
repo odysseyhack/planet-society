@@ -43,6 +43,10 @@ final class TransactionFlowContainerViewController: UIPageViewController {
 
         view.backgroundColor = PHColors.lightGray
 
+        // configure navigation bar
+        navigationController?.navigationBar.tintColor = PHColors.greyishBrown
+        navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
+
         // set initial viewcontroller
         let firstViewControllerOrNil = self.steps.map { $0.viewController }.first
         if let viewController = firstViewControllerOrNil {
@@ -79,7 +83,21 @@ final class TransactionFlowContainerViewController: UIPageViewController {
 
     private func presentTransactionOverviewViewController(transaction: TransactionNotification) {
 
-        let viewController = TransactionOverviewViewController(transaction: transaction)
+        // convert items
+        var items = [PHTableViewViewCellType]()
+        items.append(.notification(
+            type: .notification,
+            text: "Verified"))
+        items.append(.notification(
+            type: .warning,
+            text: "Permission warning!"))
+        items.append(.description(text: transaction.reason))
+
+        transaction.items.forEach {
+            items.append(.transactionItem(item: $0))
+        }
+
+        let viewController = PHTableViewController(items: items)
         navigationController?.pushViewController(viewController, animated: true)
     }
 }
