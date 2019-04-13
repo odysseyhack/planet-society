@@ -12,6 +12,17 @@ final class TransactionDescriptionTableViewCell: UITableViewCell {
 
     // MARK: - Private properties
 
+    private lazy var titleLabel: UILabel = {
+
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+
+        label.font = PHFonts.bold()
+        label.textColor = PHColors.greyishBrown
+
+        return label
+    }()
+
     private lazy var descriptionLabel: UILabel = {
 
         let label = UILabel()
@@ -52,13 +63,19 @@ final class TransactionDescriptionTableViewCell: UITableViewCell {
 
         selectionStyle = .none
 
+        addSubview(titleLabel)
         addSubview(descriptionLabel)
         addSubview(separatorView)
 
         let margin: CGFloat = 20
-        descriptionLabel.topAnchor.constraint(equalTo: topAnchor, constant: margin).isActive = true
+        titleLabel.topAnchor.constraint(equalTo: topAnchor, constant: margin).isActive = true
+        titleLabel.leftAnchor.constraint(equalTo: leftAnchor, constant: margin).isActive = true
+        titleLabel.rightAnchor.constraint(equalTo: rightAnchor, constant: -margin).isActive = true
+
+        descriptionLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 2).isActive = true
         descriptionLabel.leftAnchor.constraint(equalTo: leftAnchor, constant: margin).isActive = true
         descriptionLabel.rightAnchor.constraint(equalTo: rightAnchor, constant: -margin).isActive = true
+        descriptionLabel.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -margin).isActive = true
 
         separatorView.topAnchor.constraint(equalTo: descriptionLabel.bottomAnchor, constant: margin).isActive = true
         separatorView.leftAnchor.constraint(equalTo: leftAnchor).isActive = true
@@ -67,7 +84,11 @@ final class TransactionDescriptionTableViewCell: UITableViewCell {
         separatorView.heightAnchor.constraint(equalToConstant: 1).isActive = true
     }
 
-    func configure(withText text: String) {
-        descriptionLabel.text = text
+    func configure(withTitle
+        title: String, andDescription
+        description: String) {
+
+        titleLabel.text = title
+        descriptionLabel.text = description
     }
 }
