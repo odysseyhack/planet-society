@@ -27,7 +27,9 @@ final class TransactionPersonalDetailsViewController: PHTableViewController {
                 date: transaction.date,
                 title: "Personal details",
                 description: "Please fill out your personal details."),
-            .plugin,
+            .plugin(
+                image: UIImage(named: "digid_button"),
+                text: "Use the external DigiD plug-in to fill in your personal information (optional)."),
             .form(placeholder: "First name"),
             .form(placeholder: "Last name"),
             .form(placeholder: "Date of birth"),

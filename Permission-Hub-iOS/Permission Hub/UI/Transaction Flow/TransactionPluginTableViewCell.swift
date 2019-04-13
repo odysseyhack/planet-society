@@ -25,7 +25,7 @@ final class TransactionPluginTableViewCell: UITableViewCell {
         return stackView
     }()
 
-    private lazy var digiDButton: UIButton = {
+    private lazy var pluginButton: UIButton = {
 
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
@@ -48,8 +48,6 @@ final class TransactionPluginTableViewCell: UITableViewCell {
         label.font = PHFonts.regular()
         label.textColor = PHColors.greyishBrown
         label.numberOfLines = 0
-
-        label.text = "Use the external DigiD plug-in to fill in your personal information (optional)."
 
         return label
     }()
@@ -92,7 +90,7 @@ final class TransactionPluginTableViewCell: UITableViewCell {
 
         configureSeparatorView()
 
-        stackView.addArrangedSubview(digiDButton)
+        stackView.addArrangedSubview(pluginButton)
         stackView.addArrangedSubview(descriptionLabel)
     }
 
@@ -104,6 +102,12 @@ final class TransactionPluginTableViewCell: UITableViewCell {
         separatorView.rightAnchor.constraint(equalTo: rightAnchor).isActive = true
         separatorView.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
         separatorView.heightAnchor.constraint(equalToConstant: 1).isActive = true
+    }
+
+    func configure(withImage image: UIImage, andText text: String) {
+
+        pluginButton.setImage(image, for: UIControl.State.normal)
+        descriptionLabel.text = text
     }
 
     // MARK: - Selectors

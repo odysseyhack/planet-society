@@ -27,7 +27,7 @@ enum PHTableViewViewCellType {
         text: String)
     case warning(text: String)
     case description(date: Date, title: String, description: String)
-    case plugin
+    case plugin(image: UIImage?, text: String)
     case transactionItem(item: TransactionItem)
     case selectionDisclosure(text: String)
     case selection(options: [String])

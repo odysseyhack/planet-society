@@ -37,7 +37,7 @@ enum TransactionFlowStep: CaseIterable {
         case .paymentMethod:
             return TransactionPaymentMethodViewController(transaction: transaction)
         case .bankVerification:
-            return PHTableViewController(title: title, items: [PHTableViewViewCellType]())
+            return TransactionPaymentConfirmationViewController(transaction: transaction)
         }
     }
 }

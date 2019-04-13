@@ -218,6 +218,11 @@ final class TransactionFlowViewController: UIViewController {
 
     private func continueFlow() {
 
+        guard currentStepIndex < steps.count else {
+            print("finished!")
+            return
+        }
+
         // set initial viewcontroller
         let viewController = self.steps.map { $0.viewController(withTransaction: transaction) }[currentStepIndex]
         pageViewController.setViewControllers(
@@ -227,6 +232,11 @@ final class TransactionFlowViewController: UIViewController {
 
         // increment for next step
         currentStepIndex += 1
+
+        // last step!
+        if currentStepIndex == steps.count - 1 {
+            continueButton.setTitle("Finish!", for: .normal)
+        }
     }
 
     // MARK: - Networking
