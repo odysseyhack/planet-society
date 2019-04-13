@@ -142,14 +142,29 @@ final class TransactionFlowViewController: UIViewController {
 
     private func configureNavigationBar() {
 
+        let stackView = UIStackView()
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.axis = .horizontal
+        stackView.alignment = .center
+        stackView.spacing = 5
+
+        let image = UIImage(named: "phone_house")
+        let imageView = UIImageView(image: image)
+        imageView.contentMode = .center
+
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "Phone House - Mobile subscription"
         label.textAlignment = .left
-        label.font = PHFonts.bold(ofSize: 16)
+        label.font = PHFonts.wesBold(ofSize: 16)
         label.textColor = PHColors.greyishBrown
-        navigationItem.titleView = label
 
+        stackView.widthAnchor.constraint(equalToConstant: UIScreen.main.bounds.width - 40).isActive = true
+
+        stackView.addArrangedSubview(label)
+        stackView.addArrangedSubview(imageView)
+
+        navigationItem.titleView = stackView
         navigationController?.navigationBar.tintColor = PHColors.greyishBrown
 
         navigationItem.backBarButtonItem = UIBarButtonItem(
