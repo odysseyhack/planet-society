@@ -285,19 +285,19 @@ final class TransactionFlowViewController: UIViewController {
     @objc private func optionsButtonTapped(_ sender: UIButton) {
 
         let alert = UIAlertController(
-            title: "Options",
+            title: "External verification options",
             message: nil,
             preferredStyle: .actionSheet)
 
         alert.addAction(UIAlertAction(
-            title: "a",
+            title: "Share with a contact",
             style: .default,
             handler: { _ in
                 alert.dismiss(animated: true)
         }))
 
         alert.addAction(UIAlertAction(
-            title: "b",
+            title: "Use audit tool",
             style: .default,
             handler: { _ in
                 alert.dismiss(animated: true)
