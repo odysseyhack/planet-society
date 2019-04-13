@@ -48,7 +48,6 @@ class PHTableViewController: UIViewController {
         tableView.rowHeight = UITableView.automaticDimension
         tableView.estimatedRowHeight = 66
         tableView.separatorStyle = .none
-        tableView.allowsMultipleSelection = true
 
         tableView.dataSource = self
         tableView.delegate = self
