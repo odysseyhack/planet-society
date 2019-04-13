@@ -122,7 +122,7 @@ func (p *Protocol) handleTransactionRequest(c Conn, msg *Message) {
 		return
 	}
 
-	content, err := post(transactionRequest.Query)
+	content, err := post(transactionRequest.Query, &transactionRequest, entry)
 	if err != nil {
 		log.Warningf("transaction failed to post transaction id=%q, err=%q", transactionRequest.TransactionID.Key.String(), err)
 		errMsg := "transaction commitment failed"
@@ -136,10 +136,18 @@ func generateNotificationRequest(request *models.TransactionRequest, c []Collect
 	ret := &models.PermissionNotificationRequest{
 		RequesterName:      e.RequesterName,
 		Date:               time.Now().Format(time.RFC3339),
-		Reason:             request.Reason,
+		Description:        request.Description,
+		Title:              request.Title,
 		RequesterPublicKey: e.RequesterPublicKey.String(),
 		TransactionID:      e.TransactionID.String(),
+		Analysis:           []string{"personal data is GDPR protected data", "banking details is sensitive data"},
+		Verification:       []string{"digid.nl", "planet-blockchain", "kvk"},
 	}
+
+	for i := range c {
+		ret.Item = append(ret.Item, models.ItemField{Item: c[i].Structure, Fields: c[i].Fields})
+	}
+
 	return ret
 }
 
@@ -250,7 +258,7 @@ type Request struct {
 	Query string `json:"query"`
 }
 
-func post(query string) (string, error) {
+func post(query string, transactionRequest *models.TransactionRequest, entry *Entry) (string, error) {
 	r := Request{
 		Query: query,
 	}
@@ -261,7 +269,19 @@ func post(query string) (string, error) {
 	}
 
 	client := http.Client{}
-	rawResponse, err := client.Post("http://127.0.0.1:8088/query", "application/json", bytes.NewBuffer(requestBody))
+	request, err := http.NewRequest(http.MethodPost, "http://127.0.0.1:8088/query", bytes.NewBuffer(requestBody))
+	if err != nil {
+		return "", err
+	}
+
+	request.Header.Add("title", transactionRequest.Title)
+	request.Header.Add("description", transactionRequest.Description)
+	request.Header.Add("TransactionID", transactionRequest.TransactionID.Key.String())
+	request.Header.Add("signature", transactionRequest.Signature)
+	request.Header.Add("requester", entry.RequesterPublicKey.String())
+	request.Header.Add("requester-name", entry.RequesterName)
+	request.Header.Set("Content-Type", "application/json")
+	rawResponse, err := client.Do(request)
 	if err != nil {
 		return "", err
 	}

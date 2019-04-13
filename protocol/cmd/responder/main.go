@@ -2,10 +2,14 @@ package main
 
 import (
 	"context"
+	"encoding/hex"
 	"io/ioutil"
 	"net/http"
 	"os"
 	"path/filepath"
+	"time"
+
+	"github.com/odysseyhack/planet-society/protocol/models"
 
 	"github.com/99designs/gqlgen/handler"
 	"github.com/go-chi/chi"
@@ -89,17 +93,46 @@ func serve(db *database.Database) error {
 func Middleware(db *database.Database) func(http.Handler) http.Handler {
 	return func(next http.Handler) http.Handler {
 		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-			// generate random key
-			key := cryptography.RandomKey32()
-
-			// put it in context
-			ctx := context.WithValue(r.Context(), "transaction-key", key.String())
-			// and call the next with our new context
+			ctx := getMetadata(r)
 			r = r.WithContext(ctx)
-
 			next.ServeHTTP(w, r)
 		})
 	}
+}
+
+func getMetadata(r *http.Request) context.Context {
+	var ctx = r.Context()
+	transactionID := r.Header.Get("TransactionID")
+	if transactionID != "" {
+		log.Infoln("using transactionID:", transactionID)
+		ctx = context.WithValue(ctx, "TransactionID", transactionID)
+	} else {
+		tid := cryptography.RandomKey32()
+		ctx = context.WithValue(ctx, "TransactionID", tid.String())
+	}
+
+	k, _ := cryptography.Key32FromString(r.Header.Get("requester"))
+
+	permission := &models.Permission{
+		Title:              r.Header.Get("title"),
+		Description:        r.Header.Get("description"),
+		Expiration:         time.Now().Add(time.Hour * 120).Format(time.RFC3339),
+		RequesterSignature: r.Header.Get("signature"),
+		LawApplying:        "European Union",
+		RequesterPublicKey: models.Key32{Key: k},
+		TransactionID:      transactionID,
+		ResponderSignature: sign(r.Header.Get("requester")),
+	}
+
+	utils.AddPermission(permission)
+
+	return ctx
+}
+
+func sign(data string) string {
+	signer := cryptography.NewSigner(keychain.SignaturePrivateKey, keychain.SignaturePublicKey)
+	a, _ := signer.Sign([]byte(data))
+	return hex.EncodeToString(a)
 }
 
 func createKeychain() (err error) {

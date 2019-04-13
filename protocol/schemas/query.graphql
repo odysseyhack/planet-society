@@ -5,6 +5,7 @@ type Query {
     paymentCard: PaymentCard!
     passport: Passport!
     identityDocument: IdentityDocument!
+    bankingDetails: BankDetails!
 
     # private
     identity: [Identity!]

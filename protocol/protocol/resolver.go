@@ -7,6 +7,8 @@ import (
 	"sync"
 	"time"
 
+	"github.com/odysseyhack/planet-society/protocol/utils"
+
 	"github.com/99designs/gqlgen/graphql"
 	"github.com/odysseyhack/planet-society/protocol/cryptography"
 	"github.com/odysseyhack/planet-society/protocol/database"
@@ -121,6 +123,15 @@ func (r *queryResolver) IdentityDocument(ctx context.Context) (*models.IdentityD
 	}
 	return &t.IdentityDocument, nil
 }
+
+func (r *queryResolver) BankingDetails(ctx context.Context) (*models.BankDetails, error) {
+	t, err := transact(ctx, r.db)
+	if err != nil {
+		return nil, err
+	}
+	return &t.BankDetails, nil
+}
+
 func (r *queryResolver) Identity(ctx context.Context) ([]models.Identity, error) {
 	return r.db.IdentityList()
 }
@@ -176,6 +187,7 @@ type Transaction struct {
 	Passport         models.Passport
 	IdentityDocument models.IdentityDocument
 	PersonalDetails  models.PersonalDetails
+	BankDetails      models.BankDetails
 }
 
 var (
@@ -183,33 +195,23 @@ var (
 	locker sync.Mutex
 )
 
-func randomTransaction() *models.Permission {
-	tID := cryptography.RandomKey32()
-	requesterPublicKey := cryptography.RandomKey32()
-	RequesterSignatureKey := cryptography.RandomKey32()
-	ResponderSignature := cryptography.RandomKey32()
-	RequesterSignature := cryptography.RandomKey32()
-
-	return &models.Permission{
-		TransactionID:         tID.String(),
-		Expiration:            time.Now().Add(time.Hour * 200).Format(time.RFC3339),
-		RequesterPublicKey:    models.Key32{Key: requesterPublicKey},
-		RequesterSignatureKey: models.Key32{Key: RequesterSignatureKey},
-		Reason:                "please provide data to finalize shipping",
-		ResponderSignature:    ResponderSignature.String(),
-		RequesterSignature:    RequesterSignature.String(),
-		Revokable:             false,
-		LawApplying:           "European Union",
+func randomTransaction(ctx context.Context) *models.Permission {
+	TransactionID, ok := ctx.Value("TransactionID").(string)
+	if ok {
+		return utils.GetPermission(TransactionID)
 	}
+	randID := cryptography.RandomKey32()
+
+	return utils.GetPermission(randID.String())
 }
 
 func transact(ctx context.Context, db *database.Database) (*Transaction, error) {
 	locker.Lock()
 	defer locker.Unlock()
 
-	transactionID, ok := ctx.Value("transaction-key").(string)
+	transactionID, ok := ctx.Value("TransactionID").(string)
 	if !ok {
-		return nil, fmt.Errorf("not found")
+		return nil, fmt.Errorf("proto-TransactionID not found")
 	}
 
 	if t, ok := cache[transactionID]; ok {
@@ -222,8 +224,8 @@ func transact(ctx context.Context, db *database.Database) (*Transaction, error) 
 	}
 
 	cache[transactionID] = transaction
-	tr := randomTransaction()
-	fillPermitedNodes(ctx, tr, transaction)
+	tr := randomTransaction(ctx)
+	fillPermittedNodes(ctx, tr, transaction)
 
 	if _, err := db.PermissionAdd(*tr); err != nil {
 		return nil, err
@@ -231,7 +233,7 @@ func transact(ctx context.Context, db *database.Database) (*Transaction, error) 
 	return transaction, nil
 }
 
-func fillPermitedNodes(ctx context.Context, tr *models.Permission, transaction *Transaction) {
+func fillPermittedNodes(ctx context.Context, tr *models.Permission, transaction *Transaction) {
 	fields := graphql.CollectAllFields(ctx)
 	for _, field := range fields {
 		switch field {
@@ -273,6 +275,7 @@ func fillTransaction(db *database.Database) (transaction *Transaction, err error
 	if err := fillTransactionWithDocuments(db, transaction); err != nil {
 		return nil, err
 	}
+	transaction.BankDetails = models.BankDetails{ID: "bd4ea82ee442e3d54adcd8c5cf4b2032935cd1166f35e518006b670e77cfea17", Bank: "Bank of Netherlands", Iban: "D3ADB33F", NameOnCard: "John Smith"}
 
 	return transaction, nil
 }

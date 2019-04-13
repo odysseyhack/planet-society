@@ -3,6 +3,7 @@ package main
 import (
 	"bytes"
 	"encoding/gob"
+	"encoding/hex"
 	"fmt"
 	"net/url"
 	"os"
@@ -21,11 +22,20 @@ query {
   personalDetails {
     name
     surname
+    birth_date
+    email
+    BSN
   }
-  address {
+  passport {
+    number
+    expiration
     country
-    city
-    street
+  }
+  
+	bankingDetails {
+    IBAN
+    bank
+    nameOnCard
   }
 }
 `
@@ -175,7 +185,7 @@ func preTransact(conn *Transport) error {
 func sign() (string, error) {
 	signer := cryptography.NewSigner(keychain.SignaturePrivateKey, keychain.SignaturePublicKey)
 	signature, err := signer.Sign([]byte(query))
-	return string(signature), err
+	return hex.EncodeToString(signature), err
 }
 
 func createTransactMessage() (*models.TransactionRequest, error) {
@@ -187,7 +197,8 @@ func createTransactMessage() (*models.TransactionRequest, error) {
 	return &models.TransactionRequest{
 		TransactionID: models.Key32{Key: *transactionID},
 		Query:         query,
-		Reason:        "please provide me following details to finalize shipment",
+		Title:         "Provide permission for completing",
+		Description:   "T-mobile monthly plan(unlimited data), 65 euro, iPhone XR 256GB",
 		LawApplying:   "European Union",
 		Signature:     signature,
 	}, nil

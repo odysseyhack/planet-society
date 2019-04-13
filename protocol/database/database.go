@@ -151,6 +151,9 @@ func (d *Database) PersonalDetails() (details models.PersonalDetails, err error)
 		return d.get(bucket, []byte(personalDetailsKey), &details)
 	})
 
+	details.Email = "example@example.com"
+	details.Bsn = "128937192837"
+
 	return details, err
 }
 
@@ -797,7 +800,8 @@ func (d *Database) PermissionAdd(permission models.Permission) (added models.Per
 		added = models.Permission{
 			TransactionID:         permission.TransactionID,
 			Expiration:            permission.Expiration,
-			Reason:                permission.Reason,
+			Description:           permission.Description,
+			Title:                 permission.Title,
 			RequesterPublicKey:    permission.RequesterPublicKey,
 			RequesterSignatureKey: permission.RequesterSignatureKey,
 			RequesterSignature:    permission.RequesterSignature,

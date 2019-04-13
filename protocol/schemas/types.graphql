@@ -11,11 +11,20 @@ type PersonalDetails {
     surname: String!
     country: String!
     birth_date: String!
+    email: String!
+    BSN: String!
 }
 
 type Identity implements Node {
     id: ID!
     display_name: String!
+}
+
+type BankDetails implements Node {
+    id: ID!
+    bank: String!
+    IBAN: String!
+    nameOnCard: String!
 }
 
 type Address implements Node {
@@ -78,7 +87,8 @@ type Permission {
     id: ID!
     transaction_id: ID!
     expiration: String!
-    reason: String!
+    title: String!
+    description: String!
     requester_public_key: Key32!
     requester_signature_key: Key32!
     requester_signature: String!
@@ -94,7 +104,8 @@ type PermissionInput {
     transaction_id: ID!
     created: String!
     expiration: String!
-    reason: String!
+    title: String!
+    description: String!
     requester_public_key: Key32!
     requester_signature_key: Key32!
     requester_signature: String!
