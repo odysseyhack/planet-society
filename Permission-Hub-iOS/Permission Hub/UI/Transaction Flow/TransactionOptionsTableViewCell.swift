@@ -88,6 +88,9 @@ final class TransactionOptionsTableViewCell: UITableViewCell {
             return
         }
 
-        stackView.arrangedSubviews[index].backgroundColor = .yellow
+        stackView.arrangedSubviews.forEach {
+            $0.subviews.forEach { ($0 as? UIImageView)?.image = UIImage(named: "personal_details") }
+        }
+        (stackView.arrangedSubviews[index].subviews[0] as! UIImageView).image = UIImage(named: "checkmark")
     }
 }
