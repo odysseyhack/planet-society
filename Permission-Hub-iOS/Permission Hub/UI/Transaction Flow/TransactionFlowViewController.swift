@@ -283,7 +283,34 @@ final class TransactionFlowViewController: UIViewController {
     }
 
     @objc private func optionsButtonTapped(_ sender: UIButton) {
-        // ...
+
+        let alert = UIAlertController(
+            title: "Options",
+            message: nil,
+            preferredStyle: .actionSheet)
+
+        alert.addAction(UIAlertAction(
+            title: "a",
+            style: .default,
+            handler: { _ in
+                alert.dismiss(animated: true)
+        }))
+
+        alert.addAction(UIAlertAction(
+            title: "b",
+            style: .default,
+            handler: { _ in
+                alert.dismiss(animated: true)
+        }))
+
+        alert.addAction(UIAlertAction(
+            title: "Cancel",
+            style: .cancel,
+            handler: { _ in
+                alert.dismiss(animated: true)
+        }))
+
+        present(alert, animated: true)
     }
 
     @objc private func declineButtonTapped(_ sender: UIButton) {
