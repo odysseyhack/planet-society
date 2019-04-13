@@ -84,7 +84,7 @@ final class TransactionFlowViewController: PHTableViewController {
         return button
     }()
 
-    private let transaction: TransactionNotification
+    private var transaction: TransactionNotification
 
     // MARK: - Life cycle
 
@@ -161,6 +161,14 @@ final class TransactionFlowViewController: PHTableViewController {
     @objc private func continueButtonTapped(_ sender: UIButton) {
         respondToTransaction(isAccepted: true)
     }
+
+    // MARK: - Helpers
+
+    private func validateSelection() {
+
+        let areAllItemsAccepted = transaction.items.filter { !$0.isAccepted }.count == 0
+        continueButton.isEnabled = areAllItemsAccepted
+    }
 }
 
 extension TransactionFlowViewController: PHTableViewControllerDelegate {
@@ -175,6 +183,27 @@ extension TransactionFlowViewController: PHTableViewControllerDelegate {
                 description: $0) }
             let viewController = PHTableViewController(items: items)
             navigationController?.pushViewController(viewController, animated: true)
+
+        case .transactionItem(let item):
+            if let index = self.transaction.items.index(of: item) {
+                transaction.items[index].isAccepted = true
+            }
+            validateSelection()
+
+        default:
+            break
+        }
+    }
+
+    func didDeselect(item: PHTableViewViewCellType) {
+
+        switch item {
+        case .transactionItem(let item):
+            if let index = self.transaction.items.index(of: item) {
+                transaction.items[index].isAccepted = false
+            }
+            validateSelection()
+
         default:
             break
         }

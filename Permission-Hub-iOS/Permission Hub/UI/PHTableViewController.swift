@@ -33,6 +33,7 @@ enum PHTableViewViewCellType {
 
 protocol PHTableViewControllerDelegate: class {
     func didSelect(item: PHTableViewViewCellType)
+    func didDeselect(item: PHTableViewViewCellType)
 }
 
 class PHTableViewController: UIViewController {
@@ -196,6 +197,7 @@ extension PHTableViewController: UITableViewDelegate {
     }
 
     func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
+        delegate?.didDeselect(item: items[indexPath.row])
 
         switch items[indexPath.row] {
         case .transactionItem:
