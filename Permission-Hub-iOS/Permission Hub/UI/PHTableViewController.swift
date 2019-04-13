@@ -29,6 +29,8 @@ enum PHTableViewViewCellType {
     case description(date: Date, title: String, description: String)
     case plugin
     case transactionItem(item: TransactionItem)
+    case selectionDisclosure(text: String)
+    case selection(options: [String])
     case form(placeholder: String)
 }
 
@@ -52,6 +54,10 @@ class PHTableViewController: UIViewController {
 
         tableView.dataSource = self
         tableView.delegate = self
+
+        tableView.register(
+            UITableViewCell.self,
+            forCellReuseIdentifier: String(describing: UITableViewCell.self))
 
         tableView.register(
             TransactionTableViewCell.self,
@@ -197,6 +203,25 @@ extension PHTableViewController: UITableViewDataSource {
             let cell = tableView.dequeueReusableCell(
                 withIdentifier: String(describing: TransactionPluginTableViewCell.self),
                 for: indexPath) as! TransactionPluginTableViewCell
+
+            return cell
+
+        case .selectionDisclosure(let text):
+            let cell = tableView.dequeueReusableCell(
+                withIdentifier: String(describing: UITableViewCell.self),
+                for: indexPath)
+
+            cell.textLabel?.font = PHFonts.regular(ofSize: 14)
+            cell.textLabel?.textColor = PHColors.greyishBrown
+            cell.textLabel?.text = text
+            cell.accessoryType = .disclosureIndicator
+
+            return cell
+
+        case .selection(let options):
+            let cell = tableView.dequeueReusableCell(
+                withIdentifier: String(describing: UITableViewCell.self),
+                for: indexPath)
 
             return cell
 
