@@ -28,6 +28,7 @@ enum PHTableViewViewCellType {
     case warning(text: String)
     case description(text: String)
     case transactionItem(item: TransactionItem)
+    case form
 }
 
 final class PHTableViewController: UIViewController {
@@ -58,6 +59,10 @@ final class PHTableViewController: UIViewController {
         tableView.register(
             TransactionNotificationTableViewCell.self,
             forCellReuseIdentifier: String(describing: TransactionNotificationTableViewCell.self))
+
+        tableView.register(
+            FormTextInputCell.self,
+            forCellReuseIdentifier: String(describing: FormTextInputCell.self))
 
         return tableView
     }()
@@ -187,6 +192,18 @@ extension PHTableViewController: UITableViewDataSource {
                 title: text,
                 subtitle: "")
             cell.configure(withViewModel: viewModel)
+
+            return cell
+
+        case .form:
+
+            let cell = tableView.dequeueReusableCell(
+                withIdentifier: String(describing: FormTextInputCell.self),
+                for: indexPath) as! FormTextInputCell
+
+            cell.configure(withPlaceholder: "text") { text in
+                print(text)
+            }
 
             return cell
         }
