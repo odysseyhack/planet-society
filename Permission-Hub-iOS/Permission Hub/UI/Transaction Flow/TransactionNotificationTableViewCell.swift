@@ -9,11 +9,11 @@
 import UIKit
 
 enum TransactionNotificationType {
-    case notification, warning
+    case verification, warning
 
     var image: UIImage? {
         switch self {
-        case .notification:
+        case .verification:
             return UIImage(named: "checkmark_small")
         case .warning:
             return UIImage(named: "warning")
@@ -22,7 +22,7 @@ enum TransactionNotificationType {
 
     var color: UIColor {
         switch self {
-        case .notification:
+        case .verification:
             return PHColors.topaz
         case .warning:
             return PHColors.red
@@ -75,6 +75,15 @@ final class TransactionNotificationTableViewCell: UITableViewCell {
         return label
     }()
 
+    private lazy var notificationSublabel: UILabel = {
+
+        let label = UILabel()
+        label.font = PHFonts.regular(ofSize: 10)
+        label.textColor = .white
+
+        return label
+    }()
+
     private lazy var separatorView: UIView = {
 
         let view = UIView()
@@ -119,6 +128,7 @@ final class TransactionNotificationTableViewCell: UITableViewCell {
 
         stackView.addArrangedSubview(notificationImageView)
         stackView.addArrangedSubview(notificationLabel)
+        stackView.addArrangedSubview(notificationSublabel)
         stackView.addArrangedSubview(disclosureImageView)
     }
 
@@ -127,5 +137,6 @@ final class TransactionNotificationTableViewCell: UITableViewCell {
         notificationImageView.image = type.image
         backgroundColor = type.color
         notificationLabel.text = text
+        notificationSublabel.text = "See details"
     }
 }
