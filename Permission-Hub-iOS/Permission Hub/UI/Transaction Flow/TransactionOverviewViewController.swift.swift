@@ -81,17 +81,17 @@ extension TransactionOverviewViewController: PHTableViewControllerDelegate {
                     date: Date(),
                     title: "",
                     description: $0) }
+
+                 let viewController = PHTableViewController(
+                    title: text,
+                    items: items)
+
+                 let notification = Notification(
+                    name: Notification.Name("show verification"),
+                    object: viewController,
+                    userInfo: nil)
+                 NotificationCenter.default.post(notification)
             }
-
-            let viewController = PHTableViewController(
-                title: text,
-                items: items)
-
-            let notification = Notification(
-                name: Notification.Name("show verification"),
-                object: viewController,
-                userInfo: nil)
-            NotificationCenter.default.post(notification)
 
         case .transactionItem(let item):
             if let index = self.transaction.items.index(of: item) {
