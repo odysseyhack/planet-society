@@ -165,7 +165,7 @@ final class TransactionFlowViewController: UIViewController {
         view.addSubview(bottomStackView)
         bottomStackView.heightAnchor.constraint(equalToConstant: 75).isActive = true
         bottomStackView.topAnchor.constraint(equalTo: pageViewController.view.bottomAnchor).isActive = true
-        bottomStackView.rightAnchor.constraint(equalTo: pageViewController.view.rightAnchor, constant: -20).isActive = true
+        bottomStackView.rightAnchor.constraint(equalTo: pageViewController.view.rightAnchor, constant: -30).isActive = true
         bottomStackView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor).isActive = true
 
         bottomStackView.addArrangedSubview(declineButton)
