@@ -234,7 +234,7 @@ final class TransactionFlowViewController: UIViewController {
         currentStepIndex += 1
 
         // last step!
-        if currentStepIndex == steps.count - 1 {
+        if currentStepIndex == steps.count {
             continueButton.setTitle("Finish!", for: .normal)
         }
     }

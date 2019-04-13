@@ -18,9 +18,8 @@ final class TransactionPluginTableViewCell: UITableViewCell {
         stackView.translatesAutoresizingMaskIntoConstraints = false
 
         stackView.axis = .horizontal
-        stackView.spacing = 10
+        stackView.spacing = 20
         stackView.alignment = .center
-        stackView.distribution = .equalSpacing
 
         return stackView
     }()
@@ -29,6 +28,8 @@ final class TransactionPluginTableViewCell: UITableViewCell {
 
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
+
+        button.setContentHuggingPriority(.required, for: .horizontal)
 
         button.addTarget(
             self,
