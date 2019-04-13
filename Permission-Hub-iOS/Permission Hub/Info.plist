@@ -32,6 +32,10 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
+	<key>UIAppFonts</key>
+	<array>
+		<string></string>
+	</array>
 	<key>UISupportedInterfaceOrientations~ipad</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
@@ -39,5 +43,13 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
+    <key>UIAppFonts</key>
+    <array>
+        <string>wesfy.ttf</string>
+        <string>WesFY-Bold_S.ttf</string>
+        <string>WesFY-Thin_S.ttf</string>
+        <string>WesFY-Medium_S.ttf</string>
+        <string>WesFY-Regular_S.ttf</string>
+    </array>
 </dict>
 </plist>
