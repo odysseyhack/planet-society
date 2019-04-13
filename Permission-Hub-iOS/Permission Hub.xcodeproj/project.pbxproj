@@ -23,6 +23,7 @@
 		4147613A2261225A00030BE6 /* TransactionDescriptionTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 414761392261225A00030BE6 /* TransactionDescriptionTableViewCell.swift */; };
 		41D26A0A2261F5A800C95CCD /* FormTextInputCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41D26A092261F5A800C95CCD /* FormTextInputCell.swift */; };
 		41D26A0C22621AEF00C95CCD /* TransactionFlowViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41D26A0B22621AEF00C95CCD /* TransactionFlowViewController.swift */; };
+		41D26A0E22622F7A00C95CCD /* Date+dateString.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41D26A0D22622F7A00C95CCD /* Date+dateString.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -65,6 +66,7 @@
 		414761392261225A00030BE6 /* TransactionDescriptionTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionDescriptionTableViewCell.swift; sourceTree = "<group>"; };
 		41D26A092261F5A800C95CCD /* FormTextInputCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormTextInputCell.swift; sourceTree = "<group>"; };
 		41D26A0B22621AEF00C95CCD /* TransactionFlowViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionFlowViewController.swift; sourceTree = "<group>"; };
+		41D26A0D22622F7A00C95CCD /* Date+dateString.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+dateString.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -116,6 +118,7 @@
 			isa = PBXGroup;
 			children = (
 				414760F6226089BD00030BE6 /* AppDelegate.swift */,
+				41D26A0F22622F7D00C95CCD /* Extensions */,
 				4147612D2260B65800030BE6 /* Models */,
 				414761262260A64700030BE6 /* UI */,
 				4147612A2260ACA800030BE6 /* Networking */,
@@ -190,6 +193,14 @@
 				41D26A092261F5A800C95CCD /* FormTextInputCell.swift */,
 			);
 			name = Cells;
+			sourceTree = "<group>";
+		};
+		41D26A0F22622F7D00C95CCD /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				41D26A0D22622F7A00C95CCD /* Date+dateString.swift */,
+			);
+			path = Extensions;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -325,6 +336,7 @@
 				414760F9226089BD00030BE6 /* TransactionWalletViewController.swift in Sources */,
 				414761252260A64300030BE6 /* PHColors.swift in Sources */,
 				414761362260DB2B00030BE6 /* TransactionNotificationTableViewCell.swift in Sources */,
+				41D26A0E22622F7A00C95CCD /* Date+dateString.swift in Sources */,
 				414761332260D14E00030BE6 /* TransactionTableViewCell.swift in Sources */,
 				4147612F2260C02000030BE6 /* PHTableViewController.swift in Sources */,
 				4147612C2260B65100030BE6 /* TransactionNotification.swift in Sources */,
