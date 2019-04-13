@@ -34,6 +34,22 @@ final class TransactionFlowViewController: UIViewController {
         return stackView
     }()
 
+    private lazy var optionsButton: UIButton = {
+
+        let button = UIButton()
+        button.translatesAutoresizingMaskIntoConstraints = false
+
+        let image = UIImage(named: "checkmark_button")
+        button.setImage(image, for: .normal)
+
+        button.addTarget(
+            self,
+            action: #selector(optionsButtonTapped),
+            for: .touchUpInside)
+
+        return button
+    }()
+
     private lazy var declineButton: UIButton = {
 
         let button = UIButton()
@@ -114,6 +130,7 @@ final class TransactionFlowViewController: UIViewController {
         configureNavigationBar()
         configurePageViewController()
         configureBottomStackView()
+        configureOptionsButton()
 
         // set initial viewcontroller
         continueFlow()
@@ -149,6 +166,13 @@ final class TransactionFlowViewController: UIViewController {
 
         bottomStackView.addArrangedSubview(declineButton)
         bottomStackView.addArrangedSubview(continueButton)
+    }
+
+    private func configureOptionsButton() {
+
+        view.addSubview(optionsButton)
+        optionsButton.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 20).isActive = true
+        optionsButton.centerYAnchor.constraint(equalTo: bottomStackView.centerYAnchor).isActive = true
     }
 
     // MARK: - PageViewController
@@ -190,6 +214,10 @@ final class TransactionFlowViewController: UIViewController {
     }
 
     // MARK: - Selectors
+
+    @objc private func optionsButtonTapped(_ sender: UIButton) {
+        // ...
+    }
 
     @objc private func declineButtonTapped(_ sender: UIButton) {
         presentCancellationAlert()
