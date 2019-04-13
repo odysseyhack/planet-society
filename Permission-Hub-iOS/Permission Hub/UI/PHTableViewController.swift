@@ -124,6 +124,7 @@ class PHTableViewController: UIViewController {
         // configure navigation bar
         configureNavigationBar()
         configureTableView()
+        addHideKeyboardGestureRecognizer()
     }
 
     // MARK: - Configuration
@@ -148,6 +149,20 @@ class PHTableViewController: UIViewController {
         tableView.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
         tableView.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
         tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
+    }
+
+    private func addHideKeyboardGestureRecognizer() {
+
+        let hideKeyboardTapGestureRecognizer = UITapGestureRecognizer(
+            target: self,
+            action: #selector(hideKeyboard))
+        view.addGestureRecognizer(hideKeyboardTapGestureRecognizer)
+    }
+
+    // MARK: - Selectors
+
+    @objc private func hideKeyboard(_ sender: Any) {
+        view.endEditing(true)
     }
 }
 
