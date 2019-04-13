@@ -39,7 +39,11 @@ final class TransactionFlowViewController: UIViewController {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
 
-        let image = UIImage(named: "checkmark_button")
+        let dimension: CGFloat = 44
+        button.widthAnchor.constraint(equalToConstant: dimension).isActive = true
+        button.heightAnchor.constraint(equalToConstant: dimension).isActive = true
+
+        let image = UIImage(named: "question_mark")
         button.setImage(image, for: .normal)
 
         button.addTarget(
