@@ -199,10 +199,12 @@ extension PHTableViewController: UITableViewDataSource {
 
             return cell
 
-        case .plugin:
+        case .plugin(let image, let text):
             let cell = tableView.dequeueReusableCell(
                 withIdentifier: String(describing: TransactionPluginTableViewCell.self),
                 for: indexPath) as! TransactionPluginTableViewCell
+
+            cell.configure(withImage: image, andText: text)
 
             return cell
 

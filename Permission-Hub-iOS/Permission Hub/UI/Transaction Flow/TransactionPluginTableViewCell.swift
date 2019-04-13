@@ -30,9 +30,6 @@ final class TransactionPluginTableViewCell: UITableViewCell {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
 
-        let image = UIImage(named: "digid_button")
-        button.setImage(image, for: .normal)
-
         button.addTarget(
             self,
             action: #selector(digiDButtonTapped),
@@ -104,10 +101,12 @@ final class TransactionPluginTableViewCell: UITableViewCell {
         separatorView.heightAnchor.constraint(equalToConstant: 1).isActive = true
     }
 
-    func configure(withImage image: UIImage, andText text: String) {
+    func configure(withImage image: UIImage?, andText text: String) {
 
-        pluginButton.setImage(image, for: UIControl.State.normal)
+        pluginButton.setImage(image, for: .normal)
         descriptionLabel.text = text
+        
+        setNeedsLayout()
     }
 
     // MARK: - Selectors
