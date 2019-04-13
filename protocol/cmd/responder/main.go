@@ -9,6 +9,7 @@ import (
 	"path/filepath"
 	"time"
 
+	"github.com/odysseyhack/planet-society/protocol/generator"
 	"github.com/odysseyhack/planet-society/protocol/models"
 
 	"github.com/99designs/gqlgen/handler"
@@ -174,8 +175,8 @@ func createDatabase(dir string) (*database.Database, error) {
 	}
 
 	log.Infoln("filling database with items")
-	generator := newGenerator()
-	if err := generator.generate(db); err != nil {
+	dbGenerator := generator.NewGenerator()
+	if err := dbGenerator.Generate(db); err != nil {
 		return nil, err
 	}
 
