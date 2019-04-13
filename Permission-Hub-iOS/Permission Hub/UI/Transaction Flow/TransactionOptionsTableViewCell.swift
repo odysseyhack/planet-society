@@ -59,6 +59,7 @@ final class TransactionOptionsTableViewCell: UITableViewCell {
 
             let stackView = UIStackView()
             stackView.translatesAutoresizingMaskIntoConstraints = false
+            stackView.spacing = 10
             stackView.tag = index
 
             let tapGestureRecognizer = UITapGestureRecognizer(
