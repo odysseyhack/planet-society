@@ -26,7 +26,7 @@ final class TransactionWalletViewController: PHTableViewController {
         let decoder = JSONDecoder()
         decoder.dateDecodingStrategy = .iso8601
         let transaction = try! decoder.decode(TransactionNotification.self, from: data)
-        presentTransactionOverviewViewController(transaction: transaction)
+        presentTransactionFlowViewController(transaction: transaction)
     }
 
     // MARK: - Networking
@@ -39,7 +39,7 @@ final class TransactionWalletViewController: PHTableViewController {
             switch result {
             case .success(let transactionOrNil):
                 if let transaction = transactionOrNil {
-                    self.presentTransactionOverviewViewController(transaction: transaction)
+                    self.presentTransactionFlowViewController(transaction: transaction)
                 }
             case .failure(let error):
                 print(error)
@@ -52,7 +52,7 @@ final class TransactionWalletViewController: PHTableViewController {
 
     // MARK: - Helpers
 
-    private func presentTransactionOverviewViewController(transaction: TransactionNotification) {
+    private func presentTransactionFlowViewController(transaction: TransactionNotification) {
 
         let viewController = TransactionFlowViewController(transaction: transaction)
         let navigationController = UINavigationController(rootViewController: viewController)

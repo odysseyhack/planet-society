@@ -8,9 +8,18 @@
 
 import UIKit
 
-final class TransactionFlowViewController: PHTableViewController {
+final class TransactionFlowViewController: UIViewController {
 
     // MARK: - Private properties
+
+    private lazy var pageViewController: UIPageViewController = {
+
+        let pageViewController = UIPageViewController(
+            transitionStyle: .scroll,
+            navigationOrientation: .horizontal)
+
+        return pageViewController
+    }()
 
     private lazy var bottomStackView: UIStackView = {
 
@@ -25,6 +34,26 @@ final class TransactionFlowViewController: PHTableViewController {
         return stackView
     }()
 
+    private lazy var optionsButton: UIButton = {
+
+        let button = UIButton()
+        button.translatesAutoresizingMaskIntoConstraints = false
+
+        let dimension: CGFloat = 44
+        button.widthAnchor.constraint(equalToConstant: dimension).isActive = true
+        button.heightAnchor.constraint(equalToConstant: dimension).isActive = true
+
+        let image = UIImage(named: "question_mark")
+        button.setImage(image, for: .normal)
+
+        button.addTarget(
+            self,
+            action: #selector(optionsButtonTapped),
+            for: .touchUpInside)
+
+        return button
+    }()
+
     private lazy var declineButton: UIButton = {
 
         let button = UIButton()
@@ -37,13 +66,12 @@ final class TransactionFlowViewController: PHTableViewController {
 
         button.setTitleColor(PHColors.greyishBrown, for: .normal)
         button.backgroundColor = .white
-        button.isEnabled = false
 
         button.layer.cornerRadius = 5
         button.layer.borderWidth = 1
         button.layer.borderColor = PHColors.greyishBrown.cgColor
 
-        button.setTitle("Decline", for: .normal)
+        button.setTitle("Cancel", for: .normal)
 
         button.addTarget(
             self,
@@ -63,9 +91,8 @@ final class TransactionFlowViewController: PHTableViewController {
 
         button.titleLabel?.font = PHFonts.regular()
 
-        button.setTitleColor(PHColors.topaz.withAlphaComponent(0.5), for: .disabled)
         button.setTitleColor(.white, for: .normal)
-        button.backgroundColor = .white
+        button.backgroundColor = PHColors.topaz
 
         button.layer.cornerRadius = 5
         button.layer.borderWidth = 1
@@ -75,59 +102,131 @@ final class TransactionFlowViewController: PHTableViewController {
 
         button.addTarget(
             self,
-            action: #selector(declineButtonTapped),
+            action: #selector(continueButtonTapped),
             for: .touchUpInside)
-
-        // disabled by default
-        button.isEnabled = false
 
         return button
     }()
 
-    private var transaction: TransactionNotification
+    private let steps = TransactionFlowStep.allCases
+    private var currentStepIndex = 0
+    private let transaction: TransactionNotification
 
-    // MARK: - Life cycle
+    // MARK: - Initialization
 
     init(transaction: TransactionNotification) {
         self.transaction = transaction
 
-        var items = [PHTableViewViewCellType]()
-        items.append(.notification(
-            type: .notification,
-            text: "Verified"))
-        items.append(.notification(
-            type: .warning,
-            text: "Permission warning!"))
-        items.append(.description(
-            date: transaction.date,
-            title: transaction.title,
-            description: transaction.description))
-
-        transaction.items.forEach {
-            items.append(.transactionItem(item: $0))
-        }
-
-        super.init(items: items)
+        super.init(nibName: nil, bundle: nil)
     }
 
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
+    // MARK: - Life cycle
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        // set selection delegate to self
-        delegate = self
+        view.backgroundColor = PHColors.lightGray
+
+        configureNavigationBar()
+        configurePageViewController()
+        configureBottomStackView()
+        configureOptionsButton()
+
+        // set initial viewcontroller
+        continueFlow()
+    }
+
+    private func configureNavigationBar() {
+
+        let stackView = UIStackView()
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.axis = .horizontal
+        stackView.alignment = .center
+        stackView.spacing = 5
+
+        let image = UIImage(named: "phone_house")
+        let imageView = UIImageView(image: image)
+        imageView.contentMode = .center
+
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.text = "Phone House - Mobile subscription"
+        label.textAlignment = .left
+        label.font = PHFonts.wesBold(ofSize: 16)
+        label.textColor = PHColors.greyishBrown
+
+        stackView.widthAnchor.constraint(equalToConstant: UIScreen.main.bounds.width - 40).isActive = true
+
+        stackView.addArrangedSubview(label)
+        stackView.addArrangedSubview(imageView)
+
+        navigationItem.titleView = stackView
+        navigationController?.navigationBar.tintColor = PHColors.greyishBrown
+
+        navigationItem.backBarButtonItem = UIBarButtonItem(
+            title: "",
+            style: .plain,
+            target: nil,
+            action: nil)
+
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(pushWarningViewController),
+            name: NSNotification.Name("show warning"),
+            object: nil)
+
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(pushVerificationViewController),
+            name: NSNotification.Name("show verification"),
+            object: nil)
+    }
+
+    private func configurePageViewController() {
+
+        view.addSubview(pageViewController.view)
+        pageViewController.view.translatesAutoresizingMaskIntoConstraints = false
+        pageViewController.view.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor).isActive = true
+        pageViewController.view.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor).isActive = true
+        pageViewController.view.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor).isActive = true
+    }
+
+    private func configureBottomStackView() {
 
         view.addSubview(bottomStackView)
         bottomStackView.heightAnchor.constraint(equalToConstant: 75).isActive = true
-        bottomStackView.topAnchor.constraint(equalTo: super.tableView.bottomAnchor).isActive = true
-        bottomStackView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        bottomStackView.topAnchor.constraint(equalTo: pageViewController.view.bottomAnchor).isActive = true
+        bottomStackView.rightAnchor.constraint(equalTo: pageViewController.view.rightAnchor, constant: -30).isActive = true
         bottomStackView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor).isActive = true
 
         bottomStackView.addArrangedSubview(declineButton)
         bottomStackView.addArrangedSubview(continueButton)
+    }
+
+    private func configureOptionsButton() {
+
+        view.addSubview(optionsButton)
+        optionsButton.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 20).isActive = true
+        optionsButton.centerYAnchor.constraint(equalTo: bottomStackView.centerYAnchor).isActive = true
+    }
+
+    // MARK: - PageViewController
+
+    private func continueFlow() {
+
+        // set initial viewcontroller
+        let viewController = self.steps.map { $0.viewController(withTransaction: transaction) }[currentStepIndex]
+        pageViewController.setViewControllers(
+            [viewController],
+            direction: .forward,
+            animated: true)
+
+        // increment for next step
+        currentStepIndex += 1
     }
 
     // MARK: - Networking
@@ -140,11 +239,12 @@ final class TransactionFlowViewController: PHTableViewController {
                 withId: transaction.transactionID,
                 isAccepted: true) { [unowned self] response in
 
+                    self.dismiss(animated: true)
+
                     switch response {
-                    case .success:
-                        self.dismiss(animated: true)
                     case .failure(let error):
                         print(error)
+                    default: break
                     }
             }
         } catch {
@@ -154,58 +254,65 @@ final class TransactionFlowViewController: PHTableViewController {
 
     // MARK: - Selectors
 
+    @objc private func pushWarningViewController(_ sender: Notification) {
+
+        guard let viewController = sender.object as? UIViewController else {
+            return
+        }
+
+        navigationController?.pushViewController(viewController, animated: true)
+    }
+
+    @objc private func pushVerificationViewController(_ sender: Notification) {
+
+        guard let viewController = sender.object as? UIViewController else {
+            return
+        }
+
+        navigationController?.pushViewController(viewController, animated: true)
+    }
+
+    @objc private func optionsButtonTapped(_ sender: UIButton) {
+        // ...
+    }
+
     @objc private func declineButtonTapped(_ sender: UIButton) {
-        respondToTransaction(isAccepted: false)
+        presentCancellationAlert()
     }
 
     @objc private func continueButtonTapped(_ sender: UIButton) {
-        respondToTransaction(isAccepted: true)
+        continueFlow()
     }
 
     // MARK: - Helpers
+
+    private func presentCancellationAlert() {
+
+        let alert = UIAlertController(
+            title: "Cancel transaction",
+            message: "Are you sure you want to cancel?",
+            preferredStyle: .alert)
+
+        alert.addAction(UIAlertAction(
+            title: "Yes",
+            style: .destructive,
+            handler: { [unowned self] _ in
+                self.respondToTransaction(isAccepted: false)
+        }))
+
+        alert.addAction(UIAlertAction(
+            title: "No",
+            style: .default,
+            handler: { _ in
+                alert.dismiss(animated: true)
+        }))
+
+        present(alert, animated: true)
+    }
 
     private func validateSelection() {
 
         let areAllItemsAccepted = transaction.items.filter { !$0.isAccepted }.count == 0
         continueButton.isEnabled = areAllItemsAccepted
-    }
-}
-
-extension TransactionFlowViewController: PHTableViewControllerDelegate {
-
-    func didSelect(item: PHTableViewViewCellType) {
-
-        switch item {
-        case .notification:
-            let items: [PHTableViewViewCellType] = transaction.analysis.map { .description(
-                date: Date(),
-                title: "",
-                description: $0) }
-            let viewController = PHTableViewController(items: items)
-            navigationController?.pushViewController(viewController, animated: true)
-
-        case .transactionItem(let item):
-            if let index = self.transaction.items.index(of: item) {
-                transaction.items[index].isAccepted = true
-            }
-            validateSelection()
-
-        default:
-            break
-        }
-    }
-
-    func didDeselect(item: PHTableViewViewCellType) {
-
-        switch item {
-        case .transactionItem(let item):
-            if let index = self.transaction.items.index(of: item) {
-                transaction.items[index].isAccepted = false
-            }
-            validateSelection()
-
-        default:
-            break
-        }
     }
 }
