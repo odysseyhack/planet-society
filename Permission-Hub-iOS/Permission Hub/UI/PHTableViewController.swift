@@ -26,16 +26,16 @@ enum PHTableViewViewCellType {
         type: TransactionNotificationType,
         text: String)
     case warning(text: String)
-    case description(text: String)
+    case description(title: String, description: String)
     case transactionItem(item: TransactionItem)
     case form
 }
 
-final class PHTableViewController: UIViewController {
+class PHTableViewController: UIViewController {
 
     // MARK: - Private properties
 
-    private lazy var tableView: UITableView = {
+    lazy var tableView: UITableView = {
 
         let tableView = UITableView()
         tableView.translatesAutoresizingMaskIntoConstraints = false
@@ -67,19 +67,6 @@ final class PHTableViewController: UIViewController {
         return tableView
     }()
 
-    private lazy var bottomStackView: UIStackView = {
-
-        let stackView = UIStackView()
-        stackView.translatesAutoresizingMaskIntoConstraints = false
-
-        stackView.axis = .horizontal
-        stackView.alignment = .center
-        stackView.distribution = .equalCentering
-        stackView.spacing = 20
-
-        return stackView
-    }()
-
     private var items: [PHTableViewViewCellType]
 
     // MARK: - Initialization
@@ -101,40 +88,15 @@ final class PHTableViewController: UIViewController {
 
         view.backgroundColor = PHColors.lightGray
 
+        // configure navigation bar
+        navigationController?.navigationBar.tintColor = PHColors.greyishBrown
+        navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
+
         view.addSubview(tableView)
-        view.addSubview(bottomStackView)
 
         tableView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
         tableView.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
         tableView.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
-        bottomStackView.heightAnchor.constraint(equalToConstant: 75).isActive = true
-        bottomStackView.topAnchor.constraint(equalTo: tableView.bottomAnchor).isActive = true
-        bottomStackView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        bottomStackView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor).isActive = true
-
-        for i in 0..<2 {
-
-            let button = UIButton()
-            button.translatesAutoresizingMaskIntoConstraints = false
-
-            button.widthAnchor.constraint(equalToConstant: 92).isActive = true
-            button.heightAnchor.constraint(equalToConstant: 34).isActive = true
-
-            button.titleLabel?.font = PHFonts.regular()
-
-            let color = i == 0 ? PHColors.greyishBrown : PHColors.topaz
-            button.setTitleColor(color, for: .normal)
-            button.backgroundColor = .white
-
-            button.layer.cornerRadius = 5
-            button.layer.borderWidth = 1
-            button.layer.borderColor = color.cgColor
-
-            let title = i == 0 ? "Decline" : "Continue"
-            button.setTitle(title, for: .normal)
-            
-            bottomStackView.addArrangedSubview(button)
-        }
     }
 }
 
@@ -157,13 +119,13 @@ extension PHTableViewController: UITableViewDataSource {
 
             return cell
 
-        case .description(let text):
+        case .description(let title, let description):
 
             let cell = tableView.dequeueReusableCell(
                 withIdentifier: String(describing: TransactionDescriptionTableViewCell.self),
                 for: indexPath) as! TransactionDescriptionTableViewCell
 
-            cell.configure(withText: text)
+            cell.configure(withTitle: title, andDescription: description)
 
             return cell
 
