@@ -31,7 +31,7 @@ enum PHTableViewViewCellType {
     case transactionItem(item: TransactionItem)
     case selectionDisclosure(text: String)
     case selection(options: [String])
-    case form(placeholder: String)
+    case form(placeholder: String, text: String?)
 }
 
 protocol PHTableViewControllerDelegate: class {
@@ -83,6 +83,15 @@ class PHTableViewController: UIViewController {
     }()
 
     private var items: [PHTableViewViewCellType]
+
+    private let activityIndicatorViewController: PHActivityIndicatorViewController = {
+
+        let viewController = PHActivityIndicatorViewController()
+        viewController.modalPresentationStyle = .overCurrentContext
+        viewController.modalTransitionStyle = .crossDissolve
+
+        return viewController
+    }()
 
     // MARK: - Properties
 
@@ -204,7 +213,16 @@ extension PHTableViewController: UITableViewDataSource {
                 withIdentifier: String(describing: TransactionPluginTableViewCell.self),
                 for: indexPath) as! TransactionPluginTableViewCell
 
-            cell.configure(withImage: image, andText: text)
+            cell.configure(
+                withImage: image,
+                andText: text,
+                callback: { [unowned self] in
+                    self.present(self.activityIndicatorViewController, animated: false)
+                    self.perform(
+                        #selector(self.dismissActivityIndicator),
+                        with: nil,
+                        afterDelay: 2)
+            })
 
             return cell
 
@@ -227,18 +245,47 @@ extension PHTableViewController: UITableViewDataSource {
 
             return cell
 
-        case .form(let placeholder):
+        case .form(let placeholder, let text):
 
             let cell = tableView.dequeueReusableCell(
                 withIdentifier: String(describing: FormTextInputCell.self),
                 for: indexPath) as! FormTextInputCell
 
-            cell.configure(withPlaceholder: placeholder) { text in
-                print(text)
+            cell.configure(
+                withPlaceholder: placeholder,
+                andText: text) { text in
+                    print(text)
             }
 
             return cell
         }
+    }
+
+    // MARK: - Selectors
+
+    @objc private func dismissActivityIndicator(_ sender: Any) {
+        activityIndicatorViewController.dismiss(animated: true)
+
+        items = [
+            .notification(
+                type: .verification,
+                text: "This company is verified"),
+            .description(
+                date: Date(),
+                title: "Personal details",
+                description: "Please fill out your personal details."),
+            .plugin(
+                image: UIImage(named: "digid_button"),
+                text: "Use the external DigiD plug-in to fill in your personal information (optional)."),
+            .form(placeholder: "First name", text: "Gerard"),
+            .form(placeholder: "Last name", text: "Huizinga"),
+            .form(placeholder: "Date of birth", text: "04-11-1964"),
+            .form(placeholder: "Address", text: "Weesperplein 43-2, Amsterdam"),
+            .form(placeholder: "Email", text: "cdriesprong@gmail.com"),
+            .form(placeholder: "BSN number", text: "123023543")
+        ]
+
+        tableView.reloadData()
     }
 }
 

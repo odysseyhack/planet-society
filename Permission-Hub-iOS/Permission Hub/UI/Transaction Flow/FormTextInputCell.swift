@@ -47,12 +47,14 @@ final class FormTextInputCell: UITableViewCell {
     // MARK: - Configuration
 
     func configure(withPlaceholder
-        placeholder: String,
+        placeholder: String, andText
+        text: String? = nil,
         callback: @escaping (String) -> Void) {
 
         textField.attributedPlaceholder = NSAttributedString(
             string: placeholder,
             attributes: [.foregroundColor: PHColors.greyishBrown.withAlphaComponent(0.5)])
+        textField.text = text
 
         self.callback = callback
     }

@@ -33,7 +33,7 @@ final class TransactionPluginTableViewCell: UITableViewCell {
 
         button.addTarget(
             self,
-            action: #selector(digiDButtonTapped),
+            action: #selector(pluginButtonTapped),
             for: .touchUpInside)
 
         return button
@@ -59,6 +59,8 @@ final class TransactionPluginTableViewCell: UITableViewCell {
 
         return view
     }()
+
+    private var callback: (() -> Void)?
 
     // MARK: - Initialization
 
@@ -102,17 +104,21 @@ final class TransactionPluginTableViewCell: UITableViewCell {
         separatorView.heightAnchor.constraint(equalToConstant: 1).isActive = true
     }
 
-    func configure(withImage image: UIImage?, andText text: String) {
+    func configure(withImage
+        image: UIImage?, andText
+        text: String,
+        callback: @escaping () -> Void) {
 
         pluginButton.setImage(image, for: .normal)
         descriptionLabel.text = text
+        self.callback = callback
         
         setNeedsLayout()
     }
 
     // MARK: - Selectors
 
-    @objc private func digiDButtonTapped(_ sender: UIButton) {
-        // ...
+    @objc private func pluginButtonTapped(_ sender: UIButton) {
+        callback?()
     }
 }

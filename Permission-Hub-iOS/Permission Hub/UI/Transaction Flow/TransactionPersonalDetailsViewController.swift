@@ -30,12 +30,12 @@ final class TransactionPersonalDetailsViewController: PHTableViewController {
             .plugin(
                 image: UIImage(named: "digid_button"),
                 text: "Use the external DigiD plug-in to fill in your personal information (optional)."),
-            .form(placeholder: "First name"),
-            .form(placeholder: "Last name"),
-            .form(placeholder: "Date of birth"),
-            .form(placeholder: "Address"),
-            .form(placeholder: "Email"),
-            .form(placeholder: "BSN number")
+            .form(placeholder: "First name", text: nil),
+            .form(placeholder: "Last name", text: nil),
+            .form(placeholder: "Date of birth", text: nil),
+            .form(placeholder: "Address", text: nil),
+            .form(placeholder: "Email", text: nil),
+            .form(placeholder: "BSN number", text: nil)
         ])
     }
 

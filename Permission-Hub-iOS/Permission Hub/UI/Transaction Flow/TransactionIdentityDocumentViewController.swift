@@ -28,8 +28,8 @@ final class TransactionIdentityDocumentViewController: PHTableViewController {
                 title: "Identity document (passport)",
                 description: "Please fill out your passport details."),
             .selectionDisclosure(text: "Country of issue"),
-            .form(placeholder: "Passport number"),
-            .form(placeholder: "Expiration date")
+            .form(placeholder: "Passport number", text: nil),
+            .form(placeholder: "Expiration date", text: nil)
         ])
     }
 
