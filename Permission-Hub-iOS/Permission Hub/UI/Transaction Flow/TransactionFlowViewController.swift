@@ -201,8 +201,6 @@ final class TransactionFlowViewController: UIViewController {
 
     @objc private func continueButtonTapped(_ sender: UIButton) {
         continueFlow()
-
-//        respondToTransaction(isAccepted: true)
     }
 
     // MARK: - Helpers
