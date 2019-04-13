@@ -14,7 +14,7 @@ final class TransactionOverviewViewController: PHTableViewController {
 
     private var transaction: TransactionNotification
 
-    // MARK: - Life cycle
+    // MARK: - Initialization
 
     init(transaction: TransactionNotification) {
         self.transaction = transaction
@@ -43,6 +43,8 @@ final class TransactionOverviewViewController: PHTableViewController {
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+
+    // MARK: - Life cycle
 
     override func viewDidLoad() {
         super.viewDidLoad()

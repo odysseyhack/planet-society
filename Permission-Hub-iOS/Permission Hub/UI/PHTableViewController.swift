@@ -27,8 +27,9 @@ enum PHTableViewViewCellType {
         text: String)
     case warning(text: String)
     case description(date: Date, title: String, description: String)
+    case plugin
     case transactionItem(item: TransactionItem)
-    case form
+    case form(placeholder: String)
 }
 
 protocol PHTableViewControllerDelegate: class {
@@ -59,6 +60,10 @@ class PHTableViewController: UIViewController {
         tableView.register(
             TransactionDescriptionTableViewCell.self,
             forCellReuseIdentifier: String(describing: TransactionDescriptionTableViewCell.self))
+
+        tableView.register(
+            TransactionPluginTableViewCell.self,
+            forCellReuseIdentifier: String(describing: TransactionPluginTableViewCell.self))
 
         tableView.register(
             TransactionNotificationTableViewCell.self,
@@ -188,13 +193,20 @@ extension PHTableViewController: UITableViewDataSource {
 
             return cell
 
-        case .form:
+        case .plugin:
+            let cell = tableView.dequeueReusableCell(
+                withIdentifier: String(describing: TransactionPluginTableViewCell.self),
+                for: indexPath) as! TransactionPluginTableViewCell
+
+            return cell
+
+        case .form(let placeholder):
 
             let cell = tableView.dequeueReusableCell(
                 withIdentifier: String(describing: FormTextInputCell.self),
                 for: indexPath) as! FormTextInputCell
 
-            cell.configure(withPlaceholder: "text") { text in
+            cell.configure(withPlaceholder: placeholder) { text in
                 print(text)
             }
 

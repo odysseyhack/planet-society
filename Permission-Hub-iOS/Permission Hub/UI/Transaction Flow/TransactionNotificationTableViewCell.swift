@@ -120,16 +120,22 @@ final class TransactionNotificationTableViewCell: UITableViewCell {
         stackView.leftAnchor.constraint(equalTo: leftAnchor, constant: margin).isActive = true
         stackView.rightAnchor.constraint(equalTo: rightAnchor, constant: -margin).isActive = true
 
-        separatorView.topAnchor.constraint(equalTo: stackView.bottomAnchor, constant: margin).isActive = true
-        separatorView.leftAnchor.constraint(equalTo: leftAnchor).isActive = true
-        separatorView.rightAnchor.constraint(equalTo: rightAnchor).isActive = true
-        separatorView.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
-        separatorView.heightAnchor.constraint(equalToConstant: 1).isActive = true
+        configureSeparatorView()
 
         stackView.addArrangedSubview(notificationImageView)
         stackView.addArrangedSubview(notificationLabel)
         stackView.addArrangedSubview(notificationSublabel)
         stackView.addArrangedSubview(disclosureImageView)
+    }
+
+    private func configureSeparatorView() {
+
+        let margin: CGFloat = 15
+        separatorView.topAnchor.constraint(equalTo: stackView.bottomAnchor, constant: margin).isActive = true
+        separatorView.leftAnchor.constraint(equalTo: leftAnchor).isActive = true
+        separatorView.rightAnchor.constraint(equalTo: rightAnchor).isActive = true
+        separatorView.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
+        separatorView.heightAnchor.constraint(equalToConstant: 1).isActive = true
     }
 
     func configure(withType type: TransactionNotificationType, andText text: String) {
