@@ -15,6 +15,7 @@ clean: clean-generated
 test:
 	go test -v ./database
 	go test -v ./cryptography
+	go test -v ./utils
 
 # binaries
 binaries: requester responder notification-server
