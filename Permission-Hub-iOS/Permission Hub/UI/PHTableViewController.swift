@@ -246,12 +246,12 @@ extension PHTableViewController: UITableViewDataSource {
             return cell
 
         case .selectionDisclosure(let text):
-            let cell = tableView.dequeueReusableCell(
-                withIdentifier: String(describing: UITableViewCell.self),
-                for: indexPath)
-
+            let cell = UITableViewCell(style: .value1, reuseIdentifier: String(describing: UITableViewCell.self))
             cell.textLabel?.font = PHFonts.regular(ofSize: 14)
             cell.textLabel?.textColor = PHColors.greyishBrown
+            cell.detailTextLabel?.text = "The Netherlands"
+            cell.detailTextLabel?.font = PHFonts.regular(ofSize: 14)
+            cell.detailTextLabel?.textColor = PHColors.greyishBrown.withAlphaComponent(0.5)
             cell.textLabel?.text = text
             cell.accessoryType = .disclosureIndicator
 
