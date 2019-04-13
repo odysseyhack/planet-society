@@ -68,7 +68,7 @@ final class TransactionNotificationTableViewCell: UITableViewCell {
     private lazy var notificationLabel: UILabel = {
 
         let label = UILabel()
-        label.font = PHFonts.bold()
+        label.font = PHFonts.wesBold()
         label.textColor = .white
         label.textAlignment = .left
 
@@ -78,7 +78,7 @@ final class TransactionNotificationTableViewCell: UITableViewCell {
     private lazy var notificationSublabel: UILabel = {
 
         let label = UILabel()
-        label.font = PHFonts.regular(ofSize: 10)
+        label.font = PHFonts.wesRegular(ofSize: 10)
         label.textColor = .white
 
         return label
