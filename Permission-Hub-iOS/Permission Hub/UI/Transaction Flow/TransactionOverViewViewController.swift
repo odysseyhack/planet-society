@@ -1,5 +1,5 @@
 //
-//  TransactionFlowViewController.swift
+//  TransactionOverViewViewController.swift
 //  Permission Hub
 //
 //  Created by Corné on 13/04/2019.
@@ -8,7 +8,7 @@
 
 import UIKit
 
-final class TransactionFlowViewController: PHTableViewController {
+final class TransactionOverViewViewController: PHTableViewController {
 
     // MARK: - Private properties
 
@@ -173,7 +173,7 @@ final class TransactionFlowViewController: PHTableViewController {
     }
 }
 
-extension TransactionFlowViewController: PHTableViewControllerDelegate {
+extension TransactionOverViewViewController: PHTableViewControllerDelegate {
 
     func didSelect(item: PHTableViewViewCellType) {
 
