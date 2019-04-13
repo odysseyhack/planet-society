@@ -172,6 +172,18 @@ final class TransactionFlowViewController: UIViewController {
             style: .plain,
             target: nil,
             action: nil)
+
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(pushWarningViewController),
+            name: NSNotification.Name("show warning"),
+            object: nil)
+
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(pushVerificationViewController),
+            name: NSNotification.Name("show verification"),
+            object: nil)
     }
 
     private func configurePageViewController() {
@@ -241,6 +253,24 @@ final class TransactionFlowViewController: UIViewController {
     }
 
     // MARK: - Selectors
+
+    @objc private func pushWarningViewController(_ sender: Notification) {
+
+        guard let viewController = sender.object as? UIViewController else {
+            return
+        }
+
+        navigationController?.pushViewController(viewController, animated: true)
+    }
+
+    @objc private func pushVerificationViewController(_ sender: Notification) {
+
+        guard let viewController = sender.object as? UIViewController else {
+            return
+        }
+
+        navigationController?.pushViewController(viewController, animated: true)
+    }
 
     @objc private func optionsButtonTapped(_ sender: UIButton) {
         // ...

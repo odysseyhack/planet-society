@@ -69,7 +69,12 @@ extension TransactionOverviewViewController: PHTableViewControllerDelegate {
                 let viewController = PHTableViewController(
                     title: text,
                     items: items)
-                navigationController?.pushViewController(viewController, animated: true)
+
+                let notification = Notification(
+                    name: Notification.Name("show warning"),
+                    object: viewController,
+                    userInfo: nil)
+                NotificationCenter.default.post(notification)
 
             case .verification:
                  items = transaction.verification.map { .description(
@@ -81,7 +86,12 @@ extension TransactionOverviewViewController: PHTableViewControllerDelegate {
             let viewController = PHTableViewController(
                 title: text,
                 items: items)
-            navigationController?.pushViewController(viewController, animated: true)
+
+            let notification = Notification(
+                name: Notification.Name("show verification"),
+                object: viewController,
+                userInfo: nil)
+            NotificationCenter.default.post(notification)
 
         case .transactionItem(let item):
             if let index = self.transaction.items.index(of: item) {
