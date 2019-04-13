@@ -25,9 +25,12 @@ final class TransactionFlowViewController: PHTableViewController {
         return stackView
     }()
 
+    private let transaction: TransactionNotification
+
     // MARK: - Life cycle
 
     init(transaction: TransactionNotification) {
+        self.transaction = transaction
 
         var items = [PHTableViewViewCellType]()
         items.append(.notification(
@@ -53,6 +56,9 @@ final class TransactionFlowViewController: PHTableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        // set selection delegate to self
+        delegate = self
 
         view.addSubview(bottomStackView)
         bottomStackView.heightAnchor.constraint(equalToConstant: 75).isActive = true
@@ -103,14 +109,16 @@ final class TransactionFlowViewController: PHTableViewController {
 
         do {
             let service = NetworkingService.shared
-            try service.respondToTransaction(withId: "123", isAccepted: true) { [unowned self] response in
+            try service.respondToTransaction(
+                withId: transaction.transactionID,
+                isAccepted: true) { [unowned self] response in
 
-                switch response {
-                case .success:
-                    self.navigationController?.popViewController(animated: true)
-                case .failure(let error):
-                    print(error)
-                }
+                    switch response {
+                    case .success:
+                        self.dismiss(animated: true)
+                    case .failure(let error):
+                        print(error)
+                    }
             }
         } catch {
             print(error)
@@ -125,5 +133,24 @@ final class TransactionFlowViewController: PHTableViewController {
 
     @objc private func continueButtonTapped(_ sender: UIButton) {
         respondToTransaction(isAccepted: true)
+    }
+}
+
+extension TransactionFlowViewController: PHTableViewControllerDelegate {
+
+    func didSelect(item: PHTableViewViewCellType) {
+
+        switch item {
+        case .notification:
+            let items: [PHTableViewViewCellType] = [
+                .warning(text: "Basic informations are not needed."),
+                .warning(text: "Health records are not mandatory.")
+            ]
+            let viewController = PHTableViewController(items: items)
+            navigationController?.pushViewController(viewController, animated: true)
+
+        default:
+            break
+        }
     }
 }

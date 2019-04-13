@@ -31,6 +31,10 @@ enum PHTableViewViewCellType {
     case form
 }
 
+protocol PHTableViewControllerDelegate: class {
+    func didSelect(item: PHTableViewViewCellType)
+}
+
 class PHTableViewController: UIViewController {
 
     // MARK: - Private properties
@@ -68,6 +72,10 @@ class PHTableViewController: UIViewController {
     }()
 
     private var items: [PHTableViewViewCellType]
+
+    // MARK: - Properties
+
+    weak var delegate: PHTableViewControllerDelegate?
 
     // MARK: - Initialization
 
@@ -175,16 +183,9 @@ extension PHTableViewController: UITableViewDataSource {
 extension PHTableViewController: UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        delegate?.didSelect(item: items[indexPath.row])
 
         switch items[indexPath.row] {
-        case .notification:
-            let items: [PHTableViewViewCellType] = [
-                .warning(text: "Basic informations are not needed."),
-                .warning(text: "Health records are not mandatory.")
-            ]
-            let viewController = PHTableViewController(items: items)
-            navigationController?.pushViewController(viewController, animated: true)
-
         case .transactionItem:
             tableView.cellForRow(at: indexPath)?.isSelected = true
 
