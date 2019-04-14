@@ -3,10 +3,128 @@
 //  Permission Hub
 //
 //  Created by Corné on 12/04/2019.
-//  Copyright © 2019 Planet. All rights reserved.
-//
+//  Copyright © 2019 Planet. All rights
 
 import UIKit
+
+struct WalletItem {
+    let image: UIImage?
+    let title: String
+    let subtitle: String
+    let date: Date
+}
+
+final class WalletItemTableViewCell: PHBaseTableViewCell {
+
+    // MARK: - Private properties
+
+    private lazy var horizontalStackView: UIStackView = {
+
+        let stackView = UIStackView()
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+
+        stackView.axis = .horizontal
+        stackView.spacing = 10
+        stackView.alignment = .center
+
+        return stackView
+    }()
+
+    private lazy var verticalStackView: UIStackView = {
+
+        let stackView = UIStackView()
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+
+        stackView.axis = .vertical
+        stackView.spacing = 5
+        stackView.alignment = .leading
+
+        return stackView
+    }()
+
+    private lazy var itemImageView: UIImageView = {
+
+        let imageView = UIImageView()
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.setContentHuggingPriority(.required, for: .horizontal)
+
+        return imageView
+    }()
+
+    private lazy var itemLabel: UILabel = {
+
+        let label = UILabel()
+        label.font = PHFonts.regular()
+        label.textColor = PHColors.greyishBrown
+        label.textAlignment = .left
+
+        return label
+    }()
+
+    private let itemSubtitleLabel: UILabel = {
+
+        let label = UILabel()
+        label.font = PHFonts.regular()
+        label.textColor = PHColors.grey
+
+        return label
+    }()
+
+    private lazy var dateLabel: UILabel = {
+
+        let label = UILabel()
+        label.font = PHFonts.regular(ofSize: 11)
+        label.textColor = PHColors.grey
+
+        label.setContentHuggingPriority(.required, for: .horizontal)
+
+        return label
+    }()
+
+    // MARK: - Initialization
+
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
+
+        configure()
+    }
+
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
+    // MARK: - Configuration
+
+    override func configure() {
+        super.configure()
+
+        selectionStyle = .none
+        accessoryType = .disclosureIndicator
+
+        addSubview(horizontalStackView)
+        separatorView.backgroundColor = .white
+
+        let margin: CGFloat = 15
+        horizontalStackView.topAnchor.constraint(equalTo: topAnchor, constant: margin).isActive = true
+        horizontalStackView.leftAnchor.constraint(equalTo: leftAnchor, constant: margin).isActive = true
+        horizontalStackView.rightAnchor.constraint(equalTo: rightAnchor, constant: -50).isActive = true
+        horizontalStackView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -margin).isActive = true
+
+        horizontalStackView.addArrangedSubview(itemImageView)
+        horizontalStackView.addArrangedSubview(verticalStackView)
+        verticalStackView.addArrangedSubview(itemLabel)
+        verticalStackView.addArrangedSubview(itemSubtitleLabel)
+        horizontalStackView.addArrangedSubview(dateLabel)
+    }
+
+    func configure(withItem item: WalletItem) {
+
+        itemImageView.image = item.image
+        itemLabel.text = item.title
+        itemSubtitleLabel.text = item.subtitle
+        dateLabel.text = item.date.dateString()
+    }
+}
 
 final class TransactionWalletViewController: PHTableViewController {
 
@@ -15,7 +133,11 @@ final class TransactionWalletViewController: PHTableViewController {
     init() {
 
         let items: [PHTableViewViewCellType] = [
-//            PHTableViewViewCellType.plugin(image: <#T##UIImage?#>, text: <#T##String#>)
+            .walletItem(item: WalletItem(
+                image: UIImage(named: "phone_house"),
+                title: "Purchase at Phone House",
+                subtitle: "Personal details, Passport, Bank account",
+                date: Date()))
         ]
 
         super.init(items: items)
@@ -31,6 +153,10 @@ final class TransactionWalletViewController: PHTableViewController {
         super.viewDidLoad()
 
         navigationItem.title = "My Permission Wallet"
+
+        tableView.register(
+            WalletItemTableViewCell.self,
+            forCellReuseIdentifier: String(describing: WalletItemTableViewCell.self))
     }
 
     override func viewDidAppear(_ animated: Bool) {

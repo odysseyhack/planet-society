@@ -66,7 +66,8 @@ final class TransactionPluginTableViewCell: PHBaseTableViewCell {
 
     // MARK: - Configuration
 
-    private func configure() {
+    override func configure() {
+        super.configure()
 
         selectionStyle = .none
 

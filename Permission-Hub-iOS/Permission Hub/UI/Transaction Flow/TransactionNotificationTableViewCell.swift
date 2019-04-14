@@ -98,7 +98,8 @@ final class TransactionNotificationTableViewCell: PHBaseTableViewCell {
 
     // MARK: - Configuration
 
-    private func configure() {
+    override func configure() {
+        super.configure()
 
         selectionStyle = .none
 

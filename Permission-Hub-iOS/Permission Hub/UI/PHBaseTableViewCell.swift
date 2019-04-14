@@ -34,7 +34,7 @@ class PHBaseTableViewCell: UITableViewCell {
 
     // MARK: - Configuration
 
-    private func configure() {
+    func configure() {
         addSubview(separatorView)
     }
 

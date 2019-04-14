@@ -32,6 +32,7 @@ enum PHTableViewViewCellType {
     case selectionDisclosure(text: String)
     case selection(options: [String])
     case form(placeholder: String, text: String?, keyboardType: UIKeyboardType)
+    case walletItem(item: WalletItem)
 }
 
 protocol PHTableViewControllerDelegate: class {
@@ -331,6 +332,17 @@ extension PHTableViewController: UITableViewDataSource {
             }
 
             return cell
+
+        case .walletItem(let item):
+
+            let cell = tableView.dequeueReusableCell(
+                withIdentifier: String(describing: WalletItemTableViewCell.self),
+                for: indexPath) as! WalletItemTableViewCell
+
+            cell.configure(withItem: item)
+
+            return cell
+
         }
     }
 
