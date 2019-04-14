@@ -19,9 +19,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         window = UIWindow(frame: UIScreen.main.bounds)
 
         // set permission wallet as main view controller
-        let transactionWalletViewController = TransactionWalletViewController(
-            title: "Transaction Wallet",
-            items: [PHTableViewViewCellType]())
+        let transactionWalletViewController = TransactionWalletViewController()
         let navigationController = UINavigationController(rootViewController: transactionWalletViewController)
         window?.rootViewController = navigationController
         window?.makeKeyAndVisible()
