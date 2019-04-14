@@ -128,7 +128,7 @@ class PHTableViewController: UIViewController {
         return tableView
     }()
 
-    private var items: [PHTableViewViewCellType]
+    var items: [PHTableViewViewCellType]
 
     private let activityIndicatorViewController: PHActivityIndicatorViewController = {
 
