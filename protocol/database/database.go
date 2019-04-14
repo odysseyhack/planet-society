@@ -3,14 +3,12 @@ package database
 import (
 	"bytes"
 	"encoding/gob"
-	"fmt"
 	"os"
 	"path/filepath"
 
 	"github.com/boltdb/bolt"
 	"github.com/odysseyhack/planet-society/protocol/cryptography"
 	"github.com/odysseyhack/planet-society/protocol/models"
-	"github.com/xlab/treeprint"
 )
 
 // Db root tree:
@@ -33,7 +31,6 @@ type Database struct {
 // If the database is not existing it will be created and initialized with buckets.
 func LoadDatabase(filePath string, keychain *cryptography.Keychain) (*Database, error) {
 	directory, _ := filepath.Split(filePath)
-
 	if err := os.MkdirAll(directory, 0700); err != nil {
 		return nil, err
 	}
@@ -49,19 +46,19 @@ func LoadDatabase(filePath string, keychain *cryptography.Keychain) (*Database, 
 		db:       db,
 		keychain: keychain,
 	}
-
-	if os.IsNotExist(statErr) {
-		if err := database.initialize(); err != nil {
-			return nil, err
-		}
+	if err := database.initialize(os.IsNotExist(statErr)); err != nil {
+		return nil, err
 	}
 
 	return database, nil
 }
 
 // Initialize initializes database with proper buckets
-func (d *Database) initialize() error {
-	return d.db.Update(d.bucketInitialize)
+func (d *Database) initialize(run bool) error {
+	if run {
+		return d.db.Update(d.bucketInitialize)
+	}
+	return nil
 }
 
 // Close closes database
@@ -107,6 +104,24 @@ func (d *Database) decode(value []byte, object interface{}) error {
 	return nil
 }
 
+func updatePersonalDetails(personal *models.PersonalDetailsInput, updatedDetail *models.PersonalDetails) {
+	if personal.Name != nil {
+		updatedDetail.Name = *personal.Name
+	}
+
+	if personal.Surname != nil {
+		updatedDetail.Surname = *personal.Surname
+	}
+
+	if personal.Country != nil {
+		updatedDetail.Country = *personal.Country
+	}
+
+	if personal.BirthDate != nil {
+		updatedDetail.BirthDate = *personal.BirthDate
+	}
+}
+
 // PersonalDetailsAdd adds personal details to the database
 func (d *Database) PersonalDetailsUpdate(personal models.PersonalDetailsInput) (updatedDetail models.PersonalDetails, err error) {
 	err = d.db.Update(func(tx *bolt.Tx) error {
@@ -119,21 +134,7 @@ func (d *Database) PersonalDetailsUpdate(personal models.PersonalDetailsInput) (
 			return err
 		}
 
-		if personal.Name != nil {
-			updatedDetail.Name = *personal.Name
-		}
-
-		if personal.Surname != nil {
-			updatedDetail.Surname = *personal.Surname
-		}
-
-		if personal.Country != nil {
-			updatedDetail.Country = *personal.Country
-		}
-
-		if personal.BirthDate != nil {
-			updatedDetail.BirthDate = *personal.BirthDate
-		}
+		updatePersonalDetails(&personal, &updatedDetail)
 
 		return d.put(bucket, []byte(personalDetailsKey), &updatedDetail)
 	})
@@ -275,15 +276,21 @@ func (d *Database) ContactAdd(contact models.ContactInput) (newContact models.Co
 		}
 
 		d.contactInputToContact(&contact, &newContact)
-
-		if err := d.put(contactBucket, []byte(newContact.ID), &newContact); err != nil {
-			return err
-		}
-
-		return nil
+		return d.put(contactBucket, []byte(newContact.ID), &newContact)
 	})
 
 	return newContact, err
+}
+
+func (d *Database) collectContacts(list *[]models.Contact, bucket *bolt.Bucket) error {
+	return bucket.ForEach(func(k, v []byte) error {
+		var contact models.Contact
+		if err := d.decode(v, &contact); err != nil {
+			return err
+		}
+		*list = append(*list, contact)
+		return nil
+	})
 }
 
 // ContactList lists contacts in given identity
@@ -303,15 +310,8 @@ func (d *Database) ContactList(identity string) (list []models.Contact, err erro
 		if contactBucket == nil {
 			return ErrBucketNotFound(bucketContacts)
 		}
+		return d.collectContacts(&list, contactBucket)
 
-		return contactBucket.ForEach(func(k, v []byte) error {
-			var contact models.Contact
-			if err := d.decode(v, &contact); err != nil {
-				return err
-			}
-			list = append(list, contact)
-			return nil
-		})
 	})
 	return list, err
 }
@@ -347,12 +347,20 @@ func (d *Database) AddressAdd(addresses models.AddressInput) (added models.Addre
 			return ErrBucketNotFound(bucketAddress)
 		}
 		d.addressInputToAddress(&addresses, &added)
-		if err := d.put(addressBucket, []byte(added.ID), &added); err != nil {
-			return err
-		}
-		return nil
+		return d.put(addressBucket, []byte(added.ID), &added)
 	})
 	return added, err
+}
+
+func (d *Database) collectAddresses(list *[]models.Address, bucket *bolt.Bucket) error {
+	return bucket.ForEach(func(k, v []byte) error {
+		var address models.Address
+		if err := d.decode(v, &address); err != nil {
+			return err
+		}
+		*list = append(*list, address)
+		return nil
+	})
 }
 
 // AddressList lists known addresses
@@ -372,15 +380,7 @@ func (d *Database) AddressList(identity string) (list []models.Address, err erro
 		if addrBucket == nil {
 			return ErrBucketNotFound(bucketAddress)
 		}
-
-		return addrBucket.ForEach(func(k, v []byte) error {
-			var address models.Address
-			if err := d.decode(v, &address); err != nil {
-				return err
-			}
-			list = append(list, address)
-			return nil
-		})
+		return d.collectAddresses(&list, addrBucket)
 
 	})
 	return list, err
@@ -415,13 +415,20 @@ func (d *Database) PaymentCardAdd(paymentCard models.PaymentCardInput) (added mo
 		}
 
 		d.paymentCardInputToPaymentCard(&paymentCard, &added)
-
-		if err := d.put(paymentCardBucket, []byte(added.ID), &added); err != nil {
-			return err
-		}
-		return nil
+		return d.put(paymentCardBucket, []byte(added.ID), &added)
 	})
 	return added, err
+}
+
+func (d *Database) collectPaymentCards(list *[]models.PaymentCard, contactBucket *bolt.Bucket) error {
+	return contactBucket.ForEach(func(k, v []byte) error {
+		var paymentCard models.PaymentCard
+		if err := d.decode(v, &paymentCard); err != nil {
+			return err
+		}
+		*list = append(*list, paymentCard)
+		return nil
+	})
 }
 
 // PaymentCardList lists known payment cards for given identity
@@ -431,25 +438,15 @@ func (d *Database) PaymentCardList(identity string) (list []models.PaymentCard, 
 		if identitiesBucket == nil {
 			return ErrBucketNotFound(bucketIdentities)
 		}
-
 		identityBucket := identitiesBucket.Bucket([]byte(identity))
 		if identityBucket == nil {
 			return ErrBucketNotFound(identity)
 		}
-
 		contactBucket := identityBucket.Bucket([]byte(bucketPaymentCards))
 		if contactBucket == nil {
 			return ErrBucketNotFound(bucketContacts)
 		}
-
-		return contactBucket.ForEach(func(k, v []byte) error {
-			var paymentCard models.PaymentCard
-			if err := d.decode(v, &paymentCard); err != nil {
-				return err
-			}
-			list = append(list, paymentCard)
-			return nil
-		})
+		return d.collectPaymentCards(&list, contactBucket)
 	})
 	return list, err
 }
@@ -483,14 +480,20 @@ func (d *Database) PassportAdd(passport models.PassportInput) (added models.Pass
 		}
 
 		d.passportInputToPassport(&passport, &added)
-
-		if err := d.put(passportBucket, []byte(added.ID), &added); err != nil {
-			return err
-		}
-
-		return nil
+		return d.put(passportBucket, []byte(added.ID), &added)
 	})
 	return added, err
+}
+
+func (d *Database) collectPassport(list *[]models.Passport, passportBucket *bolt.Bucket) error {
+	return passportBucket.ForEach(func(k, v []byte) error {
+		var passport models.Passport
+		if err := d.decode(v, &passport); err != nil {
+			return err
+		}
+		*list = append(*list, passport)
+		return nil
+	})
 }
 
 // PassportList lists known passports for given identity
@@ -506,19 +509,11 @@ func (d *Database) PassportList(identity string) (list []models.Passport, err er
 			return ErrBucketNotFound(identity)
 		}
 
-		contactBucket := identityBucket.Bucket([]byte(bucketPassports))
-		if contactBucket == nil {
+		passportBucket := identityBucket.Bucket([]byte(bucketPassports))
+		if passportBucket == nil {
 			return ErrBucketNotFound(bucketContacts)
 		}
-
-		return contactBucket.ForEach(func(k, v []byte) error {
-			var passport models.Passport
-			if err := d.decode(v, &passport); err != nil {
-				return err
-			}
-			list = append(list, passport)
-			return nil
-		})
+		return d.collectPassport(&list, passportBucket)
 	})
 	return list, err
 }
@@ -536,7 +531,6 @@ func (d *Database) identityDocumentInputToDocument(identityDocument *models.Iden
 // IdentityDocumentAdd adds new identity document
 func (d *Database) IdentityDocumentAdd(identityDocument models.IdentityDocumentInput) (document models.IdentityDocument, err error) {
 	err = d.db.Update(func(tx *bolt.Tx) error {
-
 		identitiesBucket := tx.Bucket([]byte(bucketIdentities))
 		if identitiesBucket == nil {
 			return ErrBucketNotFound(bucketIdentities)
@@ -553,15 +547,21 @@ func (d *Database) IdentityDocumentAdd(identityDocument models.IdentityDocumentI
 		}
 
 		d.identityDocumentInputToDocument(&identityDocument, &document)
-
-		if err := d.put(identityDocumentBucket, []byte(document.ID), &document); err != nil {
-			return err
-		}
-
-		return nil
+		return d.put(identityDocumentBucket, []byte(document.ID), &document)
 	})
 
 	return document, err
+}
+
+func (d *Database) collectIdentityDocument(list *[]models.IdentityDocument, idsBucket *bolt.Bucket) error {
+	return idsBucket.ForEach(func(k, v []byte) error {
+		var identityDocument models.IdentityDocument
+		if err := d.decode(v, &identityDocument); err != nil {
+			return err
+		}
+		*list = append(*list, identityDocument)
+		return nil
+	})
 }
 
 // IdentityDocumentList lists known identity documents for given identity
@@ -581,17 +581,20 @@ func (d *Database) IdentityDocumentList(identity string) (list []models.Identity
 		if contactBucket == nil {
 			return ErrBucketNotFound(bucketContacts)
 		}
-
-		return contactBucket.ForEach(func(k, v []byte) error {
-			var identityDocument models.IdentityDocument
-			if err := d.decode(v, &identityDocument); err != nil {
-				return err
-			}
-			list = append(list, identityDocument)
-			return nil
-		})
+		return d.collectIdentityDocument(&list, contactBucket)
 	})
 	return list, err
+}
+
+func (d *Database) collectPermissions(list *[]models.Permission, bucket *bolt.Bucket) error {
+	return bucket.ForEach(func(k, v []byte) error {
+		var permission models.Permission
+		if err := d.decode(v, &permission); err != nil {
+			return err
+		}
+		*list = append(*list, permission)
+		return nil
+	})
 }
 
 func (d *Database) PermissionList() (list []models.Permission, err error) {
@@ -600,85 +603,35 @@ func (d *Database) PermissionList() (list []models.Permission, err error) {
 		if permissionsBucket == nil {
 			return ErrBucketNotFound(bucketPermissionsGranted)
 		}
+		return d.collectPermissions(&list, permissionsBucket)
 
-		return permissionsBucket.ForEach(func(k, v []byte) error {
-			var permission models.Permission
-			if err := d.decode(v, &permission); err != nil {
-				return err
-			}
-			list = append(list, permission)
-			return nil
-		})
 	})
 	return list, err
-}
-
-func (d *Database) PrintTree() {
-	tree := treeprint.New()
-
-	err := d.db.View(func(tx *bolt.Tx) error {
-		permissionBucket := tx.Bucket([]byte(bucketPermissionsGranted))
-		if permissionBucket != nil {
-			branch := tree.AddBranch(bucketPermissionsGranted)
-			d.treeAddNode(permissionBucket, branch)
-		}
-
-		personalBucket := tx.Bucket([]byte(personalDetailsKey))
-		if personalBucket != nil {
-			tree.AddNode(personalDetailsKey)
-		}
-
-		identityBucket := tx.Bucket([]byte(bucketIdentities))
-		if identityBucket != nil {
-			branch := tree.AddBranch(bucketIdentities)
-			d.treeAddNode(identityBucket, branch)
-		}
-		return nil
-	})
-
-	if err != nil {
-		fmt.Println(err)
-		return
-	}
-	fmt.Println(tree)
-}
-
-func (d *Database) treeAddNode(bucket *bolt.Bucket, tree treeprint.Tree) {
-	_ = bucket.ForEach(func(k, v []byte) error {
-		subBucket := bucket.Bucket(k)
-		if subBucket == nil {
-			tree.AddNode(string(k))
-		} else {
-			subBranch := tree.AddBranch(string(k))
-			d.treeAddNode(subBucket, subBranch)
-		}
-		return nil
-	})
 }
 
 // IdentityDel removed identity from database
 // if identity with given id does not exist nil error is removed
 func (d *Database) IdentityDel(id string) (removedID string, err error) {
 	err = d.db.Update(func(tx *bolt.Tx) error {
-		identitiesBucket := tx.Bucket([]byte(bucketIdentities))
-		if identitiesBucket == nil {
+		bucket := tx.Bucket([]byte(bucketIdentities))
+		if bucket == nil {
 			return ErrBucketNotFound(bucketIdentities)
 		}
 
-		return identitiesBucket.Delete([]byte(id))
+		return bucket.Delete([]byte(id))
 	})
 	return id, err
 }
 
 func (d *Database) AddressDel(id string) (removedID string, err error) {
 	err = d.db.Update(func(tx *bolt.Tx) error {
-		identitiesBucket := tx.Bucket([]byte(bucketIdentities))
-		if identitiesBucket == nil {
+		idsForAddrDel := tx.Bucket([]byte(bucketIdentities))
+		if idsForAddrDel == nil {
 			return ErrBucketNotFound(bucketIdentities)
 		}
 
-		return identitiesBucket.ForEach(func(k, v []byte) error {
-			identityBucket := identitiesBucket.Bucket(k)
+		return idsForAddrDel.ForEach(func(k, v []byte) error {
+			identityBucket := idsForAddrDel.Bucket(k)
 			if identityBucket == nil {
 				return nil
 			}
@@ -696,13 +649,13 @@ func (d *Database) AddressDel(id string) (removedID string, err error) {
 
 func (d *Database) PassportDel(id string) (removedID string, err error) {
 	err = d.db.Update(func(tx *bolt.Tx) error {
-		identitiesBucket := tx.Bucket([]byte(bucketIdentities))
-		if identitiesBucket == nil {
+		idForPassportDel := tx.Bucket([]byte(bucketIdentities))
+		if idForPassportDel == nil {
 			return ErrBucketNotFound(bucketIdentities)
 		}
 
-		return identitiesBucket.ForEach(func(k, v []byte) error {
-			identityBucket := identitiesBucket.Bucket(k)
+		return idForPassportDel.ForEach(func(k, v []byte) error {
+			identityBucket := idForPassportDel.Bucket(k)
 			if identityBucket == nil {
 				return nil
 			}
@@ -720,13 +673,13 @@ func (d *Database) PassportDel(id string) (removedID string, err error) {
 
 func (d *Database) PaymentCardDel(id string) (removedID string, err error) {
 	err = d.db.Update(func(tx *bolt.Tx) error {
-		identitiesBucket := tx.Bucket([]byte(bucketIdentities))
-		if identitiesBucket == nil {
+		idsForPaymentDel := tx.Bucket([]byte(bucketIdentities))
+		if idsForPaymentDel == nil {
 			return ErrBucketNotFound(bucketIdentities)
 		}
 
-		return identitiesBucket.ForEach(func(k, v []byte) error {
-			identityBucket := identitiesBucket.Bucket(k)
+		return idsForPaymentDel.ForEach(func(k, v []byte) error {
+			identityBucket := idsForPaymentDel.Bucket(k)
 			if identityBucket == nil {
 				return nil
 			}
@@ -744,13 +697,13 @@ func (d *Database) PaymentCardDel(id string) (removedID string, err error) {
 
 func (d *Database) IdentityDocumentDel(id string) (removedID string, err error) {
 	err = d.db.Update(func(tx *bolt.Tx) error {
-		identitiesBucket := tx.Bucket([]byte(bucketIdentities))
-		if identitiesBucket == nil {
+		idForDocumentDel := tx.Bucket([]byte(bucketIdentities))
+		if idForDocumentDel == nil {
 			return ErrBucketNotFound(bucketIdentities)
 		}
 
-		return identitiesBucket.ForEach(func(k, v []byte) error {
-			identityBucket := identitiesBucket.Bucket(k)
+		return idForDocumentDel.ForEach(func(k, v []byte) error {
+			identityBucket := idForDocumentDel.Bucket(k)
 			if identityBucket == nil {
 				return nil
 			}
@@ -768,13 +721,13 @@ func (d *Database) IdentityDocumentDel(id string) (removedID string, err error) 
 
 func (d *Database) ContactDel(id string) (removedID string, err error) {
 	err = d.db.Update(func(tx *bolt.Tx) error {
-		identitiesBucket := tx.Bucket([]byte(bucketIdentities))
-		if identitiesBucket == nil {
+		idForContactDel := tx.Bucket([]byte(bucketIdentities))
+		if idForContactDel == nil {
 			return ErrBucketNotFound(bucketIdentities)
 		}
 
-		return identitiesBucket.ForEach(func(k, v []byte) error {
-			identityBucket := identitiesBucket.Bucket(k)
+		return idForContactDel.ForEach(func(k, v []byte) error {
+			identityBucket := idForContactDel.Bucket(k)
 			if identityBucket == nil {
 				return nil
 			}
@@ -790,6 +743,22 @@ func (d *Database) ContactDel(id string) (removedID string, err error) {
 	return id, err
 }
 
+func (d *Database) permissionInputToPermission(permission, added *models.Permission) {
+	added.TransactionID = permission.TransactionID
+	added.Expiration = permission.Expiration
+	added.Description = permission.Description
+	added.Title = permission.Title
+	added.RequesterPublicKey = permission.RequesterPublicKey
+	added.RequesterSignatureKey = permission.RequesterSignatureKey
+	added.RequesterSignature = permission.RequesterSignature
+	added.ResponderSignature = permission.ResponderSignature
+	added.PermissionNodes = permission.PermissionNodes
+	added.Revokable = permission.Revokable
+	added.ID = d.newID()
+	added.LawApplying = permission.LawApplying
+	added.LegalReliationships = permission.LegalReliationships
+}
+
 func (d *Database) PermissionAdd(permission models.Permission) (added models.Permission, err error) {
 	err = d.db.Update(func(tx *bolt.Tx) error {
 		permissionBucket := tx.Bucket([]byte(bucketPermissionsGranted))
@@ -797,20 +766,7 @@ func (d *Database) PermissionAdd(permission models.Permission) (added models.Per
 			return ErrBucketNotFound(bucketIdentities)
 		}
 
-		added = models.Permission{
-			TransactionID:         permission.TransactionID,
-			Expiration:            permission.Expiration,
-			Description:           permission.Description,
-			Title:                 permission.Title,
-			RequesterPublicKey:    permission.RequesterPublicKey,
-			RequesterSignatureKey: permission.RequesterSignatureKey,
-			RequesterSignature:    permission.RequesterSignature,
-			ResponderSignature:    permission.ResponderSignature,
-			PermissionNodes:       permission.PermissionNodes,
-			Revokable:             permission.Revokable,
-			ID:                    d.newID(),
-			LawApplying:           permission.LawApplying,
-		}
+		d.permissionInputToPermission(&permission, &added)
 
 		if err := d.put(permissionBucket, []byte(added.ID), &added); err != nil {
 			return err

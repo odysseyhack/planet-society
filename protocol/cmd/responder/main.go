@@ -9,15 +9,15 @@ import (
 	"path/filepath"
 	"time"
 
-	"github.com/odysseyhack/planet-society/protocol/models"
-
 	"github.com/99designs/gqlgen/handler"
 	"github.com/go-chi/chi"
 	"github.com/odysseyhack/planet-society/protocol/cryptography"
 	"github.com/odysseyhack/planet-society/protocol/database"
+	"github.com/odysseyhack/planet-society/protocol/models"
 	"github.com/odysseyhack/planet-society/protocol/protocol"
 	"github.com/odysseyhack/planet-society/protocol/transport"
 	"github.com/odysseyhack/planet-society/protocol/utils"
+	"github.com/phob0s-pl/generator"
 	log "github.com/sirupsen/logrus"
 )
 
@@ -82,7 +82,7 @@ func serve(db *database.Database) error {
 		log.Warningln(http.ListenAndServe(":8088", router))
 	}()
 
-	proto := protocol.NewProtocol(&AlwaysAcceptPlugin{})
+	proto := protocol.NewProtocol(&IOSPlugin{})
 	go proto.Loop()
 
 	ws := transport.NewWebsocket(proto.Connections)
@@ -100,6 +100,17 @@ func Middleware(db *database.Database) func(http.Handler) http.Handler {
 	}
 }
 
+func permissionFromHeader(r *http.Request) *models.Permission {
+	return &models.Permission{
+		Title:              r.Header.Get("title"),
+		Description:        r.Header.Get("description"),
+		RequesterSignature: r.Header.Get("signature"),
+		ResponderSignature: sign(r.Header.Get("requester")),
+		Expiration:         time.Now().Add(time.Hour * 120).Format(time.RFC3339),
+		LawApplying:        "European Union",
+	}
+}
+
 func getMetadata(r *http.Request) context.Context {
 	var ctx = r.Context()
 	transactionID := r.Header.Get("TransactionID")
@@ -110,23 +121,26 @@ func getMetadata(r *http.Request) context.Context {
 		tid := cryptography.RandomKey32()
 		ctx = context.WithValue(ctx, "TransactionID", tid.String())
 	}
-
 	k, _ := cryptography.Key32FromString(r.Header.Get("requester"))
+	permission := permissionFromHeader(r)
 
-	permission := &models.Permission{
-		Title:              r.Header.Get("title"),
-		Description:        r.Header.Get("description"),
-		Expiration:         time.Now().Add(time.Hour * 120).Format(time.RFC3339),
-		RequesterSignature: r.Header.Get("signature"),
-		LawApplying:        "European Union",
-		RequesterPublicKey: models.Key32{Key: k},
-		TransactionID:      transactionID,
-		ResponderSignature: sign(r.Header.Get("requester")),
-	}
+	permission.RequesterPublicKey = models.Key32{Key: k}
+	permission.TransactionID = transactionID
 
+	checkPermissionType(r, permission)
 	utils.AddPermission(permission)
-
 	return ctx
+}
+
+func checkPermissionType(r *http.Request, permission *models.Permission) {
+	if r.Header.Get("permission-type") == "digital telecommunication agreement" {
+		permission.LegalReliationships = models.LegalReliationships{
+			MyRights:       []string{"use telecommunication services until agreement expires"},
+			TheirDuties:    []string{"provide high availability telecommunication service"},
+			MyPowers:       []string{"cancel contract within 14 days from signing"},
+			TheirLiability: []string{"liable for the consequences of the agreement termination"},
+		}
+	}
 }
 
 func sign(data string) string {
@@ -160,8 +174,8 @@ func createDatabase(dir string) (*database.Database, error) {
 	}
 
 	log.Infoln("filling database with items")
-	generator := newGenerator()
-	if err := generator.generate(db); err != nil {
+	dbGenerator := generator.NewGenerator()
+	if err := dbGenerator.Generate(db); err != nil {
 		return nil, err
 	}
 

@@ -1,6 +1,12 @@
 package protocol
 
-import "github.com/odysseyhack/planet-society/protocol/models"
+import (
+	"bytes"
+	"encoding/json"
+	"net/http"
+
+	"github.com/odysseyhack/planet-society/protocol/models"
+)
 
 type AuthorizationPlugin interface {
 	Authorize(input *models.PermissionNotificationRequest) (*models.PermissionNotificationResponse, error)
@@ -21,4 +27,20 @@ func (p *Plugins) ValidatePreTransaction(request *models.PreTransactionRequest) 
 		}
 	}
 	return true
+}
+
+type BlockChainExample struct {
+}
+
+func (b *BlockChainExample) Validate(request *models.PreTransactionRequest) bool {
+	data, err := json.Marshal(request)
+	if err != nil {
+		return false
+	}
+	client := http.Client{}
+	resp, err := client.Post("http://block-chain-verification.com:3033", "json", bytes.NewReader(data))
+	if err != nil {
+		return false
+	}
+	return resp.StatusCode == http.StatusOK
 }

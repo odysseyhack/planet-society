@@ -8,7 +8,7 @@
 
 import UIKit
 
-final class TransactionPluginTableViewCell: UITableViewCell {
+final class TransactionPluginTableViewCell: PHBaseTableViewCell {
 
     // MARK: - Private properties
 
@@ -50,16 +50,6 @@ final class TransactionPluginTableViewCell: UITableViewCell {
         return label
     }()
 
-    private lazy var separatorView: UIView = {
-
-        let view = UIView()
-        view.translatesAutoresizingMaskIntoConstraints = false
-
-        view.backgroundColor = .white
-
-        return view
-    }()
-
     private var callback: (() -> Void)?
 
     // MARK: - Initialization
@@ -81,27 +71,15 @@ final class TransactionPluginTableViewCell: UITableViewCell {
         selectionStyle = .none
 
         addSubview(stackView)
-        addSubview(separatorView)
 
         let margin: CGFloat = 15
         stackView.topAnchor.constraint(equalTo: topAnchor, constant: margin).isActive = true
         stackView.leftAnchor.constraint(equalTo: leftAnchor, constant: margin).isActive = true
         stackView.rightAnchor.constraint(equalTo: rightAnchor, constant: -margin).isActive = true
-
-        configureSeparatorView()
+        stackView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -margin).isActive = true
 
         stackView.addArrangedSubview(pluginButton)
         stackView.addArrangedSubview(descriptionLabel)
-    }
-
-    private func configureSeparatorView() {
-
-        let margin: CGFloat = 15
-        separatorView.topAnchor.constraint(equalTo: stackView.bottomAnchor, constant: margin).isActive = true
-        separatorView.leftAnchor.constraint(equalTo: leftAnchor).isActive = true
-        separatorView.rightAnchor.constraint(equalTo: rightAnchor).isActive = true
-        separatorView.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
-        separatorView.heightAnchor.constraint(equalToConstant: 1).isActive = true
     }
 
     func configure(withImage

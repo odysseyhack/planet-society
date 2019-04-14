@@ -8,7 +8,7 @@
 
 import UIKit
 
-final class TransactionDescriptionTableViewCell: UITableViewCell {
+final class TransactionDescriptionTableViewCell: PHBaseTableViewCell {
 
     // MARK: - Private properties
 
@@ -46,16 +46,6 @@ final class TransactionDescriptionTableViewCell: UITableViewCell {
         return label
     }()
 
-    private lazy var separatorView: UIView = {
-
-        let view = UIView()
-        view.translatesAutoresizingMaskIntoConstraints = false
-
-        view.backgroundColor = PHColors.grey.withAlphaComponent(0.5)
-
-        return view
-    }()
-
     // MARK: - Initialization
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -77,7 +67,6 @@ final class TransactionDescriptionTableViewCell: UITableViewCell {
         addSubview(dateLabel)
         addSubview(titleLabel)
         addSubview(descriptionLabel)
-        addSubview(separatorView)
 
         let spacing: CGFloat = 8
         let margin: CGFloat = 20
@@ -92,12 +81,7 @@ final class TransactionDescriptionTableViewCell: UITableViewCell {
         descriptionLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: spacing).isActive = true
         descriptionLabel.leftAnchor.constraint(equalTo: leftAnchor, constant: margin).isActive = true
         descriptionLabel.rightAnchor.constraint(equalTo: rightAnchor, constant: -margin).isActive = true
-
-        separatorView.topAnchor.constraint(equalTo: descriptionLabel.bottomAnchor, constant: margin).isActive = true
-        separatorView.leftAnchor.constraint(equalTo: leftAnchor).isActive = true
-        separatorView.rightAnchor.constraint(equalTo: rightAnchor).isActive = true
-        separatorView.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
-        separatorView.heightAnchor.constraint(equalToConstant: 1).isActive = true
+        descriptionLabel.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -margin).isActive = true
     }
 
     func configure(withImage

@@ -15,6 +15,7 @@ import (
 type Websocket struct {
 	upgrader   *websocket.Upgrader
 	connection chan protocol.Conn
+	server     *http.Server
 }
 
 func NewWebsocket(connection chan protocol.Conn) *Websocket {
@@ -28,7 +29,7 @@ func (ws *Websocket) Listen(addr string) error {
 	router := mux.NewRouter()
 	router.HandleFunc("/", ws.client)
 
-	server := &http.Server{
+	ws.server = &http.Server{
 		Addr: addr,
 		// todo: review timeouts
 		WriteTimeout: time.Second * 15,
@@ -37,11 +38,15 @@ func (ws *Websocket) Listen(addr string) error {
 		Handler:      router,
 	}
 
-	if err := server.ListenAndServe(); err != http.ErrServerClosed {
+	if err := ws.server.ListenAndServe(); err != http.ErrServerClosed {
 		return err
 	}
 
 	return nil
+}
+
+func (ws *Websocket) Stop() error {
+	return ws.server.Close()
 }
 
 func (ws *Websocket) client(w http.ResponseWriter, r *http.Request) {

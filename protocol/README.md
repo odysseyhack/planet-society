@@ -1,3 +1,19 @@
+## building
+
+To build binaries just run Makefile:
+```bash
+make
+```
+
+
+Running the protocol:
+```bash
+./responder
+./requester
+```
+
+## Example queries
+
 Query for shipment:
 
 ```bash

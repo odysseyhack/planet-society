@@ -67,10 +67,10 @@ extension TransactionOverviewViewController: PHTableViewControllerDelegate {
 
         switch item {
         case .notification(let type, let text):
-
             let items: [PHTableViewViewCellType]
             switch type {
             case .warning:
+
                 items = transaction.analysis.enumerated().map {
 
                     let image: UIImage?
@@ -93,6 +93,12 @@ extension TransactionOverviewViewController: PHTableViewControllerDelegate {
                     title: text,
                     items: items)
 
+                items = transaction.analysis.map { .description(
+                    date: Date(),
+                    title: "",
+                    description: $0) }
+                let viewController = PHTableViewController(title: text, items: items)
+
                 let notification = Notification(
                     name: Notification.Name("show warning"),
                     object: viewController,
@@ -106,9 +112,7 @@ extension TransactionOverviewViewController: PHTableViewControllerDelegate {
                     title: "",
                     description: $0) }
 
-                 let viewController = PHTableViewController(
-                    title: text,
-                    items: items)
+                 let viewController = PHTableViewController(title: text, items: items)
 
                  let notification = Notification(
                     name: Notification.Name("show verification"),
@@ -117,14 +121,13 @@ extension TransactionOverviewViewController: PHTableViewControllerDelegate {
                  NotificationCenter.default.post(notification)
             }
 
+
         case .transactionItem(let item, _):
+
             if let index = self.transaction.items.index(of: item) {
                 transaction.items[index].isAccepted = true
             }
-//            validateSelection()
-
-        default:
-            break
+        default: break
         }
     }
 

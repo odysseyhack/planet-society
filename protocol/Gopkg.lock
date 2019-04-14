@@ -82,6 +82,26 @@
   version = "v1.0.2"
 
 [[projects]]
+  branch = "master"
+  digest = "1:dcdfe5c4020c67b59502416295549a749eef559e57eb9022d6fad0c5fcfa21f0"
+  name = "github.com/odysseyhack/planet-society"
+  packages = [
+    "protocol/cryptography",
+    "protocol/database",
+    "protocol/models",
+  ]
+  pruneopts = "UT"
+  revision = "e3f5930f6bdfffab838a1a81e7bf41ee4e57252f"
+
+[[projects]]
+  branch = "master"
+  digest = "1:29f724343f30c6f403aed87cdce23d010394da60aba85ad85b431494c96a81db"
+  name = "github.com/phob0s-pl/generator"
+  packages = ["."]
+  pruneopts = "UT"
+  revision = "142bcea48c3cb6d119cb01bdaf8dbcff4833cd54"
+
+[[projects]]
   digest = "1:fd61cf4ae1953d55df708acb6b91492d538f49c305b364a014049914495db426"
   name = "github.com/sirupsen/logrus"
   packages = ["."]
@@ -104,14 +124,6 @@
   pruneopts = "UT"
   revision = "05741cdb0871330d8bc980d4afd21ab34eceee83"
   version = "v1.1.2"
-
-[[projects]]
-  branch = "master"
-  digest = "1:fbbce3ff584585118f3c270df893dea88eb3e7ddbece46ea322410af9ae27829"
-  name = "github.com/xlab/treeprint"
-  packages = ["."]
-  pruneopts = "UT"
-  revision = "a009c3971eca89777614839eb7f69abed3ea3959"
 
 [[projects]]
   branch = "master"
@@ -157,10 +169,11 @@
     "github.com/go-chi/chi",
     "github.com/gorilla/mux",
     "github.com/gorilla/websocket",
+    "github.com/phob0s-pl/generator",
     "github.com/sirupsen/logrus",
     "github.com/vektah/gqlparser",
     "github.com/vektah/gqlparser/ast",
-    "github.com/xlab/treeprint",
+    "github.com/vektah/gqlparser/parser",
     "golang.org/x/crypto/blake2b",
     "golang.org/x/crypto/nacl/box",
     "golang.org/x/crypto/nacl/secretbox",

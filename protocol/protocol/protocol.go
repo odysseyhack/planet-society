@@ -206,16 +206,10 @@ func sendTransactionReply(c Conn, msg *Message, reply *models.TransactionReply) 
 	if err := gob.NewEncoder(&buffer).Encode(reply); err != nil {
 		return
 	}
-
 	_ = c.Write(&Message{
-		Header: Header{
-			Topic:       TopicTransactionReply,
-			Destination: msg.Header.Source,
-			Source:      msg.Header.Destination,
-		},
-		Body: Body{
-			Payload: buffer.Bytes(),
-		},
+		Header: Header{Topic: TopicTransactionReply,
+			Destination: msg.Header.Source, Source: msg.Header.Destination,
+		}, Body: Body{Payload: buffer.Bytes()},
 	})
 }
 
@@ -258,6 +252,17 @@ type Request struct {
 	Query string `json:"query"`
 }
 
+func fillHeader(request *http.Request, transactionRequest *models.TransactionRequest, entry *Entry) {
+	request.Header.Add("permission-type", transactionRequest.Type)
+	request.Header.Add("title", transactionRequest.Title)
+	request.Header.Add("description", transactionRequest.Description)
+	request.Header.Add("TransactionID", transactionRequest.TransactionID.Key.String())
+	request.Header.Add("signature", transactionRequest.Signature)
+	request.Header.Add("requester", entry.RequesterPublicKey.String())
+	request.Header.Add("requester-name", entry.RequesterName)
+	request.Header.Set("Content-Type", "application/json")
+}
+
 func post(query string, transactionRequest *models.TransactionRequest, entry *Entry) (string, error) {
 	r := Request{
 		Query: query,
@@ -273,33 +278,30 @@ func post(query string, transactionRequest *models.TransactionRequest, entry *En
 	if err != nil {
 		return "", err
 	}
+	fillHeader(request, transactionRequest, entry)
 
-	request.Header.Add("title", transactionRequest.Title)
-	request.Header.Add("description", transactionRequest.Description)
-	request.Header.Add("TransactionID", transactionRequest.TransactionID.Key.String())
-	request.Header.Add("signature", transactionRequest.Signature)
-	request.Header.Add("requester", entry.RequesterPublicKey.String())
-	request.Header.Add("requester-name", entry.RequesterName)
-	request.Header.Set("Content-Type", "application/json")
 	rawResponse, err := client.Do(request)
 	if err != nil {
 		return "", err
 	}
 
-	content, err := ioutil.ReadAll(rawResponse.Body)
+	return handlePostResponse(rawResponse)
+}
+
+func handlePostResponse(response *http.Response) (string, error) {
+	content, err := ioutil.ReadAll(response.Body)
 	if err != nil {
 		return "", err
 	}
 
 	var reply Reply
 	if err := json.Unmarshal(content, &reply); err != nil {
-		log.Warningln("failed to unmarshal reply from permission:", err)
+		return "", err
 	}
 
 	if len(reply.Errors) > 0 {
 		return "", fmt.Errorf("query failed: %v", reply.Errors)
 	}
-
 	return dataReplyTorString(reply.Data)
 }
 

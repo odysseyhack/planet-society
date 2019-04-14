@@ -45,20 +45,21 @@ const (
 	requester        = "John Smith"
 )
 
-var (
+type Context struct {
 	keychain           *cryptography.Keychain
 	transactionID      *cryptography.Key32
 	responderPublicKey *cryptography.Key32
-)
+}
 
 func main() {
 	fmt.Println("-> generating transaction context")
-	if err := createContext(); err != nil {
+	ctx, err := createContext()
+	if err != nil {
 		fail("-> generating transaction context failed:", err)
 	}
 	fmt.Println("-> connecting to the responder")
 
-	conn, err := connectToResponder()
+	conn, err := connectToResponder(ctx)
 	if err != nil {
 		fail("-> failed to connect to responder")
 	}
@@ -70,18 +71,18 @@ func main() {
 		}
 	}()
 
-	if err := preTransact(conn); err != nil {
+	if err := preTransact(conn, ctx); err != nil {
 		fmt.Println("-> pre transaction failed:", err)
 		os.Exit(1)
 	}
 
-	if err := transact(conn); err != nil {
+	if err := transact(conn, ctx); err != nil {
 		fmt.Println("-> transaction failed:", err)
 		os.Exit(1)
 	}
 }
 
-func connectToResponder() (*Transport, error) {
+func connectToResponder(ctx *Context) (*Transport, error) {
 	u := url.URL{Scheme: "ws", Host: responderAddress, Path: "/"}
 	conn, _, err := websocket.DefaultDialer.Dial(u.String(), nil)
 	if err != nil {
@@ -91,30 +92,27 @@ func connectToResponder() (*Transport, error) {
 	return &Transport{&transport.Conn{Conn: conn}}, err
 }
 
-func createContext() error {
+func createContext() (*Context, error) {
 	k, err := cryptography.OneShotKeychain()
 	if err != nil {
-		return err
+		return nil, err
 	}
 
 	responderKey, err := utils.ReadKeyFromDir()
 	if err != nil {
-		return err
+		return nil, err
 	}
 
 	tID := cryptography.RandomKey32()
-	keychain = k
-	transactionID = &tID
-	responderPublicKey = &responderKey
-
-	fmt.Println("-> using responder public key:", responderKey.String())
-	fmt.Println("-> using unique transaction ID:", transactionID.String())
-
-	return nil
+	return &Context{
+		keychain:           k,
+		transactionID:      &tID,
+		responderPublicKey: &responderKey,
+	}, nil
 }
 
 func fail(a ...interface{}) {
-	fmt.Println(a)
+	fmt.Println(a...)
 	os.Exit(1)
 }
 
@@ -122,23 +120,14 @@ type Transport struct {
 	conn *transport.Conn
 }
 
-func (t *Transport) SendMessage(topic cryptography.Key32, payload interface{}) error {
+func (t *Transport) SendMessage(topic cryptography.Key32, payload interface{}, ctx *Context) error {
 	var buffer bytes.Buffer
 
 	if err := gob.NewEncoder(&buffer).Encode(payload); err != nil {
 		return err
 	}
 
-	msg := &protocol.Message{
-		Header: protocol.Header{
-			Source:      keychain.MainPublicKey,
-			Destination: *responderPublicKey,
-			Topic:       topic,
-		},
-		Body: protocol.Body{
-			Payload: buffer.Bytes(),
-		},
-	}
+	msg := &protocol.Message{Header: protocol.Header{Source: ctx.keychain.MainPublicKey, Destination: *ctx.responderPublicKey, Topic: topic}, Body: protocol.Body{Payload: buffer.Bytes()}}
 	return t.conn.Write(msg)
 }
 
@@ -150,67 +139,71 @@ func (t *Transport) Read() (*protocol.Message, error) {
 	return t.conn.Read()
 }
 
-func preTransact(conn *Transport) error {
-	fmt.Println("-> sending pre transaction request")
+func makePretransactionRequest(ctx *Context) *models.PreTransactionRequest {
+	return &models.PreTransactionRequest{
+		TransactionID:      models.Key32{Key: *ctx.transactionID},
+		SignaturePublicKey: models.Key32{Key: ctx.keychain.SignaturePublicKey},
+		MainPublicKey:      models.Key32{Key: ctx.keychain.MainPublicKey},
+		Requester:          "John Smith",
+	}
+}
 
-	if err := conn.SendMessage(
-		protocol.TopicPreTransactionRequest,
-		&models.PreTransactionRequest{
-			TransactionID:      models.Key32{Key: *transactionID},
-			SignaturePublicKey: models.Key32{Key: keychain.SignaturePublicKey},
-			MainPublicKey:      models.Key32{Key: keychain.MainPublicKey},
-			Requester:          "John Smith",
-		},
-	); err != nil {
+func decodePreTrasanctionReply(data []byte) (*models.PreTransactionReply, error) {
+	var preTransactionReply models.PreTransactionReply
+	if err := gob.NewDecoder(bytes.NewBuffer(data)).Decode(&preTransactionReply); err != nil {
+		return nil, fmt.Errorf("pre transaction reply invalid payload: %s", err)
+	}
+	return &preTransactionReply, nil
+}
+
+func preTransact(conn *Transport, ctx *Context) error {
+	if err := conn.SendMessage(protocol.TopicPreTransactionRequest, makePretransactionRequest(ctx), ctx); err != nil {
 		return err
 	}
-
 	msg, err := conn.Read()
 	if err != nil {
 		return err
 	}
-
-	var preTransactionReply models.PreTransactionReply
-	if err := gob.NewDecoder(bytes.NewBuffer(msg.Body.Payload)).Decode(&preTransactionReply); err != nil {
-		return fmt.Errorf("pre transaction reply invalid payload: %s", err)
+	preTransactionReply, err := decodePreTrasanctionReply(msg.Body.Payload)
+	if err != nil {
+		return err
 	}
-
 	if !preTransactionReply.Success {
 		return fmt.Errorf("pre transaction was not successful")
 	}
-	fmt.Println("-> received positive pre transaction response")
 	return nil
 }
 
-func sign() (string, error) {
-	signer := cryptography.NewSigner(keychain.SignaturePrivateKey, keychain.SignaturePublicKey)
+func sign(ctx *Context) (string, error) {
+	signer := cryptography.NewSigner(ctx.keychain.SignaturePrivateKey, ctx.keychain.SignaturePublicKey)
 	signature, err := signer.Sign([]byte(query))
 	return hex.EncodeToString(signature), err
 }
 
-func createTransactMessage() (*models.TransactionRequest, error) {
-	signature, err := sign()
+func createTransactMessage(ctx *Context) (*models.TransactionRequest, error) {
+	signature, err := sign(ctx)
 	if err != nil {
 		return nil, err
 	}
 
 	return &models.TransactionRequest{
-		TransactionID: models.Key32{Key: *transactionID},
+		TransactionID: models.Key32{Key: *ctx.transactionID},
 		Query:         query,
 		Title:         "Provide permission for completing",
 		Description:   "T-mobile monthly plan(unlimited data), 65 euro, iPhone XR 256GB",
 		LawApplying:   "European Union",
+		Type:          "digital telecommunication agreement",
 		Signature:     signature,
 	}, nil
 }
 
-func transact(conn *Transport) error {
-	smsg, err := createTransactMessage()
+func transact(conn *Transport, ctx *Context) error {
+	smsg, err := createTransactMessage(ctx)
 	if err != nil {
 		return err
 	}
 	fmt.Println("-> sending transaction request")
-	if err := conn.SendMessage(protocol.TopicTransactionRequest, smsg); err != nil {
+	if err := conn.SendMessage(protocol.TopicTransactionRequest, smsg, ctx); err != nil {
 		return err
 	}
 
@@ -219,7 +212,10 @@ func transact(conn *Transport) error {
 	if err != nil {
 		return err
 	}
+	return handleTransactReply(msg)
+}
 
+func handleTransactReply(msg *protocol.Message) error {
 	var transactionReply models.TransactionReply
 	if err := gob.NewDecoder(bytes.NewBuffer(msg.Body.Payload)).Decode(&transactionReply); err != nil {
 		return err
@@ -232,6 +228,7 @@ func transact(conn *Transport) error {
 	if transactionReply.Content == nil {
 		return fmt.Errorf("-> transaction failed: content is nil")
 	}
+
 	PrintReply(&transactionReply)
 	return nil
 }
