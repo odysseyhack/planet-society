@@ -46,6 +46,7 @@ struct ReloadedItems {
             type: .verification,
             text: "This company is verified"),
         .description(
+            image: nil,
             date: Date(),
             title: "Personal details",
             description: "Please fill out your personal details."),

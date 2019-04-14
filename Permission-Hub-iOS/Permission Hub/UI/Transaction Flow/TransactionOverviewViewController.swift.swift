@@ -89,14 +89,6 @@ extension TransactionOverviewViewController: PHTableViewControllerDelegate {
                         description: $0.1)
                 }
 
-                let viewController = PHTableViewController(
-                    title: text,
-                    items: items)
-
-                items = transaction.analysis.map { .description(
-                    date: Date(),
-                    title: "",
-                    description: $0) }
                 let viewController = PHTableViewController(title: text, items: items)
 
                 let notification = Notification(
