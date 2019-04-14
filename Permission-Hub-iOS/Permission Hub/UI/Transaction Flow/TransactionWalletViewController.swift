@@ -10,13 +10,34 @@ import UIKit
 
 final class TransactionWalletViewController: PHTableViewController {
 
+    // MARK: - Initialization
+
+    init() {
+
+        let items: [PHTableViewViewCellType] = [
+//            PHTableViewViewCellType.plugin(image: <#T##UIImage?#>, text: <#T##String#>)
+        ]
+
+        super.init(items: items)
+    }
+
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
     // MARK: - Life cycle
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+
+        navigationItem.title = "My Permission Wallet"
+    }
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
 
         // populate view with mock data
-        let data = "{\"transactionID\":\"b80db272b05b9ad007c6833dac68b95ca907594946b2da1929d1f8f95d973b5c\",\"item\":[{\"Item\":\"Personal details\",\"Fields\":[\"name\",\"surname\",\"birth_date\",\"email\",\"BSN\"]},{\"Item\":\"Passport\",\"Fields\":[\"number\",\"expiration\",\"country\"]},{\"Item\":\"Banking details\",\"Fields\":[\"IBAN\",\"bank\",\"name\"]}],\"title\":\"Provide permission for completing\",\"description\":\"T-mobile monthly plan(unlimited data), 65 euro, iPhone XR 256GB\",\"verification\":[\"digid.nl\",\"planet-blockchain\",\"kvk\"],\"date\":\"2019-04-13T15:51:57+02:00\",\"requesterName\":\"John Smith\",\"RequesterPublicKey\":\"69093eef7426963f2ef0f68fb73e355b7898ddb04a4fad769a96b41ffc824c1c\",\"analysis\":[\"personal data is GDPR protected data\",\"banking details is sensitive data\"]}".data(using: .utf8)!
+        let data = "{\"transactionID\":\"b80db272b05b9ad007c6833dac68b95ca907594946b2da1929d1f8f95d973b5c\",\"item\":[{\"Item\":\"Access to your Personal Details\",\"Fields\":[\"Name\",\"Surname\",\"Date of birth\",\"Email\",\"BSN\"]},{\"Item\":\"Legal identity (passport)\",\"Fields\":[\"Number\",\"Expiration date\",\"Country of issue\"]},{\"Item\":\"Newsletter\",\"Fields\":[\"Email address for marketing purposes\"]},{\"Item\":\"Payment information\",\"Fields\":[\"IBAN number\",\"Bank name\",\"Payment details\"]},{\"Item\":\"Subscription contract 24 months\",\"Fields\":[\"Read and accept the terms\"]}],\"title\":\"Provide permission for completing\",\"description\":\"T-mobile monthly plan(unlimited data), 65 euro, iPhone XR 256GB\",\"verification\":[\"digid.nl\",\"planet-blockchain\",\"kvk\"],\"date\":\"2019-04-13T15:51:57+02:00\",\"requesterName\":\"John Smith\",\"RequesterPublicKey\":\"69093eef7426963f2ef0f68fb73e355b7898ddb04a4fad769a96b41ffc824c1c\",\"analysis\":[\"personal data is GDPR protected data\",\"banking details is sensitive data\"]}".data(using: .utf8)!
         let decoder = JSONDecoder()
         decoder.dateDecodingStrategy = .iso8601
         let transaction = try! decoder.decode(TransactionNotification.self, from: data)
