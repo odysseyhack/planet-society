@@ -21,6 +21,7 @@ final class FormTextInputCell: UITableViewCell {
         textField.tintColor = PHColors.greyishBrown
         textField.clearButtonMode = .whileEditing
         textField.backgroundColor = PHColors.formGray
+        textField.isUserInteractionEnabled = false
 
         textField.addTarget(
             self,
