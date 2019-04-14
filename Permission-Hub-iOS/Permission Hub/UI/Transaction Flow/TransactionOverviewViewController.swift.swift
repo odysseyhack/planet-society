@@ -14,9 +14,13 @@ final class TransactionOverviewViewController: PHTableViewController {
 
     private var transaction: TransactionNotification
 
+    override var shouldDisplayFooter: Bool {
+        return true
+    }
+
     // MARK: - Initialization
 
-    init(transaction: TransactionNotification) {
+    init(transaction: TransactionNotification, isFinal: Bool) {
         self.transaction = transaction
 
         var items = [PHTableViewViewCellType]()
@@ -32,7 +36,7 @@ final class TransactionOverviewViewController: PHTableViewController {
             description: transaction.description))
 
         transaction.items.forEach {
-            items.append(.transactionItem(item: $0))
+            items.append(.transactionItem(item: $0, isChecked: isFinal))
         }
 
         super.init(
@@ -95,7 +99,7 @@ extension TransactionOverviewViewController: PHTableViewControllerDelegate {
                  NotificationCenter.default.post(notification)
             }
 
-        case .transactionItem(let item):
+        case .transactionItem(let item, _):
             if let index = self.transaction.items.index(of: item) {
                 transaction.items[index].isAccepted = true
             }
@@ -109,7 +113,7 @@ extension TransactionOverviewViewController: PHTableViewControllerDelegate {
     func didDeselect(item: PHTableViewViewCellType) {
 
         switch item {
-        case .transactionItem(let item):
+        case .transactionItem(let item, _):
             if let index = self.transaction.items.index(of: item) {
                 transaction.items[index].isAccepted = false
             }

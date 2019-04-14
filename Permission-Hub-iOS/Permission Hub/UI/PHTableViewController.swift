@@ -28,7 +28,7 @@ enum PHTableViewViewCellType {
     case warning(text: String)
     case description(date: Date, title: String, description: String)
     case plugin(image: UIImage?, text: String)
-    case transactionItem(item: TransactionItem)
+    case transactionItem(item: TransactionItem, isChecked: Bool)
     case selectionDisclosure(text: String)
     case selection(options: [String])
     case form(placeholder: String, text: String?, keyboardType: UIKeyboardType)
@@ -98,6 +98,10 @@ class PHTableViewController: UIViewController {
     }()
 
     // MARK: - Properties
+
+    var shouldDisplayFooter: Bool {
+        return false
+    }
 
     weak var delegate: PHTableViewControllerDelegate?
 
@@ -199,7 +203,7 @@ extension PHTableViewController: UITableViewDataSource {
 
             return cell
 
-        case .transactionItem(let item):
+        case .transactionItem(let item, let isChecked):
 
             let cell = tableView.dequeueReusableCell(
                 withIdentifier: String(describing: TransactionTableViewCell.self),
@@ -208,7 +212,8 @@ extension PHTableViewController: UITableViewDataSource {
             let viewModel = TransactionTableViewCellViewModel(
                 image: UIImage(),
                 title: item.item,
-                subtitle: (item.fields as NSArray).componentsJoined(by: ", "))
+                subtitle: (item.fields as NSArray).componentsJoined(by: ", "),
+                shouldDisplayCheckmark: isChecked)
             cell.configure(withViewModel: viewModel)
 
             return cell
@@ -281,6 +286,19 @@ extension PHTableViewController: UITableViewDataSource {
 
             return cell
         }
+    }
+
+    func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+
+        let cell = UITableViewCell(style: .default, reuseIdentifier: nil)
+
+        if shouldDisplayFooter {
+            cell.textLabel?.font = PHFonts.regular(ofSize: 10)
+            cell.textLabel?.textColor = PHColors.red
+            cell.textLabel?.text = "* mandatory permissions"
+        }
+
+        return cell
     }
 
     // MARK: - Selectors

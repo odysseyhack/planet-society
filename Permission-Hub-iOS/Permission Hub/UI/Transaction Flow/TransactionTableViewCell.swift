@@ -12,6 +12,19 @@ struct TransactionTableViewCellViewModel {
     let image: UIImage?
     let title: String
     let subtitle: String
+    let shouldDisplayCheckmark: Bool
+
+    init(
+        image: UIImage?,
+        title: String,
+        subtitle: String,
+        shouldDisplayCheckmark: Bool = false) {
+
+        self.image = image
+        self.title = title
+        self.subtitle = subtitle
+        self.shouldDisplayCheckmark = shouldDisplayCheckmark
+    }
 }
 
 final class TransactionTableViewCell: UITableViewCell {
@@ -98,11 +111,11 @@ final class TransactionTableViewCell: UITableViewCell {
         button.widthAnchor.constraint(equalToConstant: 44).isActive = true
         button.heightAnchor.constraint(equalToConstant: 44).isActive = true
 
-        let unselectedImage = UIImage(named: "unselected")
-        button.setImage(unselectedImage, for: .normal)
-
         let selectedImage = UIImage(named: "checkmark")
-        button.setImage(selectedImage, for: .selected)
+        button.setImage(selectedImage, for: .normal)
+
+        // hidden by default
+        button.isHidden = true
 
         return button
     }()
@@ -172,5 +185,9 @@ final class TransactionTableViewCell: UITableViewCell {
 
         itemTitleLabel.text = viewModel.title
         itemSubtitleLabel.text = viewModel.subtitle
+
+        if viewModel.shouldDisplayCheckmark {
+            selectionButton.isHidden = false
+        }
     }
 }

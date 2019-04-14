@@ -219,7 +219,7 @@ final class TransactionFlowViewController: UIViewController {
     private func continueFlow() {
 
         guard currentStepIndex < steps.count else {
-            print("finished!")
+            respondToTransaction(isAccepted: true)
             return
         }
 

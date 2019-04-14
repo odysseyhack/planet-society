@@ -9,7 +9,7 @@
 import UIKit
 
 enum TransactionFlowStep: CaseIterable {
-    case overview, personalDetails, identityDocuments, paymentMethod, bankVerification
+    case overview, personalDetails, identityDocuments, paymentMethod, bankVerification, newsletter, legalTerms, terms1, terms2, finalOverView
 
     var title: String? {
         switch self {
@@ -23,13 +23,23 @@ enum TransactionFlowStep: CaseIterable {
             return "Payment method"
         case .bankVerification:
             return "Bank verification"
+        case .newsletter:
+            return "Newsletter subscription"
+        case .legalTerms:
+            return "Legal terms"
+        case .terms1:
+            return ""
+        case .terms2:
+            return ""
+        case .finalOverView:
+            return ""
         }
     }
 
     func viewController(withTransaction transaction: TransactionNotification) -> UIViewController {
         switch self {
         case .overview:
-            return TransactionOverviewViewController(transaction: transaction)
+            return TransactionOverviewViewController(transaction: transaction, isFinal: false)
         case .personalDetails:
             return TransactionPersonalDetailsViewController(transaction: transaction)
         case .identityDocuments:
@@ -38,6 +48,16 @@ enum TransactionFlowStep: CaseIterable {
             return TransactionPaymentMethodViewController(transaction: transaction)
         case .bankVerification:
             return TransactionPaymentConfirmationViewController(transaction: transaction)
+        case .newsletter:
+            return TransactionNewsletterSubscriptionViewController(transaction: transaction)
+        case .legalTerms:
+            return TransactionLegalTermsViewController(transaction: transaction)
+        case .terms1:
+            return TransactionTermsViewController(fileName: "terms1")
+        case .terms2:
+            return TransactionTermsViewController(fileName: "terms2")
+        case .finalOverView:
+            return TransactionOverviewViewController(transaction: transaction, isFinal: true)
         }
     }
 }

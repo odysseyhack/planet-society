@@ -21,6 +21,11 @@
 		4146819922628F6A0094311A /* TransactionPaymentConfirmationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4146819822628F6A0094311A /* TransactionPaymentConfirmationViewController.swift */; };
 		4146819B226299C90094311A /* PHActivityIndicatorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4146819A226299C90094311A /* PHActivityIndicatorViewController.swift */; };
 		4146819D2262A18D0094311A /* TransactionOptionsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4146819C2262A18D0094311A /* TransactionOptionsTableViewCell.swift */; };
+		414681A12262ADF20094311A /* TransactionNewsletterSubscriptionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 414681A02262ADF20094311A /* TransactionNewsletterSubscriptionViewController.swift */; };
+		414681A32262AF7C0094311A /* TransactionLegalTermsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 414681A22262AF7C0094311A /* TransactionLegalTermsViewController.swift */; };
+		414681A52262B1AD0094311A /* TransactionTermsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 414681A42262B1AD0094311A /* TransactionTermsViewController.swift */; };
+		414681A72262B4DA0094311A /* terms1.txt in Resources */ = {isa = PBXBuildFile; fileRef = 414681A62262B4DA0094311A /* terms1.txt */; };
+		414681A92262B5DD0094311A /* terms2.txt in Resources */ = {isa = PBXBuildFile; fileRef = 414681A82262B5DD0094311A /* terms2.txt */; };
 		414760F7226089BD00030BE6 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 414760F6226089BD00030BE6 /* AppDelegate.swift */; };
 		414760F9226089BD00030BE6 /* TransactionWalletViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 414760F8226089BD00030BE6 /* TransactionWalletViewController.swift */; };
 		414760FE226089C000030BE6 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 414760FD226089C000030BE6 /* Assets.xcassets */; };
@@ -72,6 +77,11 @@
 		4146819822628F6A0094311A /* TransactionPaymentConfirmationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionPaymentConfirmationViewController.swift; sourceTree = "<group>"; };
 		4146819A226299C90094311A /* PHActivityIndicatorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PHActivityIndicatorViewController.swift; sourceTree = "<group>"; };
 		4146819C2262A18D0094311A /* TransactionOptionsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionOptionsTableViewCell.swift; sourceTree = "<group>"; };
+		414681A02262ADF20094311A /* TransactionNewsletterSubscriptionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionNewsletterSubscriptionViewController.swift; sourceTree = "<group>"; };
+		414681A22262AF7C0094311A /* TransactionLegalTermsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionLegalTermsViewController.swift; sourceTree = "<group>"; };
+		414681A42262B1AD0094311A /* TransactionTermsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionTermsViewController.swift; sourceTree = "<group>"; };
+		414681A62262B4DA0094311A /* terms1.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = terms1.txt; path = "Permission Hub/Resources/terms1.txt"; sourceTree = SOURCE_ROOT; };
+		414681A82262B5DD0094311A /* terms2.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = terms2.txt; path = "Permission Hub/Resources/terms2.txt"; sourceTree = SOURCE_ROOT; };
 		414760F3226089BD00030BE6 /* Permission Hub.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Permission Hub.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		414760F6226089BD00030BE6 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		414760F8226089BD00030BE6 /* TransactionWalletViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionWalletViewController.swift; sourceTree = "<group>"; };
@@ -125,6 +135,8 @@
 		4146817F22626E4B0094311A /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				414681A62262B4DA0094311A /* terms1.txt */,
+				414681A82262B5DD0094311A /* terms2.txt */,
 				4146818522626E6A0094311A /* Fonts */,
 			);
 			name = Resources;
@@ -219,7 +231,10 @@
 				4146819022627FAF0094311A /* TransactionPersonalDetailsViewController.swift */,
 				4146819622628D8F0094311A /* TransactionPaymentMethodViewController.swift */,
 				41468194226286DF0094311A /* TransactionIdentityDocumentViewController.swift */,
+				414681A02262ADF20094311A /* TransactionNewsletterSubscriptionViewController.swift */,
+				414681A22262AF7C0094311A /* TransactionLegalTermsViewController.swift */,
 				4146819822628F6A0094311A /* TransactionPaymentConfirmationViewController.swift */,
+				414681A42262B1AD0094311A /* TransactionTermsViewController.swift */,
 				414681712262635C0094311A /* TransactionFlowStep.swift */,
 			);
 			path = "Transaction Flow";
@@ -369,7 +384,9 @@
 				4146818B22626E8B0094311A /* WesFY-Regular_S.ttf in Resources */,
 				41476101226089C000030BE6 /* LaunchScreen.storyboard in Resources */,
 				4146818C22626E8B0094311A /* WesFY-Bold_S.ttf in Resources */,
+				414681A92262B5DD0094311A /* terms2.txt in Resources */,
 				414760FE226089C000030BE6 /* Assets.xcassets in Resources */,
+				414681A72262B4DA0094311A /* terms1.txt in Resources */,
 				4146818D22626E8B0094311A /* WesFY-Thin_S.ttf in Resources */,
 				4146818E22626E8B0094311A /* wesfy.ttf in Resources */,
 				4146818F22626E8B0094311A /* WesFY-Medium_S.ttf in Resources */,
@@ -403,9 +420,11 @@
 				41D26A0E22622F7A00C95CCD /* Date+dateString.swift in Sources */,
 				414761332260D14E00030BE6 /* TransactionTableViewCell.swift in Sources */,
 				4147612F2260C02000030BE6 /* PHTableViewController.swift in Sources */,
+				414681A52262B1AD0094311A /* TransactionTermsViewController.swift in Sources */,
 				4147612C2260B65100030BE6 /* TransactionNotification.swift in Sources */,
 				414760F7226089BD00030BE6 /* AppDelegate.swift in Sources */,
 				4146819122627FAF0094311A /* TransactionPersonalDetailsViewController.swift in Sources */,
+				414681A32262AF7C0094311A /* TransactionLegalTermsViewController.swift in Sources */,
 				4146819922628F6A0094311A /* TransactionPaymentConfirmationViewController.swift in Sources */,
 				4146819722628D8F0094311A /* TransactionPaymentMethodViewController.swift in Sources */,
 				4147613A2261225A00030BE6 /* TransactionDescriptionTableViewCell.swift in Sources */,
@@ -419,6 +438,7 @@
 				4146819D2262A18D0094311A /* TransactionOptionsTableViewCell.swift in Sources */,
 				41D26A0A2261F5A800C95CCD /* FormTextInputCell.swift in Sources */,
 				41D26A0C22621AEF00C95CCD /* TransactionOverviewViewController.swift.swift in Sources */,
+				414681A12262ADF20094311A /* TransactionNewsletterSubscriptionViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -17,6 +17,11 @@ struct TransactionItem: Decodable {
         case item = "Item"
         case fields = "Fields"
     }
+
+    init(item: String, fields: [String]) {
+        self.item = item
+        self.fields = fields
+    }
 }
 
 extension TransactionItem: Equatable {

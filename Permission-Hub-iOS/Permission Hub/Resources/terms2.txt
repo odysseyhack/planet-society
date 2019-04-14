@@ -1,0 +1,183 @@
+Effective from: 10 April 2019
+
+These Terms shall apply to all of our Services. We suggest that you print out and keep a terms and conditions for your records.
+ 
+Definitions
+
+In these terms the following definitions are used:
+“Application Form”: The form used by a Phone House customer to apply for a Phone House service as well as any additional forms (e.g. form for number porting from another mobile phone service provider)
+“Connection”: Provides the possibility to make use of the service with suitable mobile communication equipment.
+“Service”: The service, or where appropriate, part of the service provided.
+“Terms”: These terms and conditions for Phone House subscriptions.
+“Complementary Terms”: Terms for a specific additional service. Complementary Terms apply in addition to these Terms.
+ 
+1. General Agreements
+1.1. The customer has read and accepted the Terms applicable to the agreement stated on the contract.
+1.2. The Terms apply to all services offered by Phone House. Phone House may offer some services as an agent for another company. For some services Complementary Terms apply.
+1.3. Phone House reserves the right to change the Terms and /or the Complementary Terms. These changes will be effective after two weeks of notification, or any date after two weeks which will be communicated by Phone House. If the new Terms are not in line with the expectations of the customer, the agreement can be ended by the customer. This has to be done in writing within two weeks of dispatching the notification and will be effective on the date that the new Terms apply.
+ 
+2. Start of the Agreement
+2.1. An agreement is considered to be made when Tel.Totaal/Phone House has activated one or more connections. The activation will take place after all applicable forms and requested photocopies have been received by Phone House. Additionally, the in article 2.5 mentioned risk analysis has to be positive.
+2.2. 2.2. The duration of the agreement is 12 months unless stated otherwise. After this, the agreement is extended for indefinite duration. For new clients a short trial period may be specifically agreed upon.
+2.3. Phone House reserves the right to perform a risk analysis or to check the creditworthiness of a customer. If Phone House has the opinion a customers does not meet the requirements set, a connection will not be established.
+2.4. The customer may not transfer a connection or any of his rights and responsibilities under this agreement. Phone House reserves the right to transfer a connection to a third party without prior notice, provided that neither the level of service nor the customer’s rights under this agreement are reduced as a result. Else Article 1.3 applies.
+2.5. A consumer is entitled to have a maximum of three Phone House Connections at the same time.
+2.6. Phone House is entitled to charge separate (re-)connection fees for the telephone line, for voicemail, and for GPRS accounts.
+ 
+3. SIM-card
+3.1. The SIM-card remains the property of Tel.Totaal/Phone House. The customer is expected to use the SIM-card with care hereby avoiding damage, theft, and abuse.
+3.2. In case of theft of the SIM-card the customer will notify Phone House immediately. The customer is responsible for any use up till the moment of notification. After notification the SIM-card will be blocked by Phone House in order to prevent abuse by third parties.
+3.3. All incurred costs resulting from blocking, disconnecting, and reconnecting will be at the expense of the customer.
+3.4. In case of abuse of a SIM-card, Phone House reserves the right to terminate the connection or have it terminated without prior warning.
+3.5. Phone House can transfer the granted phone number to another SIM-card, due to technical or business economical reasons. In this case Phone House will send the other SIM-card to the customer, taking into account a one month period of notice for the transfer.
+ 
+4. The Service
+4.1. The Service is any or all of the following services provided via a mobile handset:
+a. The ability to make or receive calls;
+b. The ability to send or receive data (including SMS/MMS/e-mail/accessing information from the Internet); and
+c. Any other services we may offer.
+4.2. The Service includes provision of a SIM-card which will need to be activated, and may include the sale of a mobile handset and accessories.
+4.3. Phone House will use its reasonable endeavours to provide the Service by any date agreed, but cannot guarantee to do so and has no liability for any failure to meet any date.
+4.4. Phone House can change the technical properties of the service or the network or have it changed temporarily. Phone House will only limit or stop the service (temporarily) or have it limit or stopped (temporarily) if there are urgent reasons to do so.
+4.5. Phone House reserves the right to terminate the service in case it is necessary, for example due to technical or business economical reasons, or if Phone House is subject to a merger or takeover. Phone House will take into account a one month period of notice.
+4.6. Phone House or the network provider can, for maintenance purposes, temporarily (partially) shut down the network or have it shut down by a third party. Phone House will notify its customers in time unless the disruption is of such short duration and/or of limited scope that it would be unreasonable to expect Phone House to notify its customers.
+4.7. The customer is obliged to provide all information needed to maintain the connection(s). If failure of the network occurs the customer should notify Phone House as soon as possible.
+ 
+5. Use of the Service
+5.1. Phone House allocates a number to enable the customer to use the Service. The number does not belong to the customer and may only be transferred to another service provider in certain circumstances.
+5.2. The customer must not use, or permit any other person to use the Service
+a. fraudulently or in connection with a criminal offence;
+b. to send or receive calls or send, receive, upload, download, use or re-use any material which, in either case, is offensive, indecent, menacing, nuisance or a hoax call; or
+c. cause annoyance, inconvenience or needless anxiety;
+The customer must take all reasonable steps to ensure the Service is not used in this manner. The action Phone House can take if this happens is explained in article 2 and 10. If a claim is made against us because the Service is misused in this way, the customer must reimburse Phone House for any sums we have to pay.
+5.3. The customer is responsible for the use of his or her connection, irrespective of who is actually using the connection and whether this person has permission to do so from the customer. All expenses made from using the service, having regard to article 6, are at the expense of the customer.
+5.4. Would communication traffic incur problems due to the use of the connection by the customer, he or she is obliged to follow any directions of Phone House. Any cost Phone House and/or her suppliers have to make will be at the expense of the customer. If Phone House considers it necessary it can put the customer’s connection(s) out of order.
+5.5. Phone House and/or the network provider can change roaming facilities. The customer can use the prescribed local network. Hereby the options, quality, and, instructions of the country and/or network provider concerned with regards to International calls (including e.g. calling voicemail), SMS and data communication, international tariffs apply.
+5.6. It is common for mobile communication services to offer varying quality. This can result from the used devices, the network coverage, and atmospheric/static circumstances.
+5.7. Phone House reserves the right to deny access to certain countries.
+5.8. It is the responsibility of the customer to notify Phone House in writing of changes in address and bank account / credit card details within two weeks of these changes.
+5.9. The customer can change the subscription into another subscription upon approval in advance by Phone House. Phone House is entitled to charge a fee for changing subscriptions.
+5.10. Phone House cannot guarantee constant quality nor availability of SMS services, nor delivery of messages to/from third parties.
+5.11. Phone House cannot guarantee constant quality nor availability of GPRS services (if applicable), nor satisfactory data communication on the internet.
+5.12. Phone House cannot guarantee constant quality nor availability of Voicemail services (if applicable), nor delivery of messages from third parties.
+5.13. The use of the service and/or connection provided by Phone House is only allowed for “regular purposes”. “Regular purposes” is mobile phone and/or data communication making use of a mobile communication device (all devices with integrated mobile communication functionality). Any other use of the service and/or connection, e.g. making use of a GSM-box or SIM-box is not permitted. Phone House reserves the right to disconnect the service and/or connection without prior warning when it suspects unauthorised usage.
+ 
+6. Charges
+6.1. The customer will be charged, where appropriate, for the SIM-card and/or mobile handset and/or number transportation and/or any other charges after the application for Service is accepted by Phone House.
+6.2. From the date the connection is established, the customer is indebted to pay call charges to Phone House. The charges will be calculated using the details Phone House records or which are recorded on its behalf. This information is ruling, unless the customer can prove that this information is incorrect.
+6.3. From the date the connection is established, the customer, where appropriate, is indebted to pay monthly subscription charges.
+6.4. In case the customer has not made use of the subscription during a period of more than four weeks, Phone House can charge a monthly administrative fee of 5 Euros. If this situation occurs for several months in a row Phone House reserves the right to cancel the subscription.
+6.5. All charges are subject to the minimum charges shown on the Site.
+6.6. Phone House reserves the right to change rates and charges. If rates go up, Phone House has to notify the customer in time, with the exception of roaming charges.
+6.7. Roaming charges are normally set by local network providers and are hence out of Phone House’s control. Phone House will make an effort to publish the latest information on roaming availability and charges on the website.
+6.8. Phone House reserves the right to request a deposit and/or a proof of identity from the customer to enable roaming services.
+ 
+7. Billing
+7.1.  Billing shall generally be in advance. The customer is required to pay any Charges by direct debit, credit card or any other payment method Phone House agrees upon.
+7.2. The customer agrees to pay the call charges in advance before using the services. At the discretion of Phone House a credit limit to the customer’s account is applied. The customer authorizes Phone House to collect an automatic payment, if this limit is exceeded, unless agreed otherwise. The amount of the automatic payment is set by Phone House and reflects an estimation of the charges for the next 30 days, based on the details mentioned in Article 6.2.
+7.3. Bills will be sent to the customer by email unless agreed otherwise. Bills sent to the customer per postal service are subject to extra charges.
+7.4. Special circumstances can occur:
+a. Unusual costly mobile communications have taken place;
+b. Reasonable doubts exist about the use for regular purposes of the SIM-card(s);
+c. The monthly charge is higher than communicated upfront by Phone House.
+Under these circumstances Phone House is allowed to inform the customer, send interim bills and/or demand payment earlier Phone House reserves the right to disconnect and/or terminate the service and/or connection(s) if payment is not made within the set time.
+7.5. If Phone House allows payment in other ways than direct debit, a business customer is obliged to pay within 30 days after billing. In case of a consumer agreement, the customer is obliged to pay within 10 days after billing. The moment Phone House receives the amount outstanding is considered as the moment of payment.
+7.6. Phone House reserves the right to charge the customer an administrative fee Euro 2,50 per transaction for payments other than by direct debit.
+ 
+8. Late Payment
+8.1. Should a customer withdraw the payment or not pay the amount outstanding in the way as described in Article 7, he or she is without further notification of default omitting his or her duty to pay his bills.
+8.2. From the date a customer is omitting his duty to pay his bills, Phone House reserves the right to charge an administrative fee of Euro 12,50 per reminder. On top of that (legal) collection costs amounting to 15% of the amount outstanding can be added with a minimum of Euro 35. From the due date Phone House is allowed to charge 1% interest a month (or the national rate if higher) on the amount outstanding.
+8.3. Phone House reserves the right to disconnect and/or postpone the service and/or connection without further notification of default or prior notice if the customer:
+a. has not paid his or her bill within the term set by Phone House;
+b. does not provide the security as stated in Article 9;
+c. redraws the authorisation for automatic collection and/or redraws a payment.
+ 
+9. Security
+9.1. Phone House reserves the right to specify a varying usage ceiling on Connections.
+9.2. If a reasonable doubt exists whether at the time the agreement was made with the (potential) customer to omit his financial duties, Phone House reserves the right to get security by means of a bank guarantee and/or a deposit of a reasonable amount. Phone House can also ask for a third party to guarantee the (potential) customer. In absence of such security Phone House reserves the right to disconnect and/or postpone the service described in the agreement and/or apply Article 8.3.
+9.3. Phone House reserves the right to request a deposit from all customers to activate international roaming, as stated in Article 6.8.
+ 
+10. Disconnecting and Reconnecting
+10.1. Phone House reserves the right to (temporarily) disconnect a customer if he or she omits his or her duties, presuming this is serious enough to disconnect the customer. Please note that if this is the case all previous articles remain valid.
+10.2. Phone House reserves the right to disconnect the service and/or connection without further notification of default or prior notice if the situation described in article 3.4 would occur. Phone House will do the same if the situation described in article 7.4 would occur and reminders would not be effective. Besides this Phone House will disconnect the customer if he or she damages Phone House and/or the network provider in such a way that it is reasonable to disconnect the service.
+10.3. The customer can be reconnected if he fulfils his or her duties, within a reasonable period of time, as defined by Phone House. Phone House reserves the right to charge a fee of Euro 12,50 for reconnecting a customer. The fee and any other reconnection costs are at the expense of the Customer.
+ 
+11. Ending the Agreement
+11.1. Phone House can end the Agreement at any time if:
+a. the customer fails to pay Charges when they are due, including any deposit or if this Agreement is broken by the customer in any other material way;
+b. Phone House has reasonable cause to believe that the Service is being used in a way forbidden by paragraph 5.2., even if the customer does not know that the Service is being used in such a way and, does not correct the situation within 7 days of our request to do so; or
+c) the customer is the subject of a bankruptcy order, or becomes insolvent, or makes any arrangement with or for the benefit of creditors or if, being a company, goes into either voluntary or compulsory liquidation or a receiver is appointed over the assets.
+The customer is informed by Phone House about the termination in writing to the email address stated in the application or any subsequent email address supplied for this purpose.
+11.2. The customer can terminate the contract:
+a. after the agreed duration mentioned in Article 2.2 has passed;
+b. during the trial period as mentioned in Article 2.2, providing this has been explicitly agreed before the start of the contract.
+A one month term of notice applies. A request for termination has to be submitted in writing and sent by email or post. The customer is obliged to pay all charges incurred during the Agreement.
+11.3. Provided that the customer returns the SIM-card within 14 days of the ending of the Agreement, Phone House will refund:
+a. the deposits made if applicable;
+b. the outstanding amount of credit the customer has paid for.
+Refunds will be made within 3 months after the termination of the Agreement to the (bank) account the customer has provided when enrolling. Refunds to other (bank) accounts can be subject to additional charges.
+11.4. The customer may end this Agreement at any time by giving us written notice if:
+a. Phone House breaks this Agreement in any way and does not correct the situation within 14 days of the customer’s request to do so;
+b. Phone House has increased the Charges by a material amount or materially changed the conditions of this Agreement to your detriment.
+11.5. If the customer breaks this Agreement, and Phone House chooses to overlook it, it can still be ended by Phone House if this Agreement is broken again by the customer.
+ 
+12. Liability of Phone House
+12.1. Phone House’s liability, regardless whether it is derived from an agreement or an unlawful act, is limited to the amount Phone House is insured for per case.
+12.2. Phone House’s liability with regards to indirect and/or consequential damage, which includes damage to a business, loss of income, loss of savings, is expelled in all cases and at all times.
+12.3. Phone House can under no circumstances be held responsible for damage resulting from faulty mobile communication devices bought through Phone House by the customer.
+12.4. Claims for compensation should be made in writing to Phone House within four weeks after the incident, unless the customer can proof that he or she was not reasonably able to claim the damage within this period.
+ 
+13. Liability of the Customer
+13.1. A customer is responsible for any damage incurred by Phone House resulting from the customer’s behaviour and acts. The fact that the incurred damage resulted from the behaviour/acts of the customer has to be proven.
+13.2. The customer safeguards Phone House of any claims possible, made by third parties, on damage incurred by these third parties resulting from the services (or the lack of those) provided by Phone House and/or any of the information sent through the network provided by Phone House and/or its network provided.
+ 
+14. Phone Numbers
+14.1. Phone House reserves the right to change the granted phone number. This can only be done if it is critical for the performance of the service and/or connection, it results from an alteration of a law and/or rule, or if a competent rule setting (government) agency, or Phone House’s (network) supplier obligates Phone House to do so.
+14.2. Should the customer already have a phone number from a different Dutch network provider, then he or she can request for a number transfer. Phone House can charge a fee for a number transfer to the customer.
+14.3. The number can only be transferred in case the contract with the previous network provider can be ended and this provider cooperates. Phone House shall not be held liable when the provider does not cooperate.
+14.4. The customer shall, when a number transfer is carried out, cooperate and follow all instructions given by Phone House.
+14.5. The customer has the right to use the phone number provided by Phone House if he would decide to start using telecommunication services provided by a different provider, given this right is granted by the telecommunication law. The customer will have to request a number transfer at the new provider.
+14.6. The phone number assigned to a customer can only be transferred to a new provider if all financial obligations to Phone House have been fulfilled.
+ 
+15. Additional Services and Conditions
+15.1. If available, a customer can acquire an additional service. If Phone House agrees to provide this additional service, all articles mentioned in these terms apply.
+15.2. Additional or special terms can also apply to additional services. If these additional or special terms do not comply with the general terms, the additional or special terms apply.
+15.3. Additional services can result into additional and/or varying costs. The tariffs for these services are communicated by Phone House via the website.
+ 
+16. Collection, Processing and Distribution of (personal) Information
+16.1. Phone House can outsource the collection, processing and distribution of (personal) information to one or several partners. Personal information can include usage data. The information collected by Phone House as well as the partners needed to run the business are used to:
+a. perform the service offered;
+b. perform market research, including direct marketing aimed at selling products and/or services of Phone House or other organisations;
+c. handle complaints and settle conflicts;
+d. the distribution of information to the customer;
+e. increase the efficiency of Phone House as an organisation;
+f. prevent, detect, and fight fraud and irregularities;
+g. participate in (branch) warning systems;
+h. comply with rules and regulations set by law.
+16.2. Phone House will only provide third parties with information if:
+a. according to legal rules or regulations Phone House or the network provider is obliged to do so;
+b. in case of disturbance of third parties (as mentioned in article 5.6), taken that providing the information will not unreasonably harm the customer’s personal life;
+c. the situation occurs as mentioned in article 2.6;
+d. it is part of the risk analysis mentioned in article 2.5.
+16.3. The customer is allowed to view and correct his or her personal information stored. The customer is also allowed to object to distribution of this information after close observation. To do so the customer has to state in writing to Phone House that he or she objects to this.
+16.4. Phone House and the billing company are allowed to set up a database in order to collect personal information of customers who have not met their financial obligations in time as defined in article 8.3. This data can be provided to other mobile communication operators. The customer has the right to object to the way his or her information is stated in this database.
+16.5. Phone House reports this agreement to the EDR (Economic Data Resources BV) in The Hague. The EDR will process this data to prevent and/or minimize the risks resulting from credit and billing risks for credit providers and to prevent and/or minimize the risk of excessive providing of credit to credit takers. This data will be provided to organisations which are members in order to allow statistical usage.
+ 
+17. Complaints and Conflicts
+17.1. Conflict and Complaints can be put forward to Phone House in writing only. Phone House will react within 30 days, unless a reaction is within this period is not reasonable. In the latter case Phone House will propose a new reaction term.
+17.2. In the case a customer disagrees with (parts of) a bill, he or she is not allowed to postpone payment. The disagreement has to be communicated to Phone House in writing within 30 days of the billing date and will be dealt with as described in article 16.1.
+17.3. Conflicts between a natural person and Phone House about the establishment and the execution of the agreement regarding services provided by Phone House can both by the customer and Phone House be reported to the Geschillencommissie Telecommunicatie, P.O. 90600, 2509LP, The Hague. The fees charged by this commission are at the expense of customer.
+17.4. A customer can put forward a request to the Geschillencommissie Telecommunicatie only if the or she complaint has already been put forward to Phone House and no (satisfactory) reaction has been received within the terms set forth in article 16.1.
+17.5. Phone House can put forward a request to the Geschillencommissie Telecommunicatie only if the complaint has already been put forward to the customer and no (satisfactory) reaction has been received from the customer within 60 days.
+ 
+18. Distance Purchases and Reseller
+18.1. If the customer comes to an agreement from a distance (e.g. on the website) for the provision of products and/or services by Phone House, the customer has the right to recall the agreement within 7 days of completing this agreement. This right to dissolve an agreement does not exist if the customer has agreed to the delivery of the services offered by Phone House. In case a contract is dissolved the products should be sent back to Phone House in the original state, with all accessories and packaging, within thirty days and at the expense of the client.
+18.2. A possible reseller can come to an agreement for the delivery of mobile phone devices. In that case the reseller delivers the mobile phone devices. This delivery is not part of the duties of Phone House with regards to this agreement. Phone House cannot be held responsible for direct or indirect damage resulting from bad or malfunctioning devices or due to shortcomings of the delivery of these devices.
+18.3. Should Phone House and a customer come to an agreement for the delivery of mobile phone devices (possibly making use of the services of a reseller), than the specific terms and conditions of that agreement shall be ruling.
+18.4. Should Phone House deliver devices to the customer, please note that Phone House cannot be held responsible for the availability of different types of these devices.
+ 
+19. Applicable Law
+19.1. The applicable law for this agreement is the Dutch Law. Any disputes will be settled in the courts of the Netherlands.
+19.2. To the extent that this agreement concerns International Telecommunication, the International Telecommunication agreement applies with al its appendices and regulations. Furthermore Phone House may be subject to decisions and regulations of other organisations, concerning international telecommunication and applicable in The Netherlands.
+19.3. Phone House reserves the right to record or monitor conversations with customers about the Connection to assist us to improve the quality of our service.
+19.4. If a clause or condition of this agreement is not legally effective, the remainder of this agreement shall be effective. Phone House can replace any clause or condition that is not legally effective with a clause or condition of similar meaning that is legally effective.
