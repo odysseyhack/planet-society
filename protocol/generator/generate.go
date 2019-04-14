@@ -68,7 +68,7 @@ func (g *Generator) generatePersonalDetails(db *database.Database) error {
 
 func (g *Generator) generateIdentities(db *database.Database) error {
 	var newIdentities []models.IdentityInput
-
+	identityNames := gidentityNames()
 	for i := range identityNames {
 		newIdentity := models.IdentityInput{
 			DisplayName: identityNames[i],
@@ -171,31 +171,37 @@ func (g *Generator) generateDocuments(db *database.Database) error {
 }
 
 func (g *Generator) randomName() string {
+	names := gnames()
 	pos := g.rand.Uint32() % uint32(len(names))
 	return names[pos]
 }
 
 func (g *Generator) randomSurname() string {
+	surnames := gsurnames()
 	pos := g.rand.Uint32() % uint32(len(surnames))
 	return surnames[pos]
 }
 
 func (g *Generator) randomStreet() string {
+	streets := gstreets()
 	pos := g.rand.Uint32() % uint32(len(streets))
 	return streets[pos]
 }
 
 func (g *Generator) randomCity() string {
+	cities := gcities()
 	pos := g.rand.Uint32() % uint32(len(cities))
 	return cities[pos]
 }
 
 func (g *Generator) randomCountry() string {
+	countries := gcountries()
 	pos := g.rand.Uint32() % uint32(len(countries))
 	return countries[pos]
 }
 
 func (g *Generator) randomCurrency() string {
+	currencies := gcountries()
 	pos := g.rand.Uint32() % uint32(len(currencies))
 	return currencies[pos]
 }
