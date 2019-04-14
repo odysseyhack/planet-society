@@ -12,9 +12,21 @@ final class TransactionTermsViewController: UIViewController {
 
     // MARK: - Private properties
 
+    private let notificationCell: TransactionNotificationTableViewCell = {
+
+        let cell = TransactionNotificationTableViewCell()
+        cell.translatesAutoresizingMaskIntoConstraints = false
+        cell.configure(
+            withType: .warning,
+            andText: "You are allowed to revoke this agreement within 24 hours.")
+
+        return cell
+    }()
+
     private let textView: UITextView = {
 
         let textView = UITextView()
+        textView.translatesAutoresizingMaskIntoConstraints = false
         textView.font = PHFonts.regular()
         textView.textColor = PHColors.greyishBrown
 
@@ -37,14 +49,21 @@ final class TransactionTermsViewController: UIViewController {
 
     // MARK: - Life cycle
 
-    override func loadView() {
-        super.loadView()
-
-        view = textView
-    }
-
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        view.addSubview(notificationCell)
+        view.addSubview(textView)
+
+        notificationCell.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
+        notificationCell.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
+        notificationCell.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
+        notificationCell.heightAnchor.constraint(equalToConstant: 44).isActive = true
+
+        textView.topAnchor.constraint(equalTo: notificationCell.bottomAnchor).isActive = true
+        textView.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
+        textView.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
+        textView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
 
         let url = Bundle.main.url(forResource: fileName, withExtension: "txt")!
         let attrString = try! NSAttributedString(fileURL: url, options: [:], documentAttributes: nil)
