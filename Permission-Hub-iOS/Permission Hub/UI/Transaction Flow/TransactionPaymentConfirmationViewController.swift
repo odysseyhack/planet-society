@@ -33,7 +33,8 @@ final class TransactionPaymentConfirmationViewController: PHTableViewController 
                 text: "This Third Party provider is verified"),
             .plugin(
                 image: UIImage(named: "stripe"),
-                text: "By clicking the green button below you allow Stripe to access the bank account information from your bank in order to make recurrent payments on your behalf.")
+                text: "By clicking the green button below you allow Stripe to access the bank account information from your bank in order to make recurrent payments on your behalf."),
+            .selection(options: ["Allow access to my bank information"])
             ])
     }
 
