@@ -39,6 +39,8 @@
 		414EA0DC22631901005EA7F9 /* TransactionLegalTermsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 414EA0DB22631900005EA7F9 /* TransactionLegalTermsViewController.swift */; };
 		414EA0DE22631915005EA7F9 /* TransactionNewsletterSubscriptionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 414EA0DD22631914005EA7F9 /* TransactionNewsletterSubscriptionViewController.swift */; };
 		414EA0E02263192F005EA7F9 /* TransactionTermsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 414EA0DF2263192F005EA7F9 /* TransactionTermsViewController.swift */; };
+		414EA0E322631E2C005EA7F9 /* terms1.txt in Resources */ = {isa = PBXBuildFile; fileRef = 414EA0E122631E2C005EA7F9 /* terms1.txt */; };
+		414EA0E422631E2C005EA7F9 /* terms2.txt in Resources */ = {isa = PBXBuildFile; fileRef = 414EA0E222631E2C005EA7F9 /* terms2.txt */; };
 		41D26A0A2261F5A800C95CCD /* FormTextInputCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41D26A092261F5A800C95CCD /* FormTextInputCell.swift */; };
 		41D26A0C22621AEF00C95CCD /* TransactionOverviewViewController.swift.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41D26A0B22621AEF00C95CCD /* TransactionOverviewViewController.swift.swift */; };
 		41D26A0E22622F7A00C95CCD /* Date+dateString.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41D26A0D22622F7A00C95CCD /* Date+dateString.swift */; };
@@ -100,6 +102,8 @@
 		414EA0DB22631900005EA7F9 /* TransactionLegalTermsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TransactionLegalTermsViewController.swift; sourceTree = "<group>"; };
 		414EA0DD22631914005EA7F9 /* TransactionNewsletterSubscriptionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TransactionNewsletterSubscriptionViewController.swift; sourceTree = "<group>"; };
 		414EA0DF2263192F005EA7F9 /* TransactionTermsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TransactionTermsViewController.swift; sourceTree = "<group>"; };
+		414EA0E122631E2C005EA7F9 /* terms1.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = terms1.txt; path = "Permission Hub/Resources/terms1.txt"; sourceTree = SOURCE_ROOT; };
+		414EA0E222631E2C005EA7F9 /* terms2.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = terms2.txt; path = "Permission Hub/Resources/terms2.txt"; sourceTree = SOURCE_ROOT; };
 		41D26A092261F5A800C95CCD /* FormTextInputCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormTextInputCell.swift; sourceTree = "<group>"; };
 		41D26A0B22621AEF00C95CCD /* TransactionOverviewViewController.swift.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionOverviewViewController.swift.swift; sourceTree = "<group>"; };
 		41D26A0D22622F7A00C95CCD /* Date+dateString.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+dateString.swift"; sourceTree = "<group>"; };
@@ -133,6 +137,8 @@
 		4146817F22626E4B0094311A /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				414EA0E122631E2C005EA7F9 /* terms1.txt */,
+				414EA0E222631E2C005EA7F9 /* terms2.txt */,
 				4146818522626E6A0094311A /* Fonts */,
 			);
 			name = Resources;
@@ -381,7 +387,9 @@
 				4146818B22626E8B0094311A /* WesFY-Regular_S.ttf in Resources */,
 				41476101226089C000030BE6 /* LaunchScreen.storyboard in Resources */,
 				4146818C22626E8B0094311A /* WesFY-Bold_S.ttf in Resources */,
+				414EA0E422631E2C005EA7F9 /* terms2.txt in Resources */,
 				414760FE226089C000030BE6 /* Assets.xcassets in Resources */,
+				414EA0E322631E2C005EA7F9 /* terms1.txt in Resources */,
 				4146818D22626E8B0094311A /* WesFY-Thin_S.ttf in Resources */,
 				4146818E22626E8B0094311A /* wesfy.ttf in Resources */,
 				4146818F22626E8B0094311A /* WesFY-Medium_S.ttf in Resources */,
