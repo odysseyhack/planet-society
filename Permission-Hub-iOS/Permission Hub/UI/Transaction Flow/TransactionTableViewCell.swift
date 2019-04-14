@@ -174,5 +174,24 @@ final class TransactionTableViewCell: PHBaseTableViewCell {
         if viewModel.shouldDisplayCheckmark {
             selectionButton.isHidden = false
         }
+
+        if viewModel.title == "Newsletter" {
+            let image = UIImage(named: "cross")
+            selectionButton.setImage(image, for: .normal)
+            selectionButton.isHidden = false
+        }
+
+        if viewModel.title != "Newsletter" {
+            let label = UILabel()
+            label.translatesAutoresizingMaskIntoConstraints = false
+
+            label.text = "*"
+            label.textColor = PHColors.red
+            label.font = PHFonts.regular(ofSize: 14)
+
+            addSubview(label)
+            label.leftAnchor.constraint(equalTo: itemTitleLabel.rightAnchor, constant: 5).isActive = true
+            label.centerYAnchor.constraint(equalTo: itemTitleLabel.centerYAnchor).isActive = true
+        }
     }
 }
