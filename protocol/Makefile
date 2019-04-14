@@ -17,7 +17,6 @@ test:
 	go test -v ./cryptography
 	go test -v ./utils
 	go test -v ./protocol
-	go test -v ./generator
 
 # binaries
 binaries: requester responder notification-server
