@@ -205,12 +205,13 @@ class PHTableViewController: UIViewController {
         let hideKeyboardTapGestureRecognizer = UITapGestureRecognizer(
             target: self,
             action: #selector(hideKeyboard))
+        hideKeyboardTapGestureRecognizer.delegate = self
         view.addGestureRecognizer(hideKeyboardTapGestureRecognizer)
     }
 
     // MARK: - Selectors
 
-    @objc private func hideKeyboard(_ sender: Any) {
+    @objc private func hideKeyboard(_ sender: UITapGestureRecognizer) {
         view.endEditing(true)
     }
 }
@@ -369,5 +370,17 @@ extension PHTableViewController: UITableViewDelegate {
         default:
             break
         }
+    }
+}
+
+extension PHTableViewController: UIGestureRecognizerDelegate {
+
+    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
+        // add this to disable keyboard hiding tap gesture blocking tableview selection
+        if touch.view!.isDescendant(of: tableView) {
+            return false
+        }
+
+        return true
     }
 }
