@@ -18,7 +18,7 @@ final class TransactionTermsViewController: UIViewController {
         cell.translatesAutoresizingMaskIntoConstraints = false
         cell.configure(
             withType: .warning,
-            andText: "You are allowed to cancel this agreement within 24 hours.")
+            andText: "You are allowed to cancel this agreement within 14 days.")
 
         return cell
     }()
