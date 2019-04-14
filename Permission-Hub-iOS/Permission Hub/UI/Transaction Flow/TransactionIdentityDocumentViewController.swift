@@ -24,6 +24,7 @@ final class TransactionIdentityDocumentViewController: PHTableViewController {
                 type: .verification,
                 text: "This company is verified"),
             .description(
+                image: nil,
                 date: transaction.date,
                 title: "Identity document (passport)",
                 description: "Please fill out your passport details."),

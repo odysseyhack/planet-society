@@ -24,6 +24,7 @@ final class TransactionPaymentConfirmationViewController: PHTableViewController 
                 type: .verification,
                 text: "This company is verified"),
             .description(
+                image: nil,
                 date: transaction.date,
                 title: "Directly from bank account",
                 description: "The Payment Services Directive 2 requires your express consent in order to allow the Third Party Provider (Stripe) to access your bank account information currently stored by your bank. This will allow Stripe to make payment on your behalf. You can withdraw your consent anytime."),

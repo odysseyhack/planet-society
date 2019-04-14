@@ -26,7 +26,7 @@ enum PHTableViewViewCellType {
         type: TransactionNotificationType,
         text: String)
     case warning(text: String)
-    case description(date: Date, title: String, description: String)
+    case description(image: UIImage?, date: Date, title: String, description: String)
     case plugin(image: UIImage?, text: String)
     case transactionItem(item: TransactionItem, isChecked: Bool)
     case selectionDisclosure(text: String)
@@ -193,13 +193,17 @@ extension PHTableViewController: UITableViewDataSource {
 
             return cell
 
-        case .description(let date, let title, let description):
+        case .description(let image, let date, let title, let description):
 
             let cell = tableView.dequeueReusableCell(
                 withIdentifier: String(describing: TransactionDescriptionTableViewCell.self),
                 for: indexPath) as! TransactionDescriptionTableViewCell
 
-            cell.configure(withDate: date, andTitle: title, andDescription: description)
+            cell.configure(
+                withImage: image,
+                withDate: date,
+                andTitle: title,
+                andDescription: description)
 
             return cell
 
@@ -311,6 +315,7 @@ extension PHTableViewController: UITableViewDataSource {
                 type: .verification,
                 text: "This company is verified"),
             .description(
+                image: nil,
                 date: Date(),
                 title: "Personal details",
                 description: "Please fill out your personal details."),

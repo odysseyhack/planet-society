@@ -24,6 +24,7 @@ final class TransactionPaymentMethodViewController: PHTableViewController {
                 type: .verification,
                 text: "This company is verified"),
             .description(
+                image: nil,
                 date: transaction.date,
                 title: "Payment method",
                 description: "Please select out your payment method"),

@@ -27,6 +27,7 @@ final class TransactionNewsletterSubscriptionViewController: PHTableViewControll
                 type: .warning,
                 text: "Permission warning!"),
             .description(
+                image: nil,
                 date: transaction.date,
                 title: "Newsletter subscription",
                 description: "Phone House is using a newsletter to communicate with their clients and potential clients for marketing purposes."),

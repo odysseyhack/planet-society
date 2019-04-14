@@ -100,11 +100,13 @@ final class TransactionDescriptionTableViewCell: UITableViewCell {
         separatorView.heightAnchor.constraint(equalToConstant: 1).isActive = true
     }
 
-    func configure(withDate
+    func configure(withImage
+        image: UIImage?, withDate
         date: Date, andTitle
         title: String, andDescription
         description: String) {
 
+        imageView?.image = image
         dateLabel.text = date.dateAndTimeString(ofStyle: .short)
         titleLabel.text = title
         descriptionLabel.text = description

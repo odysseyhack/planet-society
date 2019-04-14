@@ -31,6 +31,7 @@ final class TransactionOverviewViewController: PHTableViewController {
             type: .warning,
             text: "Permission warning!"))
         items.append(.description(
+            image: nil,
             date: transaction.date,
             title: transaction.title,
             description: transaction.description))
@@ -53,6 +54,8 @@ final class TransactionOverviewViewController: PHTableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        tableView.allowsSelection = true
+
         // set selection delegate to self
         delegate = self
     }
@@ -68,10 +71,24 @@ extension TransactionOverviewViewController: PHTableViewControllerDelegate {
             let items: [PHTableViewViewCellType]
             switch type {
             case .warning:
-                items = transaction.analysis.map { .description(
-                    date: Date(),
-                    title: "",
-                    description: $0) }
+                items = transaction.analysis.enumerated().map {
+
+                    let image: UIImage?
+                    if $0.0 == 0 {
+                        image = UIImage(named: "kvk")
+                    } else if $0.0 == 1 {
+                        image = UIImage(named: "planet")
+                    } else {
+                        image = UIImage(named: "ethereum")
+                    }
+
+                    return .description(
+                        image: image,
+                        date: Date(),
+                        title: "",
+                        description: $0.1)
+                }
+
                 let viewController = PHTableViewController(
                     title: text,
                     items: items)
@@ -84,6 +101,7 @@ extension TransactionOverviewViewController: PHTableViewControllerDelegate {
 
             case .verification:
                  items = transaction.verification.map { .description(
+                    image: nil,
                     date: Date(),
                     title: "",
                     description: $0) }
