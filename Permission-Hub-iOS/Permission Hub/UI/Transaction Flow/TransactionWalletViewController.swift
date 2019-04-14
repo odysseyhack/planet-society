@@ -131,16 +131,7 @@ final class TransactionWalletViewController: PHTableViewController {
     // MARK: - Initialization
 
     init() {
-
-        let items: [PHTableViewViewCellType] = [
-            .walletItem(item: WalletItem(
-                image: UIImage(named: "phone_house"),
-                title: "Purchase at Phone House",
-                subtitle: "Personal details, Passport, Bank account",
-                date: Date()))
-        ]
-
-        super.init(items: items)
+        super.init(items: [PHTableViewViewCellType]())
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -157,6 +148,12 @@ final class TransactionWalletViewController: PHTableViewController {
         tableView.register(
             WalletItemTableViewCell.self,
             forCellReuseIdentifier: String(describing: WalletItemTableViewCell.self))
+
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(addItemToWallet),
+            name: Notification.Name("add item to wallet"),
+            object: nil)
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -167,13 +164,28 @@ final class TransactionWalletViewController: PHTableViewController {
         let decoder = JSONDecoder()
         decoder.dateDecodingStrategy = .iso8601
         let transaction = try! decoder.decode(TransactionNotification.self, from: data)
-        presentTransactionFlowViewController(transaction: transaction)
+//        presentTransactionFlowViewController(transaction: transaction)
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
         pollForNotifications()
+    }
+
+    // MARK: - Selectors
+
+    @objc private func addItemToWallet() {
+
+        self.items = [
+            .walletItem(item: WalletItem(
+                image: UIImage(named: "phone_house"),
+                title: "Purchase at Phone House",
+                subtitle: "Personal details, Passport, Bank account",
+                date: Date()))
+        ]
+
+        tableView.reloadData()
     }
 
     // MARK: - Networking

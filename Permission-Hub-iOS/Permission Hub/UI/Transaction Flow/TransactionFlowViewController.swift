@@ -261,6 +261,12 @@ final class TransactionFlowViewController: UIViewController {
         } catch {
             print(error)
         }
+
+        let notification = Notification(
+            name: Notification.Name("add item to wallet"),
+            object: nil,
+            userInfo: nil)
+        NotificationCenter.default.post(notification)
     }
 
     // MARK: - Selectors
