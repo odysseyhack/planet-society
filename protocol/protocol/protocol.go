@@ -206,16 +206,10 @@ func sendTransactionReply(c Conn, msg *Message, reply *models.TransactionReply) 
 	if err := gob.NewEncoder(&buffer).Encode(reply); err != nil {
 		return
 	}
-
 	_ = c.Write(&Message{
-		Header: Header{
-			Topic:       TopicTransactionReply,
-			Destination: msg.Header.Source,
-			Source:      msg.Header.Destination,
-		},
-		Body: Body{
-			Payload: buffer.Bytes(),
-		},
+		Header: Header{Topic: TopicTransactionReply,
+			Destination: msg.Header.Source, Source: msg.Header.Destination,
+		}, Body: Body{Payload: buffer.Bytes()},
 	})
 }
 
