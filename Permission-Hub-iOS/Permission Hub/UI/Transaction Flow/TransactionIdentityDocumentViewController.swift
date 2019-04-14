@@ -31,11 +31,11 @@ final class TransactionIdentityDocumentViewController: PHTableViewController {
             .selectionDisclosure(text: "Country of issue"),
             .form(
                 placeholder: "Passport number",
-                text: nil,
+                text: "J12393496",
                 keyboardType: .numbersAndPunctuation),
             .form(
                 placeholder: "Expiration date",
-                text: nil,
+                text: "02/2022",
                 keyboardType: .numbersAndPunctuation)
         ])
     }
