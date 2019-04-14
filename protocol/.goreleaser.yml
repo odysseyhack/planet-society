@@ -1,0 +1,55 @@
+project_name: i2i
+before:
+  hooks:
+    - make clean
+    - gqlgen
+builds:
+  -
+    main: ./cmd/requester
+    binary: requester
+
+    goos:
+      - darwin
+      - linux
+
+    goarch:
+      - amd64
+      - arm
+
+    goarm:
+      - 7
+
+    ignore:
+      - goos: darwin
+        goarch: arm
+
+  -
+    main: ./cmd/responder
+    binary: responder
+
+    goos:
+      - darwin
+      - linux
+
+    goarch:
+      - amd64
+      - arm
+
+    goarm:
+      - 7
+
+    ignore:
+      - goos: darwin
+        goarch: arm
+
+archive:
+  replacements:
+    386: i386
+    amd64: x86_64
+    darwin: macOS
+    linux: Linux
+  format: zip
+
+checksum:
+  name_template: "{{ .ProjectName }}_checksums.txt"
+  algorithm: sha256

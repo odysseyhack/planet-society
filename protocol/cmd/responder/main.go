@@ -82,7 +82,7 @@ func serve(db *database.Database) error {
 		log.Warningln(http.ListenAndServe(":8088", router))
 	}()
 
-	proto := protocol.NewProtocol(&AlwaysAcceptPlugin{})
+	proto := protocol.NewProtocol(&IOSPlugin{})
 	go proto.Loop()
 
 	ws := transport.NewWebsocket(proto.Connections)
