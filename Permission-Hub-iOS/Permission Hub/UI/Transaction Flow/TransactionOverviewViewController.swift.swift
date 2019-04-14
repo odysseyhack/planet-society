@@ -71,22 +71,9 @@ extension TransactionOverviewViewController: PHTableViewControllerDelegate {
             switch type {
             case .warning:
 
-                items = transaction.analysis.enumerated().map {
-
-                    let image: UIImage?
-                    if $0.0 == 0 {
-                        image = UIImage(named: "kvk")
-                    } else if $0.0 == 1 {
-                        image = UIImage(named: "planet")
-                    } else {
-                        image = UIImage(named: "ethereum")
-                    }
-
-                    return .description(
-                        image: image,
-                        date: Date(),
-                        title: "",
-                        description: $0.1)
+                items = transaction.analysis.map {
+                    let transactionItem = TransactionItem(item: $0, fields: [String]())
+                    return .transactionItem(item: transactionItem, isChecked: false)
                 }
 
                 let viewController = PHTableViewController(title: text, items: items)
@@ -98,11 +85,11 @@ extension TransactionOverviewViewController: PHTableViewControllerDelegate {
                 NotificationCenter.default.post(notification)
 
             case .verification:
-                 items = transaction.verification.map { .description(
-                    image: nil,
-                    date: Date(),
-                    title: "",
-                    description: $0) }
+                let items: [PHTableViewViewCellType] = [
+                    .transactionItem(item: TransactionItem(item: "KVK Verification", fields: ["KVK number: 284903900"]), isChecked: true),
+                    .transactionItem(item: TransactionItem(item: "Planet Blockchain", fields: ["34938 blocks validated"]), isChecked: true),
+                    .transactionItem(item: TransactionItem(item: "Ethereum", fields: ["1259840 blocks validated"]), isChecked: true)
+                ]
 
                  let viewController = PHTableViewController(title: text, items: items)
 

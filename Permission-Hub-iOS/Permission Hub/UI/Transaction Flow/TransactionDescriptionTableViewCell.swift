@@ -87,12 +87,12 @@ final class TransactionDescriptionTableViewCell: PHBaseTableViewCell {
 
     func configure(withImage
         image: UIImage?, withDate
-        date: Date, andTitle
+        date: Date?, andTitle
         title: String, andDescription
         description: String) {
 
         imageView?.image = image
-        dateLabel.text = date.dateAndTimeString(ofStyle: .short)
+        dateLabel.text = date?.dateAndTimeString(ofStyle: .short)
         titleLabel.text = title
         descriptionLabel.text = description
     }
