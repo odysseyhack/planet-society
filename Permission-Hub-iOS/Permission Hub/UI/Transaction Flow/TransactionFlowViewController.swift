@@ -254,7 +254,8 @@ final class TransactionFlowViewController: UIViewController {
                     switch response {
                     case .failure(let error):
                         print(error)
-                    default: break
+                    default:
+                        break
                     }
             }
         } catch {
