@@ -613,25 +613,25 @@ func (d *Database) PermissionList() (list []models.Permission, err error) {
 // if identity with given id does not exist nil error is removed
 func (d *Database) IdentityDel(id string) (removedID string, err error) {
 	err = d.db.Update(func(tx *bolt.Tx) error {
-		identitiesBucket := tx.Bucket([]byte(bucketIdentities))
-		if identitiesBucket == nil {
+		bucket := tx.Bucket([]byte(bucketIdentities))
+		if bucket == nil {
 			return ErrBucketNotFound(bucketIdentities)
 		}
 
-		return identitiesBucket.Delete([]byte(id))
+		return bucket.Delete([]byte(id))
 	})
 	return id, err
 }
 
 func (d *Database) AddressDel(id string) (removedID string, err error) {
 	err = d.db.Update(func(tx *bolt.Tx) error {
-		identitiesBucket := tx.Bucket([]byte(bucketIdentities))
-		if identitiesBucket == nil {
+		idsForAddrDel := tx.Bucket([]byte(bucketIdentities))
+		if idsForAddrDel == nil {
 			return ErrBucketNotFound(bucketIdentities)
 		}
 
-		return identitiesBucket.ForEach(func(k, v []byte) error {
-			identityBucket := identitiesBucket.Bucket(k)
+		return idsForAddrDel.ForEach(func(k, v []byte) error {
+			identityBucket := idsForAddrDel.Bucket(k)
 			if identityBucket == nil {
 				return nil
 			}
@@ -649,13 +649,13 @@ func (d *Database) AddressDel(id string) (removedID string, err error) {
 
 func (d *Database) PassportDel(id string) (removedID string, err error) {
 	err = d.db.Update(func(tx *bolt.Tx) error {
-		identitiesBucket := tx.Bucket([]byte(bucketIdentities))
-		if identitiesBucket == nil {
+		idForPassportDel := tx.Bucket([]byte(bucketIdentities))
+		if idForPassportDel == nil {
 			return ErrBucketNotFound(bucketIdentities)
 		}
 
-		return identitiesBucket.ForEach(func(k, v []byte) error {
-			identityBucket := identitiesBucket.Bucket(k)
+		return idForPassportDel.ForEach(func(k, v []byte) error {
+			identityBucket := idForPassportDel.Bucket(k)
 			if identityBucket == nil {
 				return nil
 			}
@@ -673,13 +673,13 @@ func (d *Database) PassportDel(id string) (removedID string, err error) {
 
 func (d *Database) PaymentCardDel(id string) (removedID string, err error) {
 	err = d.db.Update(func(tx *bolt.Tx) error {
-		identitiesBucket := tx.Bucket([]byte(bucketIdentities))
-		if identitiesBucket == nil {
+		idsForPaymentDel := tx.Bucket([]byte(bucketIdentities))
+		if idsForPaymentDel == nil {
 			return ErrBucketNotFound(bucketIdentities)
 		}
 
-		return identitiesBucket.ForEach(func(k, v []byte) error {
-			identityBucket := identitiesBucket.Bucket(k)
+		return idsForPaymentDel.ForEach(func(k, v []byte) error {
+			identityBucket := idsForPaymentDel.Bucket(k)
 			if identityBucket == nil {
 				return nil
 			}
@@ -697,13 +697,13 @@ func (d *Database) PaymentCardDel(id string) (removedID string, err error) {
 
 func (d *Database) IdentityDocumentDel(id string) (removedID string, err error) {
 	err = d.db.Update(func(tx *bolt.Tx) error {
-		identitiesBucket := tx.Bucket([]byte(bucketIdentities))
-		if identitiesBucket == nil {
+		idForDocumentDel := tx.Bucket([]byte(bucketIdentities))
+		if idForDocumentDel == nil {
 			return ErrBucketNotFound(bucketIdentities)
 		}
 
-		return identitiesBucket.ForEach(func(k, v []byte) error {
-			identityBucket := identitiesBucket.Bucket(k)
+		return idForDocumentDel.ForEach(func(k, v []byte) error {
+			identityBucket := idForDocumentDel.Bucket(k)
 			if identityBucket == nil {
 				return nil
 			}
@@ -721,13 +721,13 @@ func (d *Database) IdentityDocumentDel(id string) (removedID string, err error) 
 
 func (d *Database) ContactDel(id string) (removedID string, err error) {
 	err = d.db.Update(func(tx *bolt.Tx) error {
-		identitiesBucket := tx.Bucket([]byte(bucketIdentities))
-		if identitiesBucket == nil {
+		idForContactDel := tx.Bucket([]byte(bucketIdentities))
+		if idForContactDel == nil {
 			return ErrBucketNotFound(bucketIdentities)
 		}
 
-		return identitiesBucket.ForEach(func(k, v []byte) error {
-			identityBucket := identitiesBucket.Bucket(k)
+		return idForContactDel.ForEach(func(k, v []byte) error {
+			identityBucket := idForContactDel.Bucket(k)
 			if identityBucket == nil {
 				return nil
 			}
