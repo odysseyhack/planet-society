@@ -1,4 +1,4 @@
-project_name: i2i
+project_name: protocol
 before:
   hooks:
     - make clean
