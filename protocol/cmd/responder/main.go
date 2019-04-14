@@ -9,16 +9,15 @@ import (
 	"path/filepath"
 	"time"
 
-	"github.com/odysseyhack/planet-society/protocol/generator"
-	"github.com/odysseyhack/planet-society/protocol/models"
-
 	"github.com/99designs/gqlgen/handler"
 	"github.com/go-chi/chi"
 	"github.com/odysseyhack/planet-society/protocol/cryptography"
 	"github.com/odysseyhack/planet-society/protocol/database"
+	"github.com/odysseyhack/planet-society/protocol/models"
 	"github.com/odysseyhack/planet-society/protocol/protocol"
 	"github.com/odysseyhack/planet-society/protocol/transport"
 	"github.com/odysseyhack/planet-society/protocol/utils"
+	"github.com/phob0s-pl/generator"
 	log "github.com/sirupsen/logrus"
 )
 

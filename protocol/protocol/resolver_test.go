@@ -8,7 +8,7 @@ import (
 
 	"github.com/odysseyhack/planet-society/protocol/cryptography"
 	"github.com/odysseyhack/planet-society/protocol/database"
-	"github.com/odysseyhack/planet-society/protocol/generator"
+	"github.com/phob0s-pl/generator"
 )
 
 func TestFillTransaction(t *testing.T) {
