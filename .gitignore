@@ -5,3 +5,4 @@
 /protocol/protocol/generated.go
 /protocol/generated_resolver.go
 /protocol/models/generated.go
+/protocol/dist
