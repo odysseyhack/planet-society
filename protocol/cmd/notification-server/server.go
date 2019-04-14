@@ -14,10 +14,11 @@ import (
 type Server struct {
 	notification *models.PermissionNotificationRequest
 	reply        *models.PermissionNotificationResponse
+	server       *http.Server
 }
 
 func (s *Server) Listen(addr string) error {
-	server := &http.Server{
+	s.server = &http.Server{
 		Addr:         addr,
 		WriteTimeout: time.Second * 15,
 		ReadTimeout:  time.Second * 15,
@@ -25,10 +26,14 @@ func (s *Server) Listen(addr string) error {
 		Handler:      s.createRouter(),
 	}
 
-	if err := server.ListenAndServe(); err != http.ErrServerClosed {
+	if err := s.server.ListenAndServe(); err != http.ErrServerClosed {
 		return err
 	}
 	return nil
+}
+
+func (s *Server) Stop() error {
+	return s.server.Close()
 }
 
 func (s *Server) createRouter() *mux.Router {
